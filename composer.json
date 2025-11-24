@@ -84,6 +84,31 @@
         ],
         "post-update-cmd": [
             "@auto-scripts"
+        ],
+        "start" : [
+            "Composer\\Config::disableProcessTimeout",
+            "symfony serve"
+        ],
+        "test:phpcs" : [
+            "php-cs-fixer fix --dry-run"
+        ],
+        "fix:phpcs": [
+            "php-cs-fixer fix"
+        ],
+        "test:twigcs": [
+            "twig-cs-fixer lint templates/"
+        ],
+        "fix:twigcs": [
+            "twig-cs-fixer fix templates/"
+        ],
+        "test" : [
+            "@test:phpcs",
+            "@test:twigcs",
+            "@test:codecept"
+        ],
+        "fix" : [
+            "@fix:phpcs",
+            "@fix:twigcs"
         ]
     },
     "conflict": {
