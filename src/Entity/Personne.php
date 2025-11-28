@@ -6,7 +6,14 @@ use App\Repository\PersonneRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: PersonneRepository::class)]
-class Personne
+#[ORM\InheritanceType('SINGLE_TABLE')]
+#[ORM\DiscriminatorColumn(name: 'type', type: 'string')]
+#[ORM\DiscriminatorMap([
+    'client' => Client::class,
+    'serveur' => Serveur::class,
+    'proprietaire' => Proprietaire::class,
+])]
+abstract class Personne
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -24,6 +31,9 @@ class Personne
 
     #[ORM\Column(length: 150, nullable: true)]
     private ?string $email = null;
+
+    #[ORM\Column(length: 1024, nullable: true)]
+    private ?string $motdepasse = null;
 
     public function getidPers(): ?int
     {
@@ -76,5 +86,15 @@ class Personne
         $this->email = $email;
 
         return $this;
+    }
+
+    public function getMotdepasse(): ?string
+    {
+        return $this->motdepasse;
+    }
+
+    public function setMotdepasse(?string $motdepasse): void
+    {
+        $this->motdepasse = $motdepasse;
     }
 }
