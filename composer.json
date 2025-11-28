@@ -109,6 +109,9 @@
         "fix" : [
             "@fix:phpcs",
             "@fix:twigcs"
+        ],
+        "migration" : [
+            "bin/console doctrine:migrations:migrate"
         ]
     },
     "conflict": {
