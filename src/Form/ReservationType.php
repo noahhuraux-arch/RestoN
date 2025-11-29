@@ -15,8 +15,8 @@ class ReservationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('dateType',DateType::class)
-            ->add('heureType', ChoiceType::class,[
+            ->add('date',DateType::class)
+            ->add('heure', ChoiceType::class,[
                 'choices' => [
                     'Midi'=>[
                         '12:00' => new \DateTime('12:00'),
@@ -32,7 +32,7 @@ class ReservationType extends AbstractType
                     ]
                 ]
             ])
-            ->add('nbPersType', IntegerType::class)
+            ->add('nbPers', IntegerType::class)
         ;
     }
 
