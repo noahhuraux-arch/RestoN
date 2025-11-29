@@ -12,7 +12,7 @@ class Commande
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    private ?int $idCommande = null;
+    private ?int $id = null;
 
     #[ORM\Column]
     private ?float $prixCommande = null;
@@ -20,9 +20,9 @@ class Commande
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTime $dateCommande = null;
 
-    public function getidCommande(): ?int
+    public function getid(): ?int
     {
-        return $this->idCommande;
+        return $this->id;
     }
 
     public function getPrixCommande(): ?float

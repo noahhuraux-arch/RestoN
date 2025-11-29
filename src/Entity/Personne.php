@@ -18,7 +18,7 @@ abstract class Personne
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    private ?int $idPers = null;
+    private ?int $id = null;
 
     #[ORM\Column(length: 25, nullable: true)]
     private ?string $prenom = null;
@@ -35,9 +35,9 @@ abstract class Personne
     #[ORM\Column(length: 1024, nullable: true)]
     private ?string $motdepasse = null;
 
-    public function getidPers(): ?int
+    public function getid(): ?int
     {
-        return $this->idPers;
+        return $this->id;
     }
 
     public function getPrenom(): ?string

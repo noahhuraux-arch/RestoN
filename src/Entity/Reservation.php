@@ -12,7 +12,7 @@ class Reservation
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    private ?int $idReservation = null;
+    private ?int $id = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTime $date = null;
@@ -23,9 +23,9 @@ class Reservation
     #[ORM\Column]
     private ?int $nbPers = null;
 
-    public function getidReservation(): ?int
+    public function getid(): ?int
     {
-        return $this->idReservation;
+        return $this->id;
     }
 
     public function getDate(): ?\DateTime

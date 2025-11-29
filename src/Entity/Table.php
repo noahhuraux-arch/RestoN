@@ -12,7 +12,7 @@ class Table
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    private ?int $idTable = null;
+    private ?int $id = null;
 
     #[ORM\Column]
     private ?int $nbPlace = null;
@@ -20,9 +20,9 @@ class Table
     #[ORM\Column(nullable: true)]
     private ?bool $disponible = null;
 
-    public function getidTable(): ?int
+    public function getid(): ?int
     {
-        return $this->idTable;
+        return $this->id;
     }
 
     public function getNbPlace(): ?int

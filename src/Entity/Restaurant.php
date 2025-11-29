@@ -33,7 +33,7 @@ class Restaurant
 
     public function getidRestau(): ?int
     {
-        return $this->idRestau;
+        return $this->id;
     }
 
     public function getLibRestau(): ?string
