@@ -11,11 +11,13 @@ use Symfony\Component\Routing\Requirement\Requirement;
 
 final class ProprietaireController extends AbstractController
 {
-    #[Route('/proprietaire', name: 'app_proprietaire')]
-    public function index(): Response
+    #[Route('/proprietaire/{id}', name: 'app_proprietaire', requirements: ['id' => Requirement::DIGITS])]
+    public function index(Proprietaire $proprietaire): Response
     {
-        return $this->render('proprietaire/index.html.twig', [
-            'controller_name' => 'ProprietaireController',
+
+        return $this->render('proprietaire/liste.html.twig', [
+            'proprietaire' => $proprietaire,
+            'restaurants' => $proprietaire->getRestaurants(),
         ]);
     }
 

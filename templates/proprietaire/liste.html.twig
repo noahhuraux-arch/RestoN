@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mes Restaurants{% endblock %}
+
+{% block body %}
+    <div class="container py-5">
+        <h1 class="mb-4">Bonjour, {{ proprietaire.prenom }} !</h1>
+        <p class="lead mb-5">Quel établissement voulez-vous gérer aujourd'hui ?</p>
+
+        <div class="row g-4">
+            {% for restaurant in restaurants %}
+                <div class="col-md-4">
+                    <div class="card h-100 shadow-sm hover-shadow">
+                        <div class="card-body text-center p-5">
+                            <h3 class="card-title">{{ restaurant.libRestau }}</h3>
+                            <p class="text-muted">{{ restaurant.villeRestau }}</p>
+
+                            <a href="{{ path('app_proprietaire_show', {'id': restaurant.id}) }}" class="btn btn-outline-primary stretched-link">
+                                Gérer ce restaurant
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <div class="alert alert-warning">
+                    Vous n'avez pas encore de restaurant.
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
