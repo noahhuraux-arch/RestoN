@@ -6,7 +6,14 @@ use App\Repository\ProduitRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ProduitRepository::class)]
-class Produit
+#[ORM\InheritanceType('SINGLE_TABLE')]
+#[ORM\DiscriminatorColumn(name: 'type', type: 'string')]
+#[ORM\DiscriminatorMap([
+    'boisson' => Boisson::class,
+    'menu' => Menu::class,
+    'plat' => Plat::class,
+])]
+abstract class Produit
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
