@@ -33,6 +33,7 @@ class ReservationType extends AbstractType
                 ]
             ])
             ->add('nbPers', IntegerType::class)
+            ->add('client', ClientType::class)
         ;
     }
 
