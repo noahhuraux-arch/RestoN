@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\HoraireRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: HoraireRepository::class)]
@@ -13,112 +14,112 @@ class Horaire
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 64)]
-    private ?string $lundi = null;
+    #[ORM\Column(length: 10)]
+    private ?string $jour = null;
 
-    #[ORM\Column(length: 64)]
-    private ?string $mardi = null;
+    #[ORM\Column(type: Types::TIME_MUTABLE, nullable: true)]
+    private ?\DateTime $ouvertureMidi = null;
 
-    #[ORM\Column(length: 64)]
-    private ?string $mercredi = null;
+    #[ORM\Column(type: Types::TIME_MUTABLE, nullable: true)]
+    private ?\DateTime $fermetureMidi = null;
 
-    #[ORM\Column(length: 64)]
-    private ?string $jeudi = null;
+    #[ORM\Column(type: Types::TIME_MUTABLE, nullable: true)]
+    private ?\DateTime $ouvertureSoir = null;
 
-    #[ORM\Column(length: 64)]
-    private ?string $vendredi = null;
+    #[ORM\Column(type: Types::TIME_MUTABLE, nullable: true)]
+    private ?\DateTime $fermetureSoir = null;
 
-    #[ORM\Column(length: 64)]
-    private ?string $samedi = null;
+    #[ORM\Column(nullable: true)]
+    private ?bool $ferme = null;
 
-    #[ORM\Column(length: 64)]
-    private ?string $dimanche = null;
+    #[ORM\ManyToOne(inversedBy: 'horaires')]
+    private ?restaurant $restaurant = null;
 
-    public function getid(): ?int
+    public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getLundi(): ?string
+    public function getJour(): ?string
     {
-        return $this->lundi;
+        return $this->jour;
     }
 
-    public function setLundi(string $lundi): static
+    public function setJour(string $jour): static
     {
-        $this->lundi = $lundi;
+        $this->jour = $jour;
 
         return $this;
     }
 
-    public function getMardi(): ?string
+    public function getOuvertureMidi(): ?\DateTime
     {
-        return $this->mardi;
+        return $this->ouvertureMidi;
     }
 
-    public function setMardi(string $mardi): static
+    public function setOuvertureMidi(?\DateTime $ouvertureMidi): static
     {
-        $this->mardi = $mardi;
+        $this->ouvertureMidi = $ouvertureMidi;
 
         return $this;
     }
 
-    public function getMercredi(): ?string
+    public function getFermetureMidi(): ?\DateTime
     {
-        return $this->mercredi;
+        return $this->fermetureMidi;
     }
 
-    public function setMercredi(string $mercredi): static
+    public function setFermetureMidi(?\DateTime $fermetureMidi): static
     {
-        $this->mercredi = $mercredi;
+        $this->fermetureMidi = $fermetureMidi;
 
         return $this;
     }
 
-    public function getJeudi(): ?string
+    public function getOuvertureSoir(): ?\DateTime
     {
-        return $this->jeudi;
+        return $this->ouvertureSoir;
     }
 
-    public function setJeudi(string $jeudi): static
+    public function setOuvertureSoir(?\DateTime $ouvertureSoir): static
     {
-        $this->jeudi = $jeudi;
+        $this->ouvertureSoir = $ouvertureSoir;
 
         return $this;
     }
 
-    public function getVendredi(): ?string
+    public function getFermetureSoir(): ?\DateTime
     {
-        return $this->vendredi;
+        return $this->fermetureSoir;
     }
 
-    public function setVendredi(string $vendredi): static
+    public function setFermetureSoir(?\DateTime $fermetureSoir): static
     {
-        $this->vendredi = $vendredi;
+        $this->fermetureSoir = $fermetureSoir;
 
         return $this;
     }
 
-    public function getSamedi(): ?string
+    public function isFerme(): ?bool
     {
-        return $this->samedi;
+        return $this->ferme;
     }
 
-    public function setSamedi(string $samedi): static
+    public function setFerme(?bool $ferme): static
     {
-        $this->samedi = $samedi;
+        $this->ferme = $ferme;
 
         return $this;
     }
 
-    public function getDimanche(): ?string
+    public function getRestaurant(): ?restaurant
     {
-        return $this->dimanche;
+        return $this->restaurant;
     }
 
-    public function setDimanche(string $dimanche): static
+    public function setRestaurant(?restaurant $restaurant): static
     {
-        $this->dimanche = $dimanche;
+        $this->restaurant = $restaurant;
 
         return $this;
     }
