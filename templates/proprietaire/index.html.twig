@@ -1,0 +1,92 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mon Etablissement{% endblock %}
+
+{% block body %}
+    <div class="container py-5">
+
+        <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-3">
+            <h1 class="h2">Gestion de mon restaurant</h1>
+            <div>
+                <button class="btn btn-primary btn-sm">Modifier</button>
+            </div>
+        </div>
+
+        <div class="row g-4">
+
+            <div class="col-md-7 col-lg-8">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Informations de l'établissement</h5>
+                    </div>
+                    <div class="card-body">
+
+                        <h2 class="card-title text-primary mb-3">{{ restaurant.libRestau }}</h2>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <h6 class="text-muted text-uppercase fw-bold" style="font-size: 0.8rem;">Coordonnées</h6>
+                                <p class="mb-1">{{ restaurant.adrRestau }}</p>
+
+                                <p class="mb-1">{{ restaurant.cpRestau }} {{ restaurant.villeRestau }}</p>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <h6 class="text-muted text-uppercase fw-bold" style="font-size: 0.8rem;">Contact</h6>
+                                <p class="mb-1">{{ restaurant.telRestau }}</p>
+
+                                <p class="mb-1">{{ restaurant.emailRestau }}</p>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <h6 class="text-muted text-uppercase fw-bold" style="font-size: 0.8rem;">Autre</h6>
+                                <p class="mb-1">{{ restaurant.nbTable }} Tables</p>
+
+                                {% if restaurant.nbEtoiles %}
+                                    <p class="mb-1">{{ restaurant.nbEtoiles }} Étoiles</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-5 col-lg-4">
+                <div class="card h-100 shadow-sm border-0 bg-light">
+                    <div class="card-body p-4">
+                        <h4 class="card-title mb-4">Horaires d'ouverture</h4>
+
+                        <div class="table-responsive">
+                            <table class="table table-borderless table-sm">
+                                <tbody>
+                                {% for horaire in restaurant.horaires %}
+                                    <tr class="border-bottom">
+                                        <th scope="row">{{ horaire.jour }}</th>
+                                        <td class="text-end text-muted">
+                                            {% if horaire.ferme %}
+                                                <span class="text-danger">Fermé</span>
+                                            {% else %}
+                                                {% if horaire.ouvertureMidi %}
+                                                    {{ horaire.ouvertureMidi|date('H:i') }} - {{ horaire.fermetureMidi|date('H:i') }}
+                                                {% endif %}
+
+                                                {% if horaire.ouvertureSoir %}
+                                                    <br>
+                                                    {{ horaire.ouvertureSoir|date('H:i') }} - {{ horaire.fermetureSoir|date('H:i') }}
+                                                {% endif %}
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="d-grid mt-4">
+                            <button class="btn btn-outline-dark btn-sm">Gérer les horaires</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}

@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\RestaurantRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: RestaurantRepository::class)]
@@ -34,6 +36,23 @@ class Restaurant
     #[ORM\ManyToOne(inversedBy: 'restaurants')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Proprietaire $proprietaire = null;
+
+    #[ORM\Column(length: 10)]
+    private ?string $tel_restau = null;
+
+    #[ORM\Column(length: 150)]
+    private ?string $email_restau = null;
+
+    /**
+     * @var Collection<int, Horaire>
+     */
+    #[ORM\OneToMany(targetEntity: Horaire::class, mappedBy: 'restaurant')]
+    private Collection $horaires;
+
+    public function __construct()
+    {
+        $this->horaires = new ArrayCollection();
+    }
 
     public function getid(): ?int
     {
@@ -120,6 +139,60 @@ class Restaurant
     public function setProprietaire(?Proprietaire $proprietaire): static
     {
         $this->proprietaire = $proprietaire;
+
+        return $this;
+    }
+
+    public function getTelRestau(): ?string
+    {
+        return $this->tel_restau;
+    }
+
+    public function setTelRestau(string $tel_restau): static
+    {
+        $this->tel_restau = $tel_restau;
+
+        return $this;
+    }
+
+    public function getEmailRestau(): ?string
+    {
+        return $this->email_restau;
+    }
+
+    public function setEmailRestau(string $email_restau): static
+    {
+        $this->email_restau = $email_restau;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Horaire>
+     */
+    public function getHoraires(): Collection
+    {
+        return $this->horaires;
+    }
+
+    public function addHoraire(Horaire $horaire): static
+    {
+        if (!$this->horaires->contains($horaire)) {
+            $this->horaires->add($horaire);
+            $horaire->setRestaurant($this);
+        }
+
+        return $this;
+    }
+
+    public function removeHoraire(Horaire $horaire): static
+    {
+        if ($this->horaires->removeElement($horaire)) {
+            // set the owning side to null (unless already changed)
+            if ($horaire->getRestaurant() === $this) {
+                $horaire->setRestaurant(null);
+            }
+        }
 
         return $this;
     }
