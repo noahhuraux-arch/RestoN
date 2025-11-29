@@ -38,9 +38,11 @@
                             </div>
                             <div class="col-md-6 mb-3">
                                 <h6 class="text-muted text-uppercase fw-bold" style="font-size: 0.8rem;">Autre</h6>
-                                <p class="mb-1">{{ restaurant.nbTable }}</p>
+                                <p class="mb-1">{{ restaurant.nbTable }} Tables</p>
 
-                                <p class="mb-1">{{ restaurant.nbEtoiles }}</p>
+                                {% if restaurant.nbEtoiles %}
+                                    <p class="mb-1">{{ restaurant.nbEtoiles }} Étoiles</p>
+                                {% endif %}
                             </div>
                         </div>
                     </div>
