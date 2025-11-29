@@ -11,7 +11,7 @@ class Horaire
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    private ?int $idHoraire = null;
+    private ?int $id = null;
 
     #[ORM\Column(length: 64)]
     private ?string $lundi = null;
@@ -34,9 +34,9 @@ class Horaire
     #[ORM\Column(length: 64)]
     private ?string $dimanche = null;
 
-    public function getidHoraire(): ?int
+    public function getid(): ?int
     {
-        return $this->idHoraire;
+        return $this->id;
     }
 
     public function getLundi(): ?string

@@ -11,7 +11,7 @@ class Restaurant
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    private ?int $idRestau = null;
+    private ?int $id = null;
 
     #[ORM\Column(length: 64)]
     private ?string $libRestau = null;
@@ -31,9 +31,13 @@ class Restaurant
     #[ORM\Column(nullable: true)]
     private ?int $nbEtoiles = null;
 
-    public function getidRestau(): ?int
+    #[ORM\ManyToOne(inversedBy: 'restaurants')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Proprietaire $proprietaire = null;
+
+    public function getid(): ?int
     {
-        return $this->idRestau;
+        return $this->id;
     }
 
     public function getLibRestau(): ?string
@@ -104,6 +108,18 @@ class Restaurant
     public function setNbEtoiles(?int $nbEtoiles): static
     {
         $this->nbEtoiles = $nbEtoiles;
+
+        return $this;
+    }
+
+    public function getProprietaire(): ?Proprietaire
+    {
+        return $this->proprietaire;
+    }
+
+    public function setProprietaire(?Proprietaire $proprietaire): static
+    {
+        $this->proprietaire = $proprietaire;
 
         return $this;
     }

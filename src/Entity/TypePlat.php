@@ -11,14 +11,14 @@ class TypePlat
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    private ?int $idTypePlat = null;
+    private ?int $id = null;
 
     #[ORM\Column]
     private ?int $type = null;
 
-    public function getidTypePlat(): ?int
+    public function getid(): ?int
     {
-        return $this->idTypePlat;
+        return $this->id;
     }
 
     public function getType(): ?int
