@@ -26,6 +26,9 @@ class Reservation
     #[ORM\ManyToOne(targetEntity: Client::class, inversedBy: 'reservations')]
     private ?Client $client = null;
 
+    #[ORM\ManyToOne(targetEntity: Table::class, inversedBy: 'reservations')]
+    private ?Client $table = null;
+
     public function getid(): ?int
     {
         return $this->id;
