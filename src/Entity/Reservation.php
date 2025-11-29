@@ -39,6 +39,16 @@ class Reservation
     #[ORM\ManyToOne(targetEntity: Table::class, inversedBy: 'reservations')]
     private ?Table $table = null;
 
+    public function getTable(): ?Table
+    {
+        return $this->table;
+    }
+
+    public function setTable(?Table $table): void
+    {
+        $this->table = $table;
+    }
+
     public function getid(): ?int
     {
         return $this->id;
