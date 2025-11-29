@@ -13,4 +13,14 @@ class Client extends Personne
     #[ORM\OneToMany(targetEntity: Reservation::class, mappedBy: 'client')]
     private Collection $reservations;
 
+    public function getReservations(): Collection
+    {
+        return $this->reservations;
+    }
+
+    public function setReservations(Collection $reservations): void
+    {
+        $this->reservations = $reservations;
+    }
+
 }
