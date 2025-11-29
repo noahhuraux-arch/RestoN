@@ -26,6 +26,16 @@ class Reservation
     #[ORM\ManyToOne(targetEntity: Client::class, inversedBy: 'reservations')]
     private ?Client $client = null;
 
+    public function getClient(): ?Client
+    {
+        return $this->client;
+    }
+
+    public function setClient(?Client $client): void
+    {
+        $this->client = $client;
+    }
+
     #[ORM\ManyToOne(targetEntity: Table::class, inversedBy: 'reservations')]
     private ?Client $table = null;
 
