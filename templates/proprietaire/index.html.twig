@@ -8,7 +8,9 @@
         <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-3">
             <h1 class="h2">Gestion de mon restaurant</h1>
             <div>
-                <button class="btn btn-primary btn-sm">Modifier</button>
+                <a href="{{ path('app_restaurant_update', {'id': restaurant.id}) }}" class="btn btn-primary btn-sm">
+                    Modifier
+                </a>
             </div>
         </div>
 
