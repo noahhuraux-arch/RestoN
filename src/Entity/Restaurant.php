@@ -6,6 +6,7 @@ use App\Repository\RestaurantRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: RestaurantRepository::class)]
 class Restaurant
@@ -16,15 +17,23 @@ class Restaurant
     private ?int $id = null;
 
     #[ORM\Column(length: 64)]
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 64, maxMessage: 'Le nom ne doit pas dépasser {{ limit }} caractères.')]
     private ?string $libRestau = null;
 
     #[ORM\Column(length: 100, nullable: true)]
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 100, maxMessage: "L'adresse ne doit pas dépasser {{ limit }} caractères.")]
     private ?string $adrRestau = null;
 
     #[ORM\Column(nullable: true)]
+    #[Assert\NotBlank]
+    #[Assert\Regex(pattern: '/^[0-9]{5}$/', message: "Le code postal n'est pas valide.")]
     private ?int $cpRestau = null;
 
     #[ORM\Column(length: 50, nullable: true)]
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 50, maxMessage: 'La ville ne doit pas dépasser {{ limit }} caractères.')]
     private ?string $villeRestau = null;
 
     #[ORM\Column]
@@ -38,9 +47,13 @@ class Restaurant
     private ?Proprietaire $proprietaire = null;
 
     #[ORM\Column(length: 10)]
+    #[Assert\NotBlank]
+    #[Assert\Regex(pattern: '/^(?:(?:\+|00)33[\s.-]{0,3}(?:\(0\)[\s.-]{0,3})?|0)[1-9](?:(?:[\s.-]?\d{2}){4})$/', message: 'Format de téléphone invalide')]
     private ?string $tel_restau = null;
 
     #[ORM\Column(length: 150)]
+    #[Assert\NotBlank]
+    #[Assert\Email(message: "L'email '{{ value }}' n'est pas valide.")]
     private ?string $email_restau = null;
 
     /**
