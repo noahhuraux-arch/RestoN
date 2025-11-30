@@ -19,10 +19,21 @@ final class RestaurantController extends AbstractController
     }
 
     #[Route('/restaurant/{id}/update', name: 'app_restaurant_update', requirements: ['id' => Requirement::DIGITS])]
-    public function update(Restaurant $restaurant): Response
+    public function update(Request $request, Restaurant $restaurant, EntityManagerInterface $entityManager): Response
     {
+        $form = $this->createForm(RestaurantType::class, $restaurant);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_proprietaire_show', ['id' => $restaurant->getId()]);
+        }
+
         return $this->render('restaurant/update.html.twig', [
             'restaurant' => $restaurant,
+            'form' => $form,
         ]);
     }
 
