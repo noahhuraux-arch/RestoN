@@ -53,25 +53,16 @@ class TableRepository extends ServiceEntityRepository
      */
     public function findAvailableTables(\DateTime $date, \DateTime $heure, int $nbPersType): ?Table
     {
-        $entityManager = $this->getEntityManager();
-        $query = $entityManager->createQuery("SELECT t
-            FROM App\Entity\Table t
-            WHERE t.disponible = true
-            AND t.nbPlace >= :nbPers
-            AND t.idTable NOT IN (
-                SELECT r.table.idTable
-                FROM App\Entity\Reservation r
-                WHERE r.date = :date AND r.heure = :heure
-            )"
-        );
-        $query->setParameter("date", $date);
-        $query->setParameter("heure", $heure);
-        $query->setParameter("nbPers", $nbPersType);
-        $query->setMaxResults(1);
-        return $query->getOneOrNullResult();
-
-
-
+        $qb = $this->createQueryBuilder('t')
+            ->leftJoin('t.reservations', 'r', 'WITH', 'r.date = :date AND r.heure = :heure')
+            ->where('t.nbPlace >= :nbPers')
+            ->andWhere('t.disponible = true')
+            ->andWhere('r.id IS NULL')
+            ->setParameter('date', $date)
+            ->setParameter('heure', $heure)
+            ->setParameter('nbPers', $nbPersType);
+        $query = $qb->getQuery();
+        return $query->setMaxResults(1)->getOneOrNullResult();
     }
 
 }
