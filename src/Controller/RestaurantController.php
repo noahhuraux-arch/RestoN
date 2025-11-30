@@ -3,7 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\Restaurant;
+use App\Form\RestaurantType;
+use App\Repository\ProprietaireRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Requirement\Requirement;
@@ -37,10 +41,27 @@ final class RestaurantController extends AbstractController
         ]);
     }
 
-    #[Route('/restaurant/create', name: 'app_restaurant_create')]
-    public function create(): Response
+    #[Route('/proprietaire/{idProprio}/restaurant/create', name: 'app_restaurant_create', requirements: ['idProprio' => Requirement::DIGITS])]
+    public function create(Request $request, EntityManagerInterface $entityManager, ProprietaireRepository $proprietaireRepo, int $idProprio): Response
     {
-        return $this->render('restaurant/create.html.twig');
+        $restaurant = new Restaurant();
+        $form = $this->createForm(RestaurantType::class, $restaurant);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $proprietaire = $proprietaireRepo->find($idProprio);
+            $restaurant->setProprietaire($proprietaire);
+
+            $entityManager->persist($restaurant);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_proprietaire_show', ['id' => $restaurant->getid()]);
+        }
+
+        return $this->render('restaurant/create.html.twig', [
+            'form' => $form,
+        ]);
     }
 
     #[Route('/restaurant/{id}/delete', name: 'app_restaurant_delete', requirements: ['id' => Requirement::DIGITS])]
