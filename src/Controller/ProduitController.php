@@ -9,7 +9,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 final class ProduitController extends AbstractController
 {
-    #[Route('/produit', name: 'app_produit')]
+    #[Route('/menu', name: 'app_produit')]
     public function listBoisson(BoissonRepository $service): Response
     {
         $boisson = $service->findBy([], ['alcoolise' => 'ASC', 'prixProduit' => 'ASC']);
