@@ -26,6 +26,7 @@ class ReservationController extends AbstractController
     {
         $reservation = new Reservation();
         $form = $this->createForm(ReservationType::class, $reservation);
+        $erreurMessage= null;
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -34,9 +35,18 @@ class ReservationController extends AbstractController
                 $reservation->getHeure(),
                 $reservation->getNbPers()
             );
+            if ($tableDisponible === null) {
+                $errorMessage = 'Désolé, ce créneau n\'est plus disponible.';
+            } else {
+                $reservation->setTable($tableDisponible);
+                $entityManager->persist($reservation);
+                $entityManager->flush();
+                return $this->redirectToRoute('app_home');
+            }
         }
         return $this->render('reservation/creer.html.twig', [
             'form' => $form->createView(),
+            'erreur' => $erreurMessage,
         ]);
     }
 
