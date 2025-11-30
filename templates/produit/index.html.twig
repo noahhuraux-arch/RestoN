@@ -3,15 +3,16 @@
 {% block title %}Menu{% endblock %}
 
 {% block body %}
-    <h1>Menu</h1>
 
-    <h2>Boissons</h2>
-    <ul class="boissons">
+    <h1 class="text-center mb-2">La Carte</h1>
+
+    <h2 class="text-center mb-2">Boissons</h2>
+
+    <ul class="boissons text-center list-unstyled">
         {% for boisson in boissons %}
-            <li>
-                <span class="prodName">{{ boisson.libProduit }}</span>
-                <span class="prodPrice">{{ boisson.prixProduit}}</span>
-                <span class="prodName">{{ boisson.descriptionProduit}}</span>
+            <li class="">
+                <span class="prodName">{{ boisson.libProduit }} - </span>
+                <span class="prodPrice">{{ boisson.prixProduit | number_format(2, ',', ' ') }} €</span>
             </li>
         {% endfor %}
     </ul>
