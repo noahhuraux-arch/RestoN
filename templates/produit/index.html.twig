@@ -6,7 +6,9 @@
 
     <h1 class="text-center mb-2 font-weight-bold fst-italic border-bottom pb-2">Notre Carte</h1>
 
+    {% if boissons %}
     <h2 class="text-center mb-2 fst-italic">Boissons</h2>
+    {% endif %}
 
     <ul class="boissons text-center list-unstyled">
         {% for boisson in boissons %}
@@ -14,6 +16,24 @@
                 {% if boisson.isVisible %}
                     <span class="prodName">{{ boisson.libProduit }} - </span>
                     <span class="prodPrice">{{ boisson.prixProduit | number_format(2, ',', ' ') }} €</span>
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+
+
+    {% if entrees %}
+        <h2 class="text-center mb-2 fst-italic">Entrées</h2>
+    {% else %}
+        <p class="text-center mb-2 fst-italic fw-bolder">Aucune entrée disponible</p>
+    {% endif %}
+
+    <ul class="entrée text-center list-unstyled">
+        {% for entree in entrees %}
+            <li class="">
+                {% if entree.isVisible %}
+                    <span class="prodName">{{ entree.libProduit }} - </span>
+                    <span class="prodPrice">{{ entree.prixProduit | number_format(2, ',', ' ') }} €</span>
                 {% endif %}
             </li>
         {% endfor %}
