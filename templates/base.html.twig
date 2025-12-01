@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}Resto'N{% endblock %}</title>
@@ -17,15 +17,27 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
-                <li class="nav-item">
-                    <a class="nav-link active" href="{{ path('app_home') }}">Accueil</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">La Carte</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Réservations</a>
-                </li>
+                {% set current_route = app.request.attributes.get('_route') %}
+
+                {% if current_route == 'app_home' %}
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{{ path('app_home') }}">Accueil</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#partenaires">Nos Partenaires</a>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('app_restaurant_home', {id: app.request.get('id')}) }}">Accueil</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">La Carte</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Réservations</a>
+                    </li>
+                {% endif %}
+
                 <li class="nav-item">
                     <a class="nav-link" href="#">Connexion</a>
                 </li>
