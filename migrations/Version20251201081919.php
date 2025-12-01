@@ -1,0 +1,35 @@
+<?php
+
+declare(strict_types=1);
+
+namespace DoctrineMigrations;
+
+use Doctrine\DBAL\Schema\Schema;
+use Doctrine\Migrations\AbstractMigration;
+
+/**
+ * Auto-generated Migration: Please modify to your needs!
+ */
+final class Version20251201081919 extends AbstractMigration
+{
+    public function getDescription(): string
+    {
+        return '';
+    }
+
+    public function up(Schema $schema): void
+    {
+        // this up() migration is auto-generated, please modify it to your needs
+        $this->addSql('ALTER TABLE produit CHANGE type_plat_id type_plat_id INT DEFAULT NULL');
+        $this->addSql('ALTER TABLE produit ADD CONSTRAINT FK_29A5EC27FF1CDA95 FOREIGN KEY (type_plat_id) REFERENCES type_plat (id)');
+        $this->addSql('CREATE INDEX IDX_29A5EC27FF1CDA95 ON produit (type_plat_id)');
+    }
+
+    public function down(Schema $schema): void
+    {
+        // this down() migration is auto-generated, please modify it to your needs
+        $this->addSql('ALTER TABLE produit DROP FOREIGN KEY FK_29A5EC27FF1CDA95');
+        $this->addSql('DROP INDEX IDX_29A5EC27FF1CDA95 ON produit');
+        $this->addSql('ALTER TABLE produit CHANGE type_plat_id type_plat_id INT NOT NULL');
+    }
+}
