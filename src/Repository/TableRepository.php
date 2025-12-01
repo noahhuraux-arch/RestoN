@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Reservation;
 use App\Entity\Table;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -40,4 +41,28 @@ class TableRepository extends ServiceEntityRepository
     //            ->getOneOrNullResult()
     //        ;
     //    }
+
+    /**
+     * Trouve UNE table disponible pour un créneau donné
+     *
+     * @param \DateTime $date Le jour de la réservation
+     * @param \DateTime $heure L'heure de la réservation
+     * @param int $nbPersType Le nombre de personnes
+     *
+     * @return Table|null Un objet Table si une place est trouvée, sinon null
+     */
+    public function findAvailableTables(\DateTime $date, \DateTime $heure, int $nbPersType): ?Table
+    {
+        $qb = $this->createQueryBuilder('t')
+            ->leftJoin('t.reservations', 'r', 'WITH', 'r.date = :date AND r.heure = :heure')
+            ->where('t.nbPlace >= :nbPers')
+            ->andWhere('t.disponible = true')
+            ->andWhere('r.id IS NULL')
+            ->setParameter('date', $date)
+            ->setParameter('heure', $heure)
+            ->setParameter('nbPers', $nbPersType);
+        $query = $qb->getQuery();
+        return $query->setMaxResults(1)->getOneOrNullResult();
+    }
+
 }

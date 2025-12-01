@@ -23,6 +23,32 @@ class Reservation
     #[ORM\Column]
     private ?int $nbPers = null;
 
+    #[ORM\ManyToOne(targetEntity: Client::class, inversedBy: 'reservations', cascade: ['persist'])]
+    private ?Client $client = null;
+
+    public function getClient(): ?Client
+    {
+        return $this->client;
+    }
+
+    public function setClient(?Client $client): void
+    {
+        $this->client = $client;
+    }
+
+    #[ORM\ManyToOne(targetEntity: Table::class, inversedBy: 'reservations')]
+    private ?Table $table = null;
+
+    public function getTable(): ?Table
+    {
+        return $this->table;
+    }
+
+    public function setTable(?Table $table): void
+    {
+        $this->table = $table;
+    }
+
     public function getid(): ?int
     {
         return $this->id;

@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Repository\TableRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity(repositoryClass: TableRepository::class)]
 #[ORM\Table(name: '`table`')]
@@ -19,6 +21,19 @@ class Table
 
     #[ORM\Column(nullable: true)]
     private ?bool $disponible = null;
+
+    #[ORM\OneToMany(targetEntity: Reservation::class, mappedBy: 'table')]
+    private Collection $reservations;
+
+    public function getReservations(): Collection
+    {
+        return $this->reservations;
+    }
+
+    public function setReservations(Collection $reservations): void
+    {
+        $this->reservations = $reservations;
+    }
 
     public function getid(): ?int
     {

@@ -1,0 +1,31 @@
+{# templates/reservation/creer.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Réserver {% endblock %}
+
+{% block body %}
+    <div class="container my-5">
+        <h1 class="text-center mb-4">Réserver votre table</h1>
+    </div>
+    {% if erreur is not null %}
+        <div class="alert alert-danger text-center" role="alert">
+            {{ erreur }}
+        </div>
+    {% endif %}
+        {{ form_start(form) }}
+            {{ form_row(form.client.nom) }}
+            {{ form_row(form.client.prenom) }}
+            {{ form_row(form.client.email) }}
+            {{ form_row(form.client.telephone) }}
+            {{ form_row(form.date) }}
+            {{ form_row(form.heure) }}
+            {{ form_row(form.nbPers) }}
+            {{ form_rest(form) }}
+        <div class="d-grid mt-3">
+            <button type="submit" class="btn btn-primary btn-lg">Valider</button>
+        </div>
+
+        {{ form_end(form) }}
+
+    </div>
+{% endblock %}
