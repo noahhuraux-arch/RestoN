@@ -13,8 +13,14 @@
         </div>
     {% endif %}
         {{ form_start(form) }}
-        {{ form_widget(form) }}
-
+            {{ form_row(form.client.nom) }}
+            {{ form_row(form.client.prenom) }}
+            {{ form_row(form.client.email) }}
+            {{ form_row(form.client.telephone) }}
+            {{ form_row(form.date) }}
+            {{ form_row(form.heure) }}
+            {{ form_row(form.nbPers) }}
+            {{ form_rest(form) }}
         <div class="d-grid mt-3">
             <button type="submit" class="btn btn-primary btn-lg">Valider</button>
         </div>
