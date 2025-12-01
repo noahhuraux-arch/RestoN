@@ -24,8 +24,6 @@
 
     {% if entrees %}
         <h2 class="text-center mb-2 fst-italic">Entrées</h2>
-    {% else %}
-        <p class="text-center mb-2 fst-italic fw-bolder">Aucune entrée disponible</p>
     {% endif %}
 
     <ul class="entrée text-center list-unstyled">
@@ -42,8 +40,6 @@
 
     {% if plats %}
         <h2 class="text-center mb-2 fst-italic">Plats</h2>
-    {% else %}
-        <p class="text-center mb-2 fst-italic fw-bolder">Aucun plats disponible</p>
     {% endif %}
 
     <ul class="plat text-center list-unstyled">
@@ -52,6 +48,22 @@
                 {% if plat.isVisible %}
                     <span class="prodName">{{ plat.libProduit }} - </span>
                     <span class="prodPrice">{{ plat.prixProduit | number_format(2, ',', ' ') }} €</span>
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+
+
+    {% if desserts %}
+        <h2 class="text-center mb-2 fst-italic">Desserts</h2>
+    {% endif %}
+
+    <ul class="entrée text-center list-unstyled">
+        {% for dessert in desserts %}
+            <li class="">
+                {% if dessert.isVisible %}
+                    <span class="prodName">{{ dessert.libProduit }} - </span>
+                    <span class="prodPrice">{{ dessert.prixProduit | number_format(2, ',', ' ') }} €</span>
                 {% endif %}
             </li>
         {% endfor %}
