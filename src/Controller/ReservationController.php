@@ -36,7 +36,7 @@ class ReservationController extends AbstractController
                 $reservation->getNbPers()
             );
             if ($tableDisponible === null) {
-                $errorMessage = 'Désolé, ce créneau n\'est plus disponible.';
+                $erreurMessage = 'Désolé, ce créneau n\'est plus disponible.';
             } else {
                 $reservation->setTable($tableDisponible);
                 $entityManager->persist($reservation);
