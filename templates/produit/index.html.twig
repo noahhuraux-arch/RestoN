@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Menu{% endblock %}
+
+{% block body %}
+
+    <h1 class="text-center mb-2 font-weight-bold fst-italic border-bottom pb-2">Notre Carte</h1>
+
+    <h2 class="text-center mb-2 fst-italic">Boissons</h2>
+
+    <ul class="boissons text-center list-unstyled">
+        {% for boisson in boissons %}
+            <li class="">
+                {% if boisson.isVisible %}
+                    <span class="prodName">{{ boisson.libProduit }} - </span>
+                    <span class="prodPrice">{{ boisson.prixProduit | number_format(2, ',', ' ') }} €</span>
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+
+{% endblock %}
