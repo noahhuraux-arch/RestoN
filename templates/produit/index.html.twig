@@ -39,4 +39,22 @@
         {% endfor %}
     </ul>
 
+
+    {% if plats %}
+        <h2 class="text-center mb-2 fst-italic">Plats</h2>
+    {% else %}
+        <p class="text-center mb-2 fst-italic fw-bolder">Aucun plats disponible</p>
+    {% endif %}
+
+    <ul class="plat text-center list-unstyled">
+        {% for plat in plats %}
+            <li class="">
+                {% if plat.isVisible %}
+                    <span class="prodName">{{ plat.libProduit }} - </span>
+                    <span class="prodPrice">{{ plat.prixProduit | number_format(2, ',', ' ') }} €</span>
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+
 {% endblock %}
