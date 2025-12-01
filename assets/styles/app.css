@@ -1,3 +1,46 @@
-body {
-    background-color: skyblue;
+.home-section {
+    background-image: url("../images/home_restaurant.jpg");
+    background-size: cover;
+    background-position: center;
+    height: 60vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    margin-bottom: 2rem;
+    border-radius: 0.5rem;
+}
+
+.home-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: 0.5rem;
+}
+
+.home-content {
+    z-index: 10;
+    color: white;
+    text-align: center;
+    padding: 2rem;
+}
+
+.info-card {
+    min-height: 250px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    border: 1px solid #dee2e6;
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.05);
+}
+
+.info-card i, .info-card h4 {
+    color: #ff5722;
 }
