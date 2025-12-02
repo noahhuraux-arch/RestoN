@@ -3,8 +3,8 @@
 namespace App\Form;
 
 use App\Entity\Boisson;
-use Doctrine\DBAL\Types\BooleanType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -17,9 +17,9 @@ class BoissonType extends AbstractType
         $builder
             ->add('libProduit', TextType::class, ['label' => 'Nom boisson'])
             ->add('prixProduit', IntegerType::class, ['label' => 'Prix boisson'])
-            ->add('visible', BooleanType::class, ['label' => 'Visible ? (0 - 1)'])
+            ->add('visible', CheckboxType::class, ['label' => 'Visible ', 'required' => false])
             ->add('descriptionProduit', TextType::class, ['label' => 'Description boisson'])
-            ->add('alcoolise', BooleanType::class, ['label' => 'Alcoolise ? (0 - 1)'])
+            ->add('alcoolise', CheckboxType::class, ['label' => 'Alcoolise ', 'required' => false])
         ;
     }
 
