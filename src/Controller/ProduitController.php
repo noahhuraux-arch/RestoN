@@ -64,7 +64,7 @@ final class ProduitController extends AbstractController
             $entityManager->persist($boisson);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_produit');
+            return $this->redirectToRoute('app_produit', ['idRestau' => $restaurant->getid()]);
         }
 
         return $this->render('produit/createBoisson.html.twig', [
