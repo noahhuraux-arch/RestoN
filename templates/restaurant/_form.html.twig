@@ -1,0 +1,60 @@
+{% block title %}{% endblock %}
+
+{% block body %}
+    <div class="container py-5">
+        {% if submit_label=='Modifier' %}
+            <h1 class="mb-4">Modification du restaurant - {{ restaurant.libRestau }}</h1>
+        {% elseif submit_label=='Créer' %}
+            <h1 class="mb-4">Création d'un réstaurant</h1>
+        {% endif %}
+
+        <div class="card shadow-sm">
+            <div class="card-body">
+
+                {{ form_start(form) }}
+
+                {{ form_row(form.libRestau) }}
+                {{ form_row(form.adrRestau) }}
+
+                <div class="row">
+                    <div class="col-md-4">
+                        {{ form_row(form.cpRestau) }}
+                    </div>
+                    <div class="col-md-8">
+                        {{ form_row(form.villeRestau) }}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        {{ form_row(form.nbEtoiles) }}
+                    </div>
+                    <div class="col-md-6">
+                        {{ form_row(form.nbTable) }}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        {{ form_row(form.tel_restau) }}
+                    </div>
+                    <div class="col-md-6">
+                        {{ form_row(form.email_restau) }}
+                    </div>
+                </div>
+
+
+                {{ form_widget(form) }}
+
+                <div class="mt-4 d-grid gap-2 d-md-flex justify-content-md-end">
+                    <button type="submit" class="btn btn-primary px-4">
+                        {{ submit_label }}
+                    </button>
+                </div>
+
+                {{ form_end(form) }}
+
+            </div>
+        </div>
+    </div>
+{% endblock %}
