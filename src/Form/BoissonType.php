@@ -18,7 +18,7 @@ class BoissonType extends AbstractType
             ->add('libProduit', TextType::class, ['label' => 'Nom boisson'])
             ->add('prixProduit', IntegerType::class, ['label' => 'Prix boisson'])
             ->add('visible', CheckboxType::class, ['label' => 'Visible ', 'required' => false])
-            ->add('descriptionProduit', TextType::class, ['label' => 'Description boisson'])
+            ->add('descriptionProduit', TextType::class, ['label' => 'Description boisson', 'required' => false])
             ->add('alcoolise', CheckboxType::class, ['label' => 'Alcoolise ', 'required' => false])
         ;
     }
