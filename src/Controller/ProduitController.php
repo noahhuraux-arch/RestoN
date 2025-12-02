@@ -6,19 +6,24 @@ use App\Entity\Boisson;
 use App\Form\BoissonType;
 use App\Repository\BoissonRepository;
 use App\Repository\PlatRepository;
+use App\Repository\RestaurantRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\Requirement\Requirement;
 
 final class ProduitController extends AbstractController
 {
-    #[Route('/carte', name: 'app_produit')]
-    public function listMenu(BoissonRepository $boissonRep, PlatRepository $platRep): Response
+    #[Route('/restaurant/{idRestau}/carte', name: 'app_produit', requirements: ['idRestau' => Requirement::DIGITS])]
+    public function listMenu(BoissonRepository $boissonRep, PlatRepository $platRep, RestaurantRepository $restauRepo, int $idRestau): Response
     {
-        $boisson = $boissonRep->findBy([], ['alcoolise' => 'ASC', 'prixProduit' => 'ASC']);
-        $produit = $platRep->findAll();
+        $restaurant = $restauRepo->find($idRestau);
+
+
+        $boisson = $boissonRep->findBy(['idRestau' => $idRestau], ['alcoolise' => 'ASC', 'prixProduit' => 'ASC']);
+        $produit = $platRep->findBy(['idRestau' => $idRestau], ['libProduit' => 'ASC', 'prixProduit' => 'ASC']);
 
         $entrees = [];
         $plat = [];
@@ -43,8 +48,8 @@ final class ProduitController extends AbstractController
     }
 
 
-    #[Route('/produit/boisson/create', name: 'app_produit_boisson_create')]
-    public function create(Request $request, EntityManagerInterface $entityManager)
+    #[Route('/restaurant/{idRestau}/produit/boisson/create', name: 'app_produit_boisson_create', requirements: ['idRestau' => Requirement::DIGITS])]
+    public function create(Request $request, EntityManagerInterface $entityManager, int $idRestau, RestaurantRepository $restoRepo)
     {
         $boisson = new Boisson();
         $form = $this->createForm(BoissonType::class, $boisson);
@@ -53,10 +58,13 @@ final class ProduitController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
+            $restaurant = $restoRepo->find($idRestau);
+            $restaurant->addBoisson($boisson);
+
             $entityManager->persist($boisson);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_produit');
+            return $this->redirectToRoute('app_produit', ['idRestau' => $restaurant->getid()]);
         }
 
         return $this->render('produit/createBoisson.html.twig', [
