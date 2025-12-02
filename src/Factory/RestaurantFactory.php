@@ -33,13 +33,31 @@ final class RestaurantFactory extends PersistentProxyObjectFactory
     #[\Override]
     protected function defaults(): array|callable
     {
-        return [
-            'email_restau' => self::faker()->text(150),
-            'libRestau' => self::faker()->text(64),
-            'nbTable' => self::faker()->randomNumber(),
-            'proprietaire' => ProprietaireFactory::new(),
-            'tel_restau' => self::faker()->text(10),
-        ];
+        return function () {
+            $faker = self::faker();
+
+            $prenom = $faker->firstName();
+            $nom = $faker->lastName();
+
+            $prenomSlug = strtolower(iconv('UTF-8', 'ASCII//TRANSLIT', $prenom));
+            $nomSlug = strtolower(iconv('UTF-8', 'ASCII//TRANSLIT', $nom));
+
+            $domain = strtolower($faker->domainName());
+
+            $email = "{$prenomSlug}.{$nomSlug}@{$domain}";
+
+            return [
+                'libRestau' => $faker->company(),
+                'adr_restau' => $faker->streetAddress(),
+                'cp_restau' => $faker->postcode(),
+                'ville_restau' => $faker->city(),
+                'nb_table' => $faker->numberBetween(5, 40),
+                'nb_etoiles' => $faker->numberBetween(0, 3),
+                'proprietaire' => ProprietaireFactory::new(),
+                'tel_restau' => $faker->numerify('0#########'),
+                'email_restau' => $email,
+            ];
+        };
     }
 
     /**
