@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Horaire;
 use App\Entity\Restaurant;
 use App\Form\RestaurantType;
 use App\Repository\ProprietaireRepository;
@@ -86,6 +87,17 @@ final class RestaurantController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $proprietaire = $proprietaireRepo->find($idProprio);
             $restaurant->setProprietaire($proprietaire);
+
+            $jours = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'];
+
+            foreach ($jours as $jour) {
+                $horaire = new Horaire();
+                $horaire->setJour($jour);
+                $horaire->setFerme(true);
+                $horaire->setRestaurant($restaurant);
+
+                $entityManager->persist($horaire);
+            }
 
             $entityManager->persist($restaurant);
             $entityManager->flush();

@@ -86,7 +86,9 @@
                         </div>
 
                         <div class="d-grid mt-4">
-                            <button class="btn btn-outline-dark btn-sm">Gérer les horaires</button>
+                            <a href="{{ path('app_restaurant_horaires', {'id': restaurant.id}) }}" class="btn btn-outline-dark btn-sm">
+                                Gérer les horaires
+                            </a>
                         </div>
                     </div>
                 </div>

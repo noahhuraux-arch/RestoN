@@ -1,0 +1,86 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gérer les horaires - {{ restaurant.libRestau }}{% endblock %}
+
+{% block body %}
+    <div class="container py-5">
+
+        {# En-tête #}
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="h3 mb-0">Horaires d'ouverture - {{ restaurant.libRestau }}</h2>
+        </div>
+
+        <div class="card shadow-sm">
+            <div class="card-body">
+
+                {{ form_start(form) }}
+
+                <div class="table-responsive">
+                    <table class="table table-striped align-middle">
+                        <thead class="table-dark">
+                        <tr>
+                            <th style="width: 15%">Jour</th>
+                            <th style="width: 15%">État</th>
+                            <th style="width: 35%" class="text-center">Midi</th>
+                            <th style="width: 35%" class="text-center">Soir</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for horaireForm in form.horaires %}
+                            <tr>
+                                <td>
+                                    {{ form_widget(horaireForm.jour, {
+                                        'attr': {
+                                            'readonly': true,
+                                            'class': 'fw-bold border-0 bg-transparent'
+                                        }
+                                    }) }}
+                                </td>
+
+                                <td>
+                                    <div class="form-check form-switch d-flex align-items-center">
+
+                                        {{ form_widget(horaireForm.ferme, {
+                                            'attr': {
+                                                'class': 'form-check-input me-2',
+                                                'role': 'switch'
+                                            }
+                                        }) }}
+
+                                        <label>Fermé</label>
+
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div class="d-flex align-items-center justify-content-center gap-2">
+                                        {{ form_widget(horaireForm.ouvertureMidi, {'attr': {'class': 'form-control form-control-sm text-center'}}) }}
+                                        <span class="text-muted fw-bold">-</span>
+                                        {{ form_widget(horaireForm.fermetureMidi, {'attr': {'class': 'form-control form-control-sm text-center'}}) }}
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div class="d-flex align-items-center justify-content-center gap-2">
+                                        {{ form_widget(horaireForm.ouvertureSoir, {'attr': {'class': 'form-control form-control-sm text-center'}}) }}
+                                        <span class="text-muted fw-bold">-</span>
+                                        {{ form_widget(horaireForm.fermetureSoir, {'attr': {'class': 'form-control form-control-sm text-center'}}) }}
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="d-flex justify-content-end mt-4">
+                    <a href="{{ path('app_proprietaire_show', {'id': restaurant.id}) }}" class="btn btn-secondary me-2">Annuler</a>
+                    <button type="submit" class="btn btn-primary">Enregistrer tout</button>
+                </div>
+
+                {{ form_end(form) }}
+
+            </div>
+        </div>
+    </div>
+{% endblock %}
