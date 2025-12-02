@@ -49,7 +49,7 @@ final class RestaurantFactory extends PersistentProxyObjectFactory
             return [
                 'libRestau' => $faker->company(),
                 'adr_restau' => $faker->streetAddress(),
-                'cp_restau' => $faker->postcode(),
+                'cp_restau' => (int) $faker->numerify('#####'),
                 'ville_restau' => $faker->city(),
                 'nb_table' => $faker->numberBetween(5, 40),
                 'nb_etoiles' => $faker->numberBetween(0, 3),
