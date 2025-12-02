@@ -7,6 +7,7 @@ use App\Form\RestaurantType;
 use App\Repository\ProprietaireRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -29,12 +30,12 @@ final class RestaurantController extends AbstractController
         $nomJourActuel = $joursSemaine[date('l')];
 
         $horaires = [
-            'Lundi'    => ['ouvert' => false, 'plages' => 'Fermé'],
-            'Mardi'    => ['ouvert' => true, 'plages' => '12:00 - 14:30 | 19:00 - 22:30'],
+            'Lundi' => ['ouvert' => false, 'plages' => 'Fermé'],
+            'Mardi' => ['ouvert' => true, 'plages' => '12:00 - 14:30 | 19:00 - 22:30'],
             'Mercredi' => ['ouvert' => true, 'plages' => '12:00 - 14:30 | 19:00 - 22:30'],
-            'Jeudi'    => ['ouvert' => true, 'plages' => '12:00 - 14:30 | 19:00 - 22:30'],
+            'Jeudi' => ['ouvert' => true, 'plages' => '12:00 - 14:30 | 19:00 - 22:30'],
             'Vendredi' => ['ouvert' => true, 'plages' => '12:00 - 14:30 | 19:00 - 22:30'],
-            'Samedi'   => ['ouvert' => true, 'plages' => '12:00 - 14:30 | 19:00 - 22h30'],
+            'Samedi' => ['ouvert' => true, 'plages' => '12:00 - 14:30 | 19:00 - 22h30'],
             'Dimanche' => ['ouvert' => true, 'plages' => '12:00 - 15:00'],
         ];
 
@@ -46,7 +47,7 @@ final class RestaurantController extends AbstractController
             'telephone' => '01 23 45 67 89',
             'email' => 'contact@reston.fr',
             'nom_jour' => $nomJourActuel,
-            'horaire_jour' => $affichageHoraire
+            'horaire_jour' => $affichageHoraire,
         ];
 
         return $this->render('restaurant/index.html.twig', [
@@ -97,11 +98,34 @@ final class RestaurantController extends AbstractController
         ]);
     }
 
-    #[Route('/restaurant/{id}/delete', name: 'app_restaurant_delete', requirements: ['id' => Requirement::DIGITS])]
-    public function delete(Restaurant $restaurant): Response
+    #[Route('/restaurant/{id}/delete', name: 'app_restaurant_delete')]
+    public function delete(Request $request, Restaurant $restaurant, EntityManagerInterface $entityManager): Response
     {
+        $form = $this->createFormBuilder()
+            ->add('delete', SubmitType::class)
+            ->add('cancel', SubmitType::class)
+            ->getForm();
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            if ($form->get('delete')->isClicked()) {
+                $idProprio = $restaurant->getProprietaire()->getId();
+
+                $entityManager->remove($restaurant);
+                $entityManager->flush();
+
+                return $this->redirectToRoute('app_proprietaire', ['id' => $idProprio]);
+            }
+
+            if ($form->get('cancel')->isClicked()) {
+                return $this->redirectToRoute('app_proprietaire_show', ['id' => $restaurant->getId()]);
+            }
+        }
+
         return $this->render('restaurant/delete.html.twig', [
             'restaurant' => $restaurant,
+            'form' => $form->createView(),
         ]);
     }
 }
