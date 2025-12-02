@@ -16,11 +16,14 @@ use Symfony\Component\Routing\Requirement\Requirement;
 
 final class ProduitController extends AbstractController
 {
-    #[Route('/carte', name: 'app_produit')]
-    public function listMenu(BoissonRepository $boissonRep, PlatRepository $platRep): Response
+    #[Route('/restaurant/{idRestau}/carte', name: 'app_produit', requirements: ['idRestau' => Requirement::DIGITS])]
+    public function listMenu(BoissonRepository $boissonRep, PlatRepository $platRep, RestaurantRepository $restauRepo, int $idRestau): Response
     {
-        $boisson = $boissonRep->findBy([], ['alcoolise' => 'ASC', 'prixProduit' => 'ASC']);
-        $produit = $platRep->findAll();
+        $restaurant = $restauRepo->find($idRestau);
+
+
+        $boisson = $boissonRep->findBy(['idRestau' => $idRestau], ['alcoolise' => 'ASC', 'prixProduit' => 'ASC']);
+        $produit = $platRep->findBy(['idRestau' => $idRestau], ['libProduit' => 'ASC', 'prixProduit' => 'ASC']);
 
         $entrees = [];
         $plat = [];
