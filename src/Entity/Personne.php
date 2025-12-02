@@ -35,6 +35,7 @@ abstract class Personne
     #[ORM\Column(length: 1024, nullable: true)]
     private ?string $motdepasse = null;
 
+
     public function getid(): ?int
     {
         return $this->id;
