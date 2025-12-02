@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}Resto'N{% endblock %}</title>
@@ -9,23 +9,40 @@
     {% block stylesheets %}{% endblock %}
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4 sticky-top">
     <div class="container">
-        <a class="navbar-brand" href="{{ path('app_home') }}">Resto'N</a>
+        <a class="navbar-brand" href="{{ path('app_home') }}"><img src="{{ asset('images/favicon.png') }}" alt="Logo" width="30" height="30" class="d-inline-block align-text-top me-2" style="filter: invert(1);">
+            Resto'N
+        </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
-                <li class="nav-item">
-                    <a class="nav-link active" href="{{ path('app_home') }}">Accueil</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">La Carte</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Réservations</a>
-                </li>
+                {% set current_route = app.request.attributes.get('_route') %}
+
+                {% if current_route == 'app_home' %}
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{{ path('app_home') }}">Accueil</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#about">À Propos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#partenaires">Nos Partenaires</a>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('app_restaurant_home', {id: app.request.get('id')}) }}">Accueil</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">La Carte</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Réservations</a>
+                    </li>
+                {% endif %}
+
                 <li class="nav-item">
                     <a class="nav-link" href="#">Connexion</a>
                 </li>
