@@ -62,9 +62,23 @@ class Restaurant
     #[ORM\OneToMany(targetEntity: Horaire::class, mappedBy: 'restaurant')]
     private Collection $horaires;
 
+    /**
+     * @var Collection<int, Boisson>
+     */
+    #[ORM\OneToMany(targetEntity: Boisson::class, mappedBy: 'idRestau')]
+    private Collection $boissons;
+
+    /**
+     * @var Collection<int, Plat>
+     */
+    #[ORM\OneToMany(targetEntity: Plat::class, mappedBy: 'idRestau')]
+    private Collection $plats;
+
     public function __construct()
     {
         $this->horaires = new ArrayCollection();
+        $this->boissons = new ArrayCollection();
+        $this->plats = new ArrayCollection();
     }
 
     public function getid(): ?int
@@ -204,6 +218,66 @@ class Restaurant
             // set the owning side to null (unless already changed)
             if ($horaire->getRestaurant() === $this) {
                 $horaire->setRestaurant(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Boisson>
+     */
+    public function getBoissons(): Collection
+    {
+        return $this->boissons;
+    }
+
+    public function addBoisson(Boisson $boisson): static
+    {
+        if (!$this->boissons->contains($boisson)) {
+            $this->boissons->add($boisson);
+            $boisson->setIdRestau($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBoisson(Boisson $boisson): static
+    {
+        if ($this->boissons->removeElement($boisson)) {
+            // set the owning side to null (unless already changed)
+            if ($boisson->getIdRestau() === $this) {
+                $boisson->setIdRestau(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Plat>
+     */
+    public function getPlats(): Collection
+    {
+        return $this->plats;
+    }
+
+    public function addPlat(Plat $plat): static
+    {
+        if (!$this->plats->contains($plat)) {
+            $this->plats->add($plat);
+            $plat->setIdRestau($this);
+        }
+
+        return $this;
+    }
+
+    public function removePlat(Plat $plat): static
+    {
+        if ($this->plats->removeElement($plat)) {
+            // set the owning side to null (unless already changed)
+            if ($plat->getIdRestau() === $this) {
+                $plat->setIdRestau(null);
             }
         }
 
