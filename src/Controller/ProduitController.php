@@ -117,5 +117,26 @@ final class ProduitController extends AbstractController
             'form' => $form,
         ]);
     }
+
+
+    #[Route('{idRestau}/plat/{idPlat}/update', name: 'app_produit_plat_update', requirements: ['idRestau' => Requirement::DIGITS, 'idPlat' => Requirement::DIGITS])]
+    public function updatePlat(Request $request, Plat $idPlat, PlatRepository $platRepo, int $idRestau, EntityManagerInterface $entityManager): Response
+    {
+        $plat = $platRepo->find($idPlat);
+        $form = $this->createForm(PlatType::class, $plat);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_produit', ['idRestau' => $idRestau]);
+        }
+
+        return $this->render('produit/plat/update.html.twig', [
+            'plat' => $plat,
+            'form' => $form,
+        ]);
+    }
 }
 
