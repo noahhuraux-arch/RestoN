@@ -75,6 +75,26 @@ final class ProduitController extends AbstractController
     }
 
 
+    #[Route('{idRestau}/boisson/{idBoisson}/update', name: 'app_produit_boisson_update', requirements: ['idRestau' => Requirement::DIGITS, 'idBoisson' => Requirement::DIGITS])]
+    public function updateBoisson(Request $request, Boisson $idBoisson, BoissonRepository $boissonRepo, int $idRestau, EntityManagerInterface $entityManager): Response
+    {
+        $boisson = $boissonRepo->find($idBoisson);
+        $form = $this->createForm(BoissonType::class, $boisson);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_produit', ['idRestau' => $idRestau]);
+        }
+
+        return $this->render('produit/boisson/update.html.twig', [
+            'boisson' => $boisson,
+            'form' => $form,
+        ]);
+    }
+
 
     #[Route('/{idRestau}/plat/create', name: 'app_produit_plat_create', requirements: ['idRestau' => Requirement::DIGITS])]
     public function createPlat(Request $request, EntityManagerInterface $entityManager, int $idRestau, RestaurantRepository $restoRepo):Response
