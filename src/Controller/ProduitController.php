@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\Boisson;
+use App\Entity\Plat;
 use App\Form\BoissonType;
+use App\Form\PlatType;
 use App\Repository\BoissonRepository;
 use App\Repository\PlatRepository;
 use App\Repository\RestaurantRepository;
@@ -49,7 +51,7 @@ final class ProduitController extends AbstractController
 
 
     #[Route('/{idRestau}/boisson/create', name: 'app_produit_boisson_create', requirements: ['idRestau' => Requirement::DIGITS])]
-    public function create(Request $request, EntityManagerInterface $entityManager, int $idRestau, RestaurantRepository $restoRepo)
+    public function createBoisson(Request $request, EntityManagerInterface $entityManager, int $idRestau, RestaurantRepository $restoRepo):Response
     {
         $boisson = new Boisson();
         $form = $this->createForm(BoissonType::class, $boisson);
@@ -68,6 +70,30 @@ final class ProduitController extends AbstractController
         }
 
         return $this->render('produit/boisson/create.html.twig', [
+            'form' => $form,
+        ]);
+    }
+
+
+
+    #[Route('/{idRestau}/plat/create', name: 'app_produit_plat_create', requirements: ['idRestau' => Requirement::DIGITS])]
+    public function createPlat(Request $request, EntityManagerInterface $entityManager, int $idRestau, RestaurantRepository $restoRepo):Response
+    {
+        $plat = new Plat();
+        $form = $this->createForm(PlatType::class, $plat);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $restaurant = $restoRepo->find($idRestau);
+            $restaurant->addPlat($plat);
+
+            $entityManager->persist($plat);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_produit', ['idRestau' => $restaurant->getid()]);
+        }
+
+        return $this->render('produit/plat/create.html.twig', [
             'form' => $form,
         ]);
     }
