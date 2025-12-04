@@ -25,7 +25,7 @@ class PlatType extends AbstractType
             ->add('typePlat', EntityType::class, [
                 'class' => TypePlat::class,
                 'placeholder' => 'Choisissez un type',
-                'choice_label' => 'id'
+                'choice_label' => 'lib'
             ])
         ;
     }
