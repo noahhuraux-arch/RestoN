@@ -67,7 +67,7 @@ final class ProduitController extends AbstractController
             return $this->redirectToRoute('app_produit', ['idRestau' => $restaurant->getid()]);
         }
 
-        return $this->render('produit/createBoisson.html.twig', [
+        return $this->render('produit/boisson/create.html.twig', [
             'form' => $form,
         ]);
     }
