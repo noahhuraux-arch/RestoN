@@ -15,8 +15,8 @@ class TypePlat
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column]
-    private ?int $type = null;
+    #[ORM\Column(length: 255)]
+    private ?string $lib = null;
 
     /**
      * @var Collection<int, Plat>
@@ -34,14 +34,14 @@ class TypePlat
         return $this->id;
     }
 
-    public function getType(): ?int
+    public function getLib(): ?string
     {
-        return $this->type;
+        return $this->lib;
     }
 
-    public function setType(int $type): static
+    public function setLib(string $lib): static
     {
-        $this->type = $type;
+        $this->lib = $lib;
 
         return $this;
     }
