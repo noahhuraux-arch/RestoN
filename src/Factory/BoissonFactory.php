@@ -34,11 +34,11 @@ final class BoissonFactory extends PersistentObjectFactory
     protected function defaults(): array|callable
     {
         return [
-            'alcoolise' => self::faker()->boolean(),
-            'idRestau' => RestaurantFactory::new(),
-            'libProduit' => self::faker()->text(64),
-            'prixProduit' => self::faker()->randomFloat(),
-            'visible' => self::faker()->boolean(),
+            'alcoolise' => true,
+            'libProduit' => "Boisson default",
+            'prixProduit' => self::faker()->randomFloat(2,2,15),
+            'visible' => true,
+            'descriptionProduit' => self::faker()->text(150),
         ];
     }
 
