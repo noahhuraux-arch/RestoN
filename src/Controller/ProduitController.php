@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Requirement\Requirement;
 
 final class ProduitController extends AbstractController
 {
-    #[Route('/restaurant/{idRestau}/carte', name: 'app_produit', requirements: ['idRestau' => Requirement::DIGITS])]
+    #[Route('/{idRestau}/carte', name: 'app_produit', requirements: ['idRestau' => Requirement::DIGITS])]
     public function listMenu(BoissonRepository $boissonRep, PlatRepository $platRep, RestaurantRepository $restauRepo, int $idRestau): Response
     {
         $restaurant = $restauRepo->find($idRestau);
@@ -48,7 +48,7 @@ final class ProduitController extends AbstractController
     }
 
 
-    #[Route('/restaurant/{idRestau}/produit/boisson/create', name: 'app_produit_boisson_create', requirements: ['idRestau' => Requirement::DIGITS])]
+    #[Route('/{idRestau}/boisson/create', name: 'app_produit_boisson_create', requirements: ['idRestau' => Requirement::DIGITS])]
     public function create(Request $request, EntityManagerInterface $entityManager, int $idRestau, RestaurantRepository $restoRepo)
     {
         $boisson = new Boisson();
