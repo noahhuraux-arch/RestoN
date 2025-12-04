@@ -18,13 +18,14 @@ class PlatType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('libProduit', TextType::class, ['label' => 'Nom boisson'])
+            ->add('libProduit', TextType::class, ['label' => 'Nom'])
             ->add('prixProduit', IntegerType::class, ['label' => 'Prix'])
             ->add('visible', CheckboxType::class, ['label' => 'Visible'])
             ->add('descriptionProduit', TextType::class, ['label' => 'Description', 'required' => false])
             ->add('typePlat', EntityType::class, [
                 'class' => TypePlat::class,
-                'choice_label' => 'id',
+                'placeholder' => 'Choisissez un type',
+                'choice_label' => 'id'
             ])
         ;
     }
