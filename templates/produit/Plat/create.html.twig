@@ -29,6 +29,10 @@
                     </button>
                 </div>
 
+                <a href="{{ path('app_produit_proprio', { idRestau: restaurant.id }) }}" class="btn btn-light border rounded-3 px-4 fs-6">
+                    ← Retour à la carte
+                </a>
+
                 {{ form_end(form) }}
 
             </div>
