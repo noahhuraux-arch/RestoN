@@ -76,7 +76,8 @@ final class ProduitController extends AbstractController
             ['boissons' => $boisson,
                 'entrees' => $entrees,
                 'plats' => $plat,
-                'desserts' => $dessert]);
+                'desserts' => $dessert,
+                'restaurant' => $restaurant]);
     }
 
 
