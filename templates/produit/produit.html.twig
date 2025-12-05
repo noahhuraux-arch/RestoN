@@ -85,6 +85,11 @@
                             Modifier
                         </a>
                     {% endif %}
+
+                    <a href="{{ path('app_produit_delete', {'id': produit.id}) }}" class="btn btn-danger border rounded-3 px-4 fs-6">
+                        Supprimer
+                    </a>
+
                 </div>
 
             </div>
