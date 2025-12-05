@@ -116,7 +116,7 @@ final class ProduitController extends AbstractController
     #[Route('{idRestau}/boisson/{idBoisson}/update', name: 'app_produit_boisson_update', requirements: ['idRestau' => Requirement::DIGITS, 'idBoisson' => Requirement::DIGITS])]
     public function updateBoisson(Request $request, Boisson $idBoisson, BoissonRepository $boissonRepo, int $idRestau, EntityManagerInterface $entityManager): Response
     {
-        $restaurant = $entityManager->getRepository(restaurant::class)->find($idRestau);
+        $restaurant = $entityManager->getRepository(Restaurant::class)->find($idRestau);
 
         $form = $this->createForm(BoissonType::class, $idBoisson);
 
@@ -162,6 +162,7 @@ final class ProduitController extends AbstractController
     #[Route('{idRestau}/plat/{idPlat}/update', name: 'app_produit_plat_update', requirements: ['idRestau' => Requirement::DIGITS, 'idPlat' => Requirement::DIGITS])]
     public function updatePlat(Request $request, Plat $idPlat, PlatRepository $platRepo, int $idRestau, EntityManagerInterface $entityManager): Response
     {
+        $restaurant = $entityManager->getRepository(Restaurant::class)->find($idRestau);
         $form = $this->createForm(PlatType::class, $idPlat);
 
         $form->handleRequest($request);
@@ -175,6 +176,7 @@ final class ProduitController extends AbstractController
         return $this->render('produit/plat/update.html.twig', [
             'plat' => $idPlat,
             'form' => $form,
+            'restaurant' => $restaurant,
         ]);
     }
 }
