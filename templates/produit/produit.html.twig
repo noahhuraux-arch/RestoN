@@ -39,9 +39,29 @@
                 <hr>
 
                 <div class="d-flex justify-content-start align-items-center mt-4">
-                <span class="badge {% if produit.visible %}bg-success{% else %}bg-danger{% endif %} px-3 py-2">
-                    {{ produit.visible ? 'Visible sur la carte' : 'Non visible' }}
-                </span>
+
+                    {% if produit.visible %}
+                    <span class="badge bg-success px-3 py-2 me-3 ">
+                        Visible sur la carte
+                    </span>
+                    {% else %}
+                        <span class="badge bg-danger px-3 py-2 me-3">
+                            Non visible
+                        </span>
+                    {% endif %}
+
+                    {% if produit.alcoolise is defined %}
+                        {% if produit.alcoolise %}
+                            <span class="badge bg-danger px-3 py-2">
+                                Alcoolisé
+                            </span>
+                        {% else %}
+                            <span class="badge bg-success px-3 py-2">
+                                Sans alcool
+                            </span>
+                        {% endif %}
+                    {% endif %}
+
                 </div>
 
                 <hr>
