@@ -73,8 +73,10 @@
                 {% for boisson in boissons %}
                     <li class="">
                         {% if boisson.isVisible %}
-                            <span class="prodName">{{ boisson.libProduit }} - </span>
-                            <span class="prodPrice">{{ boisson.prixProduit | number_format(2, ',', ' ') }} €</span>
+                            <a href="{{ path('app_produit_details', { id: boisson.id }) }}" class="text-decoration-none text-body">
+                                <span class="prodName">{{ boisson.libProduit }} - </span>
+                                <span class="prodPrice">{{ boisson.prixProduit | number_format(2, ',', ' ') }} €</span>
+                            </a>
                         {% endif %}
                     </li>
                 {% endfor %}
