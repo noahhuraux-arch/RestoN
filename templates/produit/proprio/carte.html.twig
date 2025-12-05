@@ -38,8 +38,10 @@
                 {% for plat in plats %}
                     <li class="">
                         {% if plat.isVisible %}
-                            <span class="prodName">{{ plat.libProduit }} - </span>
-                            <span class="prodPrice">{{ plat.prixProduit | number_format(2, ',', ' ') }} €</span>
+                            <a href="{{ path('app_produit_details', { id: plat.id }) }}" class="text-decoration-none text-body">
+                                <span class="prodName">{{ plat.libProduit }} - </span>
+                                <span class="prodPrice">{{ plat.prixProduit | number_format(2, ',', ' ') }} €</span>
+                            </a>
                         {% endif %}
                     </li>
                 {% endfor %}
