@@ -80,7 +80,6 @@ final class ProduitController extends AbstractController
                 'restaurant' => $restaurant]);
     }
 
-
     #[Route('/produit/{id}/', name: 'app_produit_details', requirements: ['id' => Requirement::DIGITS])]
     public function Produit(Produit $produit): Response
     {
@@ -88,7 +87,6 @@ final class ProduitController extends AbstractController
             'produit' => $produit,
         ]);
     }
-
 
     #[Route('/{idRestau}/boisson/create', name: 'app_produit_boisson_create', requirements: ['idRestau' => Requirement::DIGITS])]
     public function createBoisson(Request $request, EntityManagerInterface $entityManager, int $idRestau, RestaurantRepository $restoRepo): Response
@@ -135,12 +133,13 @@ final class ProduitController extends AbstractController
     #[Route('/{idRestau}/plat/create', name: 'app_produit_plat_create', requirements: ['idRestau' => Requirement::DIGITS])]
     public function createPlat(Request $request, EntityManagerInterface $entityManager, int $idRestau, RestaurantRepository $restoRepo): Response
     {
+        $restaurant = $restoRepo->find($idRestau);
+
         $plat = new Plat();
         $form = $this->createForm(PlatType::class, $plat);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $restaurant = $restoRepo->find($idRestau);
             $restaurant->addPlat($plat);
 
             $entityManager->persist($plat);
@@ -151,13 +150,13 @@ final class ProduitController extends AbstractController
 
         return $this->render('produit/plat/create.html.twig', [
             'form' => $form,
+            'restaurant' => $restaurant,
         ]);
     }
 
     #[Route('{idRestau}/plat/{idPlat}/update', name: 'app_produit_plat_update', requirements: ['idRestau' => Requirement::DIGITS, 'idPlat' => Requirement::DIGITS])]
     public function updatePlat(Request $request, Plat $idPlat, PlatRepository $platRepo, int $idRestau, EntityManagerInterface $entityManager): Response
     {
-
         $form = $this->createForm(PlatType::class, $idPlat);
 
         $form->handleRequest($request);
