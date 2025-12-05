@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Boisson;
 use App\Entity\Plat;
+use App\Entity\Produit;
 use App\Form\BoissonType;
 use App\Form\PlatType;
 use App\Repository\BoissonRepository;
@@ -47,6 +48,16 @@ final class ProduitController extends AbstractController
                 'plats' => $plat,
                 'desserts' => $dessert]);
     }
+
+
+    #[Route('/produit/{id}/', name: 'app_produit_show', requirements: ['id' => Requirement::DIGITS])]
+    public function Produit(Produit $produit): Response
+    {
+        return $this->render('produit/produit.html.twig', [
+            'produit' => $produit,
+        ]);
+    }
+
 
     #[Route('/{idRestau}/boisson/create', name: 'app_produit_boisson_create', requirements: ['idRestau' => Requirement::DIGITS])]
     public function createBoisson(Request $request, EntityManagerInterface $entityManager, int $idRestau, RestaurantRepository $restoRepo): Response

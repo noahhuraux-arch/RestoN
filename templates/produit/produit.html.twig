@@ -1,0 +1,80 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Menu{% endblock %}
+
+{% block body %}
+
+    {% if not boissons and not entrees and not plats and not desserts %}
+        <p class="text-center fw-bold fs-1">La carte n'est pas disponible</p>
+
+    {% else %}
+
+        <div class="listCarte container-xxl">
+            <h1 class="text-center mb-2 font-weight-bold fst-italic border-bottom pb-2">Notre Carte</h1>
+
+            {% if entrees %}
+                <h2 class="text-center mb-2 fst-italic">Entrées</h2>
+            {% endif %}
+
+            <ul class="entrée text-center list-unstyled">
+                {% for entree in entrees %}
+                    <li class="">
+                        {% if entree.isVisible %}
+                            <span class="prodName">{{ entree.libProduit }} - </span>
+                            <span class="prodPrice">{{ entree.prixProduit | number_format(2, ',', ' ') }} €</span>
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+
+
+            {% if plats %}
+                <h2 class="text-center mb-2 fst-italic">Plats</h2>
+            {% endif %}
+
+            <ul class="plat text-center list-unstyled">
+                {% for plat in plats %}
+                    <li class="">
+                        {% if plat.isVisible %}
+                            <span class="prodName">{{ plat.libProduit }} - </span>
+                            <span class="prodPrice">{{ plat.prixProduit | number_format(2, ',', ' ') }} €</span>
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+
+
+            {% if desserts %}
+                <h2 class="text-center mb-2 fst-italic">Desserts</h2>
+            {% endif %}
+
+            <ul class="entrée text-center list-unstyled">
+                {% for dessert in desserts %}
+                    <li class="">
+                        {% if dessert.isVisible %}
+                            <span class="prodName">{{ dessert.libProduit }} - </span>
+                            <span class="prodPrice">{{ dessert.prixProduit | number_format(2, ',', ' ') }} €</span>
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+
+            {% if boissons %}
+                <h2 class="text-center mb-2 fst-italic">Boissons</h2>
+            {% endif %}
+
+            <ul class="boissons text-center list-unstyled">
+                {% for boisson in boissons %}
+                    <li class="">
+                        {% if boisson.isVisible %}
+                            <span class="prodName">{{ boisson.libProduit }} - </span>
+                            <span class="prodPrice">{{ boisson.prixProduit | number_format(2, ',', ' ') }} €</span>
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+
+
+{% endblock %}
