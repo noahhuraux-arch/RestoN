@@ -6,8 +6,9 @@ use App\Entity\Restaurant;
 use App\Factory\BoissonFactory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
-class BoissonFixtures extends Fixture
+class BoissonFixtures extends Fixture implements DependentFixtureInterface
 {
     private const boissons = [
         ['lib' => 'Eau de source 50cl', 'prix' => 3.00, 'alcoolise' => false, 'descriptionProduit' => 'Eau plate.'],
@@ -19,9 +20,7 @@ class BoissonFixtures extends Fixture
 
     public function load(ObjectManager $manager): void
     {
-
         $restaurants = $manager->getRepository(Restaurant::class)->findAll();
-
 
         foreach ($restaurants as $restaurant) {
 
@@ -30,14 +29,21 @@ class BoissonFixtures extends Fixture
                 BoissonFactory::createOne([
                     'libProduit' => $boisson['lib'],
                     'prixProduit' => $boisson['prix'],
-                    'alcoolise' => $boisson['alcoolise'],
-                    'descriptionProduit' => $boisson['desc'],
+                    'descriptionProduit' => $boisson['descriptionProduit'],
                     'visible' => true,
+                    'alcoolise' => $boisson['alcoolise'],
                     'idRestau' => $restaurant,
                 ]);
             }
         }
 
         $manager->flush();
+    }
+
+    public function getDependencies(): array
+    {
+        return [
+            RestaurantFixtures::class,
+        ];
     }
 }

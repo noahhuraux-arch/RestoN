@@ -3,6 +3,7 @@
 namespace App\Factory;
 
 use App\Entity\Boisson;
+use App\Entity\Produit;
 use Zenstruck\Foundry\Persistence\PersistentObjectFactory;
 
 /**
@@ -10,11 +11,6 @@ use Zenstruck\Foundry\Persistence\PersistentObjectFactory;
  */
 final class BoissonFactory extends PersistentObjectFactory
 {
-    /**
-     * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#factories-as-services
-     *
-     * @todo inject services if required
-     */
     public function __construct()
     {
     }
@@ -25,31 +21,21 @@ final class BoissonFactory extends PersistentObjectFactory
         return Boisson::class;
     }
 
-    /**
-     * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#model-factories
-     *
-     * @todo add your default values here
-     */
     #[\Override]
     protected function defaults(): array|callable
     {
         return [
-            'alcoolise' => true,
-            'libProduit' => "Boisson default",
-            'prixProduit' => self::faker()->randomFloat(2,2,15),
+            'libProduit' => 'Boisson default',
+            'prixProduit' => self::faker()->randomFloat(2, 2, 15),
             'visible' => true,
             'descriptionProduit' => self::faker()->text(150),
+            'alcoolise' => false,
         ];
     }
 
-    /**
-     * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#initialization
-     */
     #[\Override]
     protected function initialize(): static
     {
-        return $this
-            // ->afterInstantiate(function(Boisson $boisson): void {})
-        ;
+        return $this;
     }
 }
