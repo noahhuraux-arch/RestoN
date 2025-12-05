@@ -108,7 +108,7 @@ final class ProduitController extends AbstractController
 
         return $this->render('produit/boisson/create.html.twig', [
             'form' => $form,
-            'restau' => $restaurant,
+            'restaurant' => $restaurant,
         ]);
     }
 
