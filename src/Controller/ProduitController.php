@@ -91,13 +91,13 @@ final class ProduitController extends AbstractController
     #[Route('/{idRestau}/boisson/create', name: 'app_produit_boisson_create', requirements: ['idRestau' => Requirement::DIGITS])]
     public function createBoisson(Request $request, EntityManagerInterface $entityManager, int $idRestau, RestaurantRepository $restoRepo): Response
     {
+        $restaurant = $restoRepo->find($idRestau);
         $boisson = new Boisson();
         $form = $this->createForm(BoissonType::class, $boisson);
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $restaurant = $restoRepo->find($idRestau);
             $restaurant->addBoisson($boisson);
 
             $entityManager->persist($boisson);
@@ -108,6 +108,7 @@ final class ProduitController extends AbstractController
 
         return $this->render('produit/boisson/create.html.twig', [
             'form' => $form,
+            'restau' => $restaurant,
         ]);
     }
 
