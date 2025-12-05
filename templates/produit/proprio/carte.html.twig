@@ -10,7 +10,29 @@
     {% else %}
 
         <div class="listCarte container-xxl">
-            <h1 class="text-center mb-2 font-weight-bold fst-italic border-bottom pb-2">Notre Carte</h1>
+            <div class="mb-4 pb-2 border-bottom">
+
+                <div class="row align-items-center">
+
+                    <div class="col-4 text-start">
+                        <a href="{{ path('app_produit_plat_create', { idRestau: restaurant.id }) }}" class="btn btn-outline-dark rounded-3 px-4 fs-6 fw-bold">
+                            Ajouter un plat
+                        </a>
+                    </div>
+
+                    <div class="col-4">
+                        <h1 class="text-center font-weight-bold fst-italic mb-0">Notre Carte</h1>
+                    </div>
+
+                    <div class="col-4 text-end">
+                        <a href="{{ path('app_produit_boisson_create', { idRestau: restaurant.id }) }}" class="btn btn-outline-dark rounded-3 px-4 fs-6 fw-bold">
+                            Ajouter une boisson
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+
 
             {% if entrees %}
                 <h2 class="text-center mb-2 fst-italic">Entrées</h2>
