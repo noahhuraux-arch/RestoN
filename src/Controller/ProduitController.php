@@ -50,7 +50,7 @@ final class ProduitController extends AbstractController
     }
 
 
-    #[Route('/produit/{id}/', name: 'app_produit_show', requirements: ['id' => Requirement::DIGITS])]
+    #[Route('/produit/{id}/', name: 'app_produit_details', requirements: ['id' => Requirement::DIGITS])]
     public function Produit(Produit $produit): Response
     {
         return $this->render('produit/produit.html.twig', [
@@ -85,19 +85,18 @@ final class ProduitController extends AbstractController
     #[Route('{idRestau}/boisson/{idBoisson}/update', name: 'app_produit_boisson_update', requirements: ['idRestau' => Requirement::DIGITS, 'idBoisson' => Requirement::DIGITS])]
     public function updateBoisson(Request $request, Boisson $idBoisson, BoissonRepository $boissonRepo, int $idRestau, EntityManagerInterface $entityManager): Response
     {
-        $boisson = $boissonRepo->find($idBoisson);
-        $form = $this->createForm(BoissonType::class, $boisson);
+        $form = $this->createForm(BoissonType::class, $idBoisson);
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_produit', ['idRestau' => $idRestau]);
+            return $this->redirectToRoute('app_produit_details', ['id' => $idBoisson->getId()]);
         }
 
         return $this->render('produit/boisson/update.html.twig', [
-            'boisson' => $boisson,
+            'boisson' => $idBoisson,
             'form' => $form,
         ]);
     }
@@ -127,19 +126,19 @@ final class ProduitController extends AbstractController
     #[Route('{idRestau}/plat/{idPlat}/update', name: 'app_produit_plat_update', requirements: ['idRestau' => Requirement::DIGITS, 'idPlat' => Requirement::DIGITS])]
     public function updatePlat(Request $request, Plat $idPlat, PlatRepository $platRepo, int $idRestau, EntityManagerInterface $entityManager): Response
     {
-        $plat = $platRepo->find($idPlat);
-        $form = $this->createForm(PlatType::class, $plat);
+
+        $form = $this->createForm(PlatType::class, $idPlat);
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_produit', ['idRestau' => $idRestau]);
+            return $this->redirectToRoute('app_produit_details', ['id' => $idPlat->getId()]);
         }
 
         return $this->render('produit/plat/update.html.twig', [
-            'plat' => $plat,
+            'plat' => $idPlat,
             'form' => $form,
         ]);
     }
