@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Boisson;
 use App\Entity\Plat;
 use App\Entity\Produit;
+use App\Entity\Restaurant;
 use App\Form\BoissonType;
 use App\Form\PlatType;
 use App\Repository\BoissonRepository;
@@ -115,6 +116,8 @@ final class ProduitController extends AbstractController
     #[Route('{idRestau}/boisson/{idBoisson}/update', name: 'app_produit_boisson_update', requirements: ['idRestau' => Requirement::DIGITS, 'idBoisson' => Requirement::DIGITS])]
     public function updateBoisson(Request $request, Boisson $idBoisson, BoissonRepository $boissonRepo, int $idRestau, EntityManagerInterface $entityManager): Response
     {
+        $restaurant = $entityManager->getRepository(restaurant::class)->find($idRestau);
+
         $form = $this->createForm(BoissonType::class, $idBoisson);
 
         $form->handleRequest($request);
@@ -128,6 +131,7 @@ final class ProduitController extends AbstractController
         return $this->render('produit/boisson/update.html.twig', [
             'boisson' => $idBoisson,
             'form' => $form,
+            'restaurant' => $restaurant,
         ]);
     }
 
