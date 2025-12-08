@@ -11,7 +11,7 @@
                 <p class="lead text-muted mb-0">Quel établissement voulez-vous gérer aujourd'hui ?</p>
             </div>
 
-            <a href="{{ path('app_restaurant_create', {'idProprio': proprietaire.id}) }}" class="btn btn-primary shadow-sm">
+            <a href="{{ path('app_restaurant_create', {idProprio: proprietaire.id}) }}" class="btn btn-primary shadow-sm">
                 Créer un restaurant
             </a>
         </div>
@@ -26,7 +26,7 @@
                             <h3 class="card-title text-primary">{{ restaurant.libRestau }}</h3>
                             <p class="text-muted">{{ restaurant.villeRestau }}</p>
 
-                            <a href="{{ path('app_proprietaire_show', {'id': restaurant.id}) }}" class="btn btn-outline-primary stretched-link mt-3">
+                            <a href="{{ path('app_proprietaire_show', {id: restaurant.id}) }}" class="btn btn-outline-primary stretched-link mt-3">
                                 Gérer ce restaurant
                             </a>
                         </div>

@@ -41,19 +41,19 @@ final class ProprietaireFactory extends PersistentProxyObjectFactory
 
             $email = null;
 
-            if ($prenom !== null && $nom !== null) {
+            if (null !== $prenom && null !== $nom) {
                 $prenomSlug = strtolower(iconv('UTF-8', 'ASCII//TRANSLIT', $prenom));
-                $nomSlug    = strtolower(iconv('UTF-8', 'ASCII//TRANSLIT', $nom));
-                $domain     = strtolower($faker->domainName());
-                $email      = "{$prenomSlug}.{$nomSlug}@{$domain}";
+                $nomSlug = strtolower(iconv('UTF-8', 'ASCII//TRANSLIT', $nom));
+                $domain = strtolower($faker->domainName());
+                $email = "{$prenomSlug}.{$nomSlug}@{$domain}";
             }
 
             return [
-                'prenom'      => $prenom,
-                'nom'         => $nom,
-                'telephone'   => $faker->numerify('0#########'),
-                'email'       => $email,
-                'motdepasse'  => $faker->password(8, 20),
+                'prenom' => $prenom,
+                'nom' => $nom,
+                'telephone' => $faker->numerify('0#########'),
+                'email' => $email,
+                'motdepasse' => $faker->password(8, 20),
             ];
         };
     }

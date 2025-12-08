@@ -31,7 +31,7 @@
                     <li class="nav-item">
                         <a class="nav-link" href="#partenaires">Nos Partenaires</a>
                     </li>
-                {% elseif current_route == 'app_restaurant_home'%}
+                {% elseif current_route == 'app_restaurant_home' %}
                     <li class="nav-item">
                         <a class="nav-link" href="{{ path('app_restaurant_home', {id: app.request.get('id')}) }}">Accueil</a>
                     </li>

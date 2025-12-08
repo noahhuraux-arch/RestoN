@@ -14,7 +14,6 @@ final class ProprietaireController extends AbstractController
     #[Route('/proprietaire/{id}', name: 'app_proprietaire', requirements: ['id' => Requirement::DIGITS])]
     public function index(Proprietaire $proprietaire): Response
     {
-
         return $this->render('proprietaire/liste.html.twig', [
             'proprietaire' => $proprietaire,
             'restaurants' => $proprietaire->getRestaurants(),
@@ -27,6 +26,5 @@ final class ProprietaireController extends AbstractController
         return $this->render('proprietaire/index.html.twig', [
             'restaurant' => $restaurant,
         ]);
-
     }
 }

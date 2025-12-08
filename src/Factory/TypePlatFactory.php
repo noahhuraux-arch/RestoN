@@ -34,7 +34,7 @@ final class TypePlatFactory extends PersistentObjectFactory
     protected function defaults(): array|callable
     {
         return [
-            'lib' => "Default"
+            'lib' => 'Default',
         ];
     }
 

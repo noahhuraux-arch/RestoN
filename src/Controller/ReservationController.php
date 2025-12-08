@@ -1,5 +1,7 @@
 <?php
+
 namespace App\Controller;
+
 use App\Entity\Reservation;
 use App\Form\ReservationType;
 use App\Repository\TableRepository;
@@ -11,22 +13,15 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class ReservationController extends AbstractController
 {
-    /**
-     * @param Request $request
-     * @param TableRepository $tableRepository
-     * @param EntityManagerInterface $entityManager
-     * @return Response
-     */
     #[Route('/reserver', name: 'app_reservation_creer', methods: ['GET', 'POST'])]
     public function creerReservation(
-        Request                $request,
-        TableRepository        $tableRepository,
-        EntityManagerInterface $entityManager
-    ): Response
-    {
+        Request $request,
+        TableRepository $tableRepository,
+        EntityManagerInterface $entityManager,
+    ): Response {
         $reservation = new Reservation();
         $form = $this->createForm(ReservationType::class, $reservation);
-        $erreurMessage= null;
+        $erreurMessage = null;
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -35,19 +30,20 @@ class ReservationController extends AbstractController
                 $reservation->getHeure(),
                 $reservation->getNbPers()
             );
-            if ($tableDisponible === null) {
+            if (null === $tableDisponible) {
                 $erreurMessage = 'Désolé, ce créneau n\'est plus disponible.';
             } else {
                 $reservation->setTable($tableDisponible);
                 $entityManager->persist($reservation);
                 $entityManager->flush();
+
                 return $this->redirectToRoute('app_home');
             }
         }
+
         return $this->render('reservation/creer.html.twig', [
             'form' => $form->createView(),
             'erreur' => $erreurMessage,
         ]);
     }
-
 }

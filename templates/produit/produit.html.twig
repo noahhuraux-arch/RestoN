@@ -72,21 +72,21 @@
                 </p>
 
                 <div class="d-flex justify-content-between mt-4">
-                    <a href="{{ path('app_produit_proprio', { idRestau: produit.idRestau.id , idBoisson: produit.id}) }}" class="btn btn-light border rounded-3 px-4 fs-6">
+                    <a href="{{ path('app_produit_proprio', {idRestau: produit.idRestau.id, idBoisson: produit.id}) }}" class="btn btn-light border rounded-3 px-4 fs-6">
                         ← Retour à la carte
                     </a>
 
                     {% if produit.alcoolise is defined %}
-                        <a href="{{ path('app_produit_boisson_update', { idRestau: produit.idRestau.id, idBoisson: produit.id}) }}" class="btn btn-outline-primary rounded-3 px-4 fs-6 fw-bold">
+                        <a href="{{ path('app_produit_boisson_update', {idRestau: produit.idRestau.id, idBoisson: produit.id}) }}" class="btn btn-outline-primary rounded-3 px-4 fs-6 fw-bold">
                             Modifier
                         </a>
                     {% elseif produit.typePlat is defined %}
-                        <a href="{{ path('app_produit_plat_update', { idRestau: produit.idRestau.id , idPlat: produit.id}) }}" class="btn btn-outline-primary rounded-3 px-4 fs-6 fw-bold">
+                        <a href="{{ path('app_produit_plat_update', {idRestau: produit.idRestau.id, idPlat: produit.id}) }}" class="btn btn-outline-primary rounded-3 px-4 fs-6 fw-bold">
                             Modifier
                         </a>
                     {% endif %}
 
-                    <a href="{{ path('app_produit_delete', {'id': produit.id}) }}" class="btn btn-danger border rounded-3 px-4 fs-6">
+                    <a href="{{ path('app_produit_delete', {id: produit.id}) }}" class="btn btn-danger border rounded-3 px-4 fs-6">
                         Supprimer
                     </a>
 

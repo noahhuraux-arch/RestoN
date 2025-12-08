@@ -21,12 +21,11 @@
                 <li class="">
                     {% if entree.isVisible %}
                         <span class="prodName">{{ entree.libProduit }} - </span>
-                        <span class="prodPrice">{{ entree.prixProduit | number_format(2, ',', ' ') }} €</span>
+                        <span class="prodPrice">{{ entree.prixProduit|number_format(2, ',', ' ') }} €</span>
                     {% endif %}
                 </li>
             {% endfor %}
         </ul>
-
 
         {% if plats %}
             <h2 class="text-center mb-2 fst-italic">Plats</h2>
@@ -37,12 +36,11 @@
                 <li class="">
                     {% if plat.isVisible %}
                         <span class="prodName">{{ plat.libProduit }} - </span>
-                        <span class="prodPrice">{{ plat.prixProduit | number_format(2, ',', ' ') }} €</span>
+                        <span class="prodPrice">{{ plat.prixProduit|number_format(2, ',', ' ') }} €</span>
                     {% endif %}
                 </li>
             {% endfor %}
         </ul>
-
 
         {% if desserts %}
             <h2 class="text-center mb-2 fst-italic">Desserts</h2>
@@ -53,7 +51,7 @@
                 <li class="">
                     {% if dessert.isVisible %}
                         <span class="prodName">{{ dessert.libProduit }} - </span>
-                        <span class="prodPrice">{{ dessert.prixProduit | number_format(2, ',', ' ') }} €</span>
+                        <span class="prodPrice">{{ dessert.prixProduit|number_format(2, ',', ' ') }} €</span>
                     {% endif %}
                 </li>
             {% endfor %}
@@ -68,13 +66,12 @@
                 <li class="">
                     {% if boisson.isVisible %}
                         <span class="prodName">{{ boisson.libProduit }} - </span>
-                        <span class="prodPrice">{{ boisson.prixProduit | number_format(2, ',', ' ') }} €</span>
+                        <span class="prodPrice">{{ boisson.prixProduit|number_format(2, ',', ' ') }} €</span>
                     {% endif %}
                 </li>
             {% endfor %}
         </ul>
     </div>
     {% endif %}
-
 
 {% endblock %}
