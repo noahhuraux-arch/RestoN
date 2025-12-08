@@ -34,7 +34,7 @@ final class PlatFactory extends PersistentObjectFactory
     protected function defaults(): array|callable
     {
         return [
-            'libProduit' => 'Plat default',
+            'libProduit' => 'plat default',
             'prixProduit' => self::faker()->randomFloat(2, 2, 15),
             'visible' => true,
             'descriptionProduit' => self::faker()->text(150),
@@ -48,7 +48,7 @@ final class PlatFactory extends PersistentObjectFactory
     protected function initialize(): static
     {
         return $this
-            // ->afterInstantiate(function(Plat $plat): void {})
+            // ->afterInstantiate(function(plat $plat): void {})
         ;
     }
 }

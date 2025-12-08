@@ -17,7 +17,7 @@ class PlatRepository extends ServiceEntityRepository
     }
 
     //    /**
-    //     * @return Plat[] Returns an array of Plat objects
+    //     * @return plat[] Returns an array of plat objects
     //     */
     //    public function findByExampleField($value): array
     //    {
@@ -31,7 +31,7 @@ class PlatRepository extends ServiceEntityRepository
     //        ;
     //    }
 
-    //    public function findOneBySomeField($value): ?Plat
+    //    public function findOneBySomeField($value): ?plat
     //    {
     //        return $this->createQueryBuilder('p')
     //            ->andWhere('p.exampleField = :val')
