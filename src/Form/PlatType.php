@@ -19,7 +19,7 @@ class PlatType extends AbstractType
     {
         $builder
             ->add('libProduit', TextType::class, ['label' => 'Nom'])
-            ->add('prixProduit', IntegerType::class, ['label' => 'Prix'])
+            ->add('prixProduit', IntegerType::class, ['label' => 'Prix', 'attr' => ['min' => 0]])
             ->add('visible', CheckboxType::class, ['label' => 'Visible', 'required' => false])
             ->add('descriptionProduit', TextType::class, ['label' => 'Description', 'required' => false])
             ->add('typePlat', EntityType::class, [
