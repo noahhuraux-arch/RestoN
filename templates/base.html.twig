@@ -57,8 +57,42 @@
 
 {% block body %}{% endblock %}
 
-<footer class="container py-3 my-4 border-top">
-    <p class="text-center text-muted">© 2025 Resto'N</p>
+<footer class="bg-dark text-white pt-5 pb-4 mt-auto">
+    <div class="container text-center text-md-start">
+        <div class="row text-center text-md-start">
+
+            <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mt-3">
+                <h5 class="text-uppercase mb-4 fw-bold text-warning">
+                    <img src="{{ asset('images/favicon.png') }}" alt="Logo" width="25" height="25" class="d-inline-block align-text-top me-2" style="filter: invert(1);">
+                    Resto'N
+                </h5>
+                <p><strong>La</strong> solution pour la gestion de restaurants. Simple, rapide et efficace.</p>
+            </div>
+
+            <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mt-3">
+                <h5 class="text-uppercase mb-4 fw-bold text-warning">Accès rapide</h5>
+                <p><a href="{{ path('app_home') }}" class="text-white text-decoration-none">Accueil</a></p>
+                <p><a href="#about" class="text-white text-decoration-none">À Propos</a></p>
+                <p><a href="#partenaires" class="text-white text-decoration-none">Partenaires</a></p>
+            </div>
+
+            <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mt-3">
+                <h5 class="text-uppercase mb-4 fw-bold text-warning">Contact</h5>
+                <p><i class="fas fa-home me-2"></i> Resto'N, Reims</p>
+                <p><i class="fas fa-envelope me-2"></i> contact@reston.fr</p>
+                <p><i class="fas fa-phone me-2"></i> +33 1 23 45 67 89</p>
+            </div>
+
+        </div>
+
+        <hr class="mb-4">
+
+        <div class="row align-items-center">
+            <div class="col-12 text-center">
+                <p>© 2025 <strong>Resto'N</strong> - Tous Droits Réservés</p>
+            </div>
+        </div>
+    </div>
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
