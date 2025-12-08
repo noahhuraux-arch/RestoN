@@ -30,30 +30,39 @@ final class RestaurantController extends AbstractController
         ];
         $nomJourActuel = $joursSemaine[date('l')];
 
-        $horaires = [
-            'Lundi' => ['ouvert' => false, 'plages' => 'Fermé'],
-            'Mardi' => ['ouvert' => true, 'plages' => '12:00 - 14:30 | 19:00 - 22:30'],
-            'Mercredi' => ['ouvert' => true, 'plages' => '12:00 - 14:30 | 19:00 - 22:30'],
-            'Jeudi' => ['ouvert' => true, 'plages' => '12:00 - 14:30 | 19:00 - 22:30'],
-            'Vendredi' => ['ouvert' => true, 'plages' => '12:00 - 14:30 | 19:00 - 22:30'],
-            'Samedi' => ['ouvert' => true, 'plages' => '12:00 - 14:30 | 19:00 - 22h30'],
-            'Dimanche' => ['ouvert' => true, 'plages' => '12:00 - 15:00'],
-        ];
+        $horaireDuJour = null;
+        $texteHoraire = "Non défini";
 
-        $horaireDuJour = $horaires[$nomJourActuel] ?? ['ouvert' => false, 'plages' => 'Non défini'];
-        $affichageHoraire = $horaireDuJour['plages'];
+        foreach ($restaurant->getHoraires() as $horaire) {
+            if ($horaire->getJour() === $nomJourActuel) {
+                $horaireDuJour = $horaire;
+                break;
+            }
+        }
 
-        $infoRestaurant = [
-            'adresse' => '12 Avenue de la Gastronomie, 75001 Paris',
-            'telephone' => '01 23 45 67 89',
-            'email' => 'contact@reston.fr',
-            'nom_jour' => $nomJourActuel,
-            'horaire_jour' => $affichageHoraire,
-        ];
+        if ($horaireDuJour) {
+            if ($horaireDuJour->isFerme()) {
+                $texteHoraire = "Fermé";
+            } else {
+                $plages = [];
+                if ($horaireDuJour->getOuvertureMidi() && $horaireDuJour->getFermetureMidi()) {
+                    $plages[] = $horaireDuJour->getOuvertureMidi()->format('H:i') . ' - ' . $horaireDuJour->getFermetureMidi()->format('H:i');
+                }
+                if ($horaireDuJour->getOuvertureSoir() && $horaireDuJour->getFermetureSoir()) {
+                    $plages[] = $horaireDuJour->getOuvertureSoir()->format('H:i') . ' - ' . $horaireDuJour->getFermetureSoir()->format('H:i');
+                }
+                if (empty($plages)) {
+                    $texteHoraire = "Ouvert (Horaires non spécifiés)";
+                } else {
+                    $texteHoraire = implode(' | ', $plages);
+                }
+            }
+        }
 
         return $this->render('restaurant/index.html.twig', [
             'restaurant' => $restaurant,
-            'restaurant1' => $infoRestaurant,
+            'nom_jour_actuel' => $nomJourActuel,
+            'texte_horaire_actuel' => $texteHoraire
         ]);
     }
 
