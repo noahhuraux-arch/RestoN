@@ -27,4 +27,14 @@ class HorairesFixtures extends Fixture implements DependentFixtureInterface
 
         $manager->flush();
     }
+
+    /**
+     * Cette méthode indique à Doctrine de charger RestaurantFixtures avant HoraireFixtures.
+     */
+    public function getDependencies(): array
+    {
+        return [
+            RestaurantFixtures::class,
+        ];
+    }
 }
