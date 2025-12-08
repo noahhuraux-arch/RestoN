@@ -11,7 +11,6 @@ class Serveur extends Personne
     #[ORM\Column]
     private ?float $salaire = null;
 
-
     public function getSalaire(): ?float
     {
         return $this->salaire;

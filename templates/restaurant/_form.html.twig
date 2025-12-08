@@ -2,9 +2,9 @@
 
 {% block body %}
     <div class="container py-5">
-        {% if submit_label=='Modifier' %}
+        {% if submit_label == 'Modifier' %}
             <h1 class="mb-4">Modification du restaurant - {{ restaurant.libRestau }}</h1>
-        {% elseif submit_label=='Créer' %}
+        {% elseif submit_label == 'Créer' %}
             <h1 class="mb-4">Création d'un réstaurant</h1>
         {% endif %}
 
@@ -42,7 +42,6 @@
                         {{ form_row(form.email_restau) }}
                     </div>
                 </div>
-
 
                 {{ form_widget(form) }}
 

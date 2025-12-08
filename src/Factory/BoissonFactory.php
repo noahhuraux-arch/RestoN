@@ -3,7 +3,6 @@
 namespace App\Factory;
 
 use App\Entity\Boisson;
-use App\Entity\Produit;
 use Zenstruck\Foundry\Persistence\PersistentObjectFactory;
 
 /**

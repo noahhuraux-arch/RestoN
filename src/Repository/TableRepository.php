@@ -2,7 +2,6 @@
 
 namespace App\Repository;
 
-use App\Entity\Reservation;
 use App\Entity\Table;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -43,11 +42,11 @@ class TableRepository extends ServiceEntityRepository
     //    }
 
     /**
-     * Trouve UNE table disponible pour un créneau donné
+     * Trouve UNE table disponible pour un créneau donné.
      *
-     * @param \DateTime $date Le jour de la réservation
-     * @param \DateTime $heure L'heure de la réservation
-     * @param int $nbPersType Le nombre de personnes
+     * @param \DateTime $date       Le jour de la réservation
+     * @param \DateTime $heure      L'heure de la réservation
+     * @param int       $nbPersType Le nombre de personnes
      *
      * @return Table|null Un objet Table si une place est trouvée, sinon null
      */
@@ -62,7 +61,7 @@ class TableRepository extends ServiceEntityRepository
             ->setParameter('heure', $heure)
             ->setParameter('nbPers', $nbPersType);
         $query = $qb->getQuery();
+
         return $query->setMaxResults(1)->getOneOrNullResult();
     }
-
 }
