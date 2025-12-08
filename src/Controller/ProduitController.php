@@ -51,8 +51,8 @@ final class ProduitController extends AbstractController
                 'desserts' => $dessert]);
     }
 
-    #[Route('/{idRestau}/carte/proprietaire', name: 'app_produit_proprio', requirements: ['idRestau' => Requirement::DIGITS])]
-    public function listMenuProprio(BoissonRepository $boissonRep, PlatRepository $platRep, RestaurantRepository $restauRepo, int $idRestau): Response
+    #[Route('/{idRestau}/carte/proprietaire', name: 'app_produit_proprietaire', requirements: ['idRestau' => Requirement::DIGITS])]
+    public function listMenuProprietaire(BoissonRepository $boissonRep, PlatRepository $platRep, RestaurantRepository $restauRepo, int $idRestau): Response
     {
         $restaurant = $restauRepo->find($idRestau);
 
