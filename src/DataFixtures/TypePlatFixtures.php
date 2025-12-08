@@ -15,7 +15,7 @@ class TypePlatFixtures extends Fixture
         ]);
 
         TypePlatFactory::createOne([
-            'lib' => 'Plat Principal',
+            'lib' => 'plat Principal',
         ]);
 
         TypePlatFactory::createOne([

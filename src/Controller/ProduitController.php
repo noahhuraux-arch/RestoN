@@ -51,7 +51,7 @@ final class ProduitController extends AbstractController
                 'desserts' => $dessert]);
     }
 
-    #[Route('/{idRestau}/carte/proprio', name: 'app_produit_proprio', requirements: ['idRestau' => Requirement::DIGITS])]
+    #[Route('/{idRestau}/carte/proprietaire', name: 'app_produit_proprio', requirements: ['idRestau' => Requirement::DIGITS])]
     public function listMenuProprio(BoissonRepository $boissonRep, PlatRepository $platRep, RestaurantRepository $restauRepo, int $idRestau): Response
     {
         $restaurant = $restauRepo->find($idRestau);
@@ -74,7 +74,7 @@ final class ProduitController extends AbstractController
             }
         }
 
-        return $this->render('produit/proprio/carte.html.twig',
+        return $this->render('produit/proprietaire/carte.html.twig',
             ['boissons' => $boisson,
                 'entrees' => $entrees,
                 'plats' => $plat,

@@ -28,7 +28,7 @@ class ProduitFixtures extends Fixture implements DependentFixtureInterface
         ['lib' => 'Côte de Bœuf (350g) Sauce au poivre', 'prix' => 32.00, 'typePlat' => '2', 'descriptionProduit' => 'Coupée au couteau, maturée, servie avec frites maison.'],
         ['lib' => 'Magret de canard, sauce au miel', 'prix' => 24.00, 'typePlat' => '2', 'descriptionProduit' => 'Accompagné de pommes de terre sarladaises.'],
         ['lib' => 'Blanquette de Veau à l\'Ancienne', 'prix' => 23.50, 'typePlat' => '2', 'descriptionProduit' => 'Morceaux de veau mijotés dans une sauce crémeuse aux champignons.'],
-        ['lib' => 'Cassoulet Toulousain', 'prix' => 25.00, 'typePlat' => '2', 'descriptionProduit' => 'Plat du Sud-Ouest à base de haricots blancs, saucisse et confit de canard.'],
+        ['lib' => 'Cassoulet Toulousain', 'prix' => 25.00, 'typePlat' => '2', 'descriptionProduit' => 'plat du Sud-Ouest à base de haricots blancs, saucisse et confit de canard.'],
         ['lib' => 'Mille-feuille à la vanille', 'prix' => 8.50, 'typePlat' => '3', 'descriptionProduit' => 'Pâte feuilletée croustillante et crème pâtissière légère.'],
         ['lib' => 'Île Flottante', 'prix' => 7.00, 'typePlat' => '3', 'descriptionProduit' => 'Meringue légère sur lit de crème anglaise.'],
         ['lib' => 'Moelleux au Chocolat, cœur coulant', 'prix' => 9.00, 'typePlat' => '3', 'descriptionProduit' => 'Servi avec une boule de glace vanille.'],
