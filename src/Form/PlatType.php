@@ -3,7 +3,6 @@
 namespace App\Form;
 
 use App\Entity\Plat;
-use App\Entity\Restaurant;
 use App\Entity\TypePlat;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -25,7 +24,7 @@ class PlatType extends AbstractType
             ->add('typePlat', EntityType::class, [
                 'class' => TypePlat::class,
                 'placeholder' => 'Choisissez un type',
-                'choice_label' => 'lib'
+                'choice_label' => 'lib',
             ])
         ;
     }
