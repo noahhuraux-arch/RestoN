@@ -65,6 +65,8 @@ class Restaurant
     #[ORM\OneToMany(targetEntity: Table::class, mappedBy: 'restaurant')]
     private Collection $table;
 
+    #[ORM\OneToMany(targetEntity: Reservation::class, mappedBy: 'restaurant')]
+    private Collection $reservations;
 
     /**
      * @var Collection<int, Boisson>
