@@ -23,7 +23,11 @@
             {{ form_row(form.visible) }}
             {{ form_row(form.alcoolise) }}
 
-            <div class="mt-4 d-grid gap-2 d-md-flex justify-content-md-end">
+            <div class="mt-4 d-grid gap-2 d-md-flex justify-content-between">
+                <a href="{{ path('app_produit_details', { id: boisson.id }) }}" class="btn btn-light border rounded-3 px-4 fs-6">
+                    ← Retour
+                </a>
+
                 <button type="submit" class="btn btn-primary px-4">
                     Modifier
                 </button>
