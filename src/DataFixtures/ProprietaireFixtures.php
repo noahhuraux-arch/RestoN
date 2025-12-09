@@ -10,6 +10,14 @@ class ProprietaireFixtures extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
+        ProprietaireFactory::createOne([
+            'email' => 'root@example.com',
+            'password' => 'test',
+            'nom' => 'Dupont',
+            'prenom' => 'Albert',
+            'roles' => ['ROLE_ADMIN'],
+        ]);
+
         ProprietaireFactory::createMany(5);
 
         $manager->flush();
