@@ -80,12 +80,19 @@ class Restaurant
     #[ORM\OneToMany(targetEntity: Serveur::class, mappedBy: 'restaurant')]
     private Collection $serveurs;
 
+    /**
+     * @var Collection<int, Menu>
+     */
+    #[ORM\OneToMany(targetEntity: Menu::class, mappedBy: 'idRestau')]
+    private Collection $menus;
+
     public function __construct()
     {
         $this->horaires = new ArrayCollection();
         $this->boissons = new ArrayCollection();
         $this->plats = new ArrayCollection();
         $this->serveurs = new ArrayCollection();
+        $this->menus = new ArrayCollection();
     }
 
     public function getid(): ?int
@@ -315,6 +322,36 @@ class Restaurant
             // set the owning side to null (unless already changed)
             if ($serveur->getRestaurant() === $this) {
                 $serveur->setRestaurant(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Menu>
+     */
+    public function getMenus(): Collection
+    {
+        return $this->menus;
+    }
+
+    public function addMenu(Menu $menu): static
+    {
+        if (!$this->menus->contains($menu)) {
+            $this->menus->add($menu);
+            $menu->setIdRestau($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMenu(Menu $menu): static
+    {
+        if ($this->menus->removeElement($menu)) {
+            // set the owning side to null (unless already changed)
+            if ($menu->getIdRestau() === $this) {
+                $menu->setIdRestau(null);
             }
         }
 

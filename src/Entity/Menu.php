@@ -16,6 +16,10 @@ class Menu extends Produit
     #[ORM\ManyToMany(targetEntity: Plat::class, inversedBy: 'menus')]
     private Collection $idPlat;
 
+    #[ORM\ManyToOne(inversedBy: 'menus')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Restaurant $idRestau = null;
+
     public function __construct()
     {
         $this->idPlat = new ArrayCollection();
@@ -41,6 +45,18 @@ class Menu extends Produit
     public function removeIdPlat(Plat $idPlat): static
     {
         $this->idPlat->removeElement($idPlat);
+
+        return $this;
+    }
+
+    public function getIdRestau(): ?Restaurant
+    {
+        return $this->idRestau;
+    }
+
+    public function setIdRestau(?Restaurant $idRestau): static
+    {
+        $this->idRestau = $idRestau;
 
         return $this;
     }
