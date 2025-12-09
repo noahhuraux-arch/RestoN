@@ -105,7 +105,7 @@ final class ProduitController extends AbstractController
             $entityManager->persist($boisson);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_produit_proprio', ['idRestau' => $restaurant->getid()]);
+            return $this->redirectToRoute('app_produit_proprietaire', ['idRestau' => $restaurant->getid()]);
         }
 
         return $this->render('produit/boisson/create.html.twig', [
@@ -151,7 +151,7 @@ final class ProduitController extends AbstractController
             $entityManager->persist($plat);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_produit_proprio', ['idRestau' => $restaurant->getid()]);
+            return $this->redirectToRoute('app_produit_proprietaire', ['idRestau' => $restaurant->getid()]);
         }
 
         return $this->render('produit/plat/create.html.twig', [
@@ -198,7 +198,7 @@ final class ProduitController extends AbstractController
                 $entityManager->remove($produit);
                 $entityManager->flush();
 
-                return $this->redirectToRoute('app_produit_proprio', ['idRestau' => $idRestau]);
+                return $this->redirectToRoute('app_produit_proprietaire', ['idRestau' => $idRestau]);
             }
 
             if ($form->get('cancel')->isClicked()) {
