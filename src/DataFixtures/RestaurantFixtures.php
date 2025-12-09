@@ -13,7 +13,7 @@ class RestaurantFixtures extends Fixture
     {
         $noms = [
             'The Rustic Fork',
-            'Spice Route Chicken',
+            'Spice Route Kitchen',
             'Blue Fin Sushi',
             'Bella Luna Pizzeria',
             'The Daily Grind Café',
