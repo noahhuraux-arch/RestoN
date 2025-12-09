@@ -19,7 +19,7 @@ final class ServeurController extends AbstractController
         ]);
     }
 
-    #[Route('/serveur/restaurant/{id}', name: 'app_serveur_show', requirements: ['id' => Requirement::DIGITS])]
+    #[Route('/{id}/serveur', name: 'app_serveur_show', requirements: ['id' => Requirement::DIGITS])]
     public function show(
         Restaurant $restaurant,
         ServeurRepository $serveurRepository,
