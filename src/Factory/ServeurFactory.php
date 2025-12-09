@@ -38,7 +38,7 @@ final class ServeurFactory extends PersistentProxyObjectFactory
             'nom' => self::faker()->lastName(),
             'telephone' => self::faker()->numerify('0#########'),
             'email' => self::faker()->unique()->safeEmail(),
-            'motdepasse' => 'password123',
+            'password' => 'password123',
             'salaire' => self::faker()->randomFloat(2, 1200, 2500),
             'restaurant' => RestaurantFactory::random(),
         ];
