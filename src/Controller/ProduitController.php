@@ -3,10 +3,12 @@
 namespace App\Controller;
 
 use App\Entity\Boisson;
+use App\Entity\Menu;
 use App\Entity\Plat;
 use App\Entity\Produit;
 use App\Entity\Restaurant;
 use App\Form\BoissonType;
+use App\Form\MenuType;
 use App\Form\PlatType;
 use App\Repository\BoissonRepository;
 use App\Repository\PlatRepository;
@@ -105,7 +107,7 @@ final class ProduitController extends AbstractController
             $entityManager->persist($boisson);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_produit_proprio', ['idRestau' => $restaurant->getid()]);
+            return $this->redirectToRoute('app_produit_proprietaire', ['idRestau' => $restaurant->getid()]);
         }
 
         return $this->render('produit/boisson/create.html.twig', [
@@ -151,10 +153,32 @@ final class ProduitController extends AbstractController
             $entityManager->persist($plat);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_produit_proprio', ['idRestau' => $restaurant->getid()]);
+            return $this->redirectToRoute('app_produit_proprietaire', ['idRestau' => $restaurant->getid()]);
         }
 
         return $this->render('produit/plat/create.html.twig', [
+            'form' => $form,
+            'restaurant' => $restaurant,
+        ]);
+    }
+
+    #[Route('/{idRestau}/menu/create', name: 'app_produit_menu_create', requirements: ['idRestau' => Requirement::DIGITS])]
+    public function createMenu(Request $request, EntityManagerInterface $entityManager, int $idRestau)
+    {
+        $restaurant = $entityManager->getRepository(Restaurant::class)->find($idRestau);
+        $menu = new Menu();
+        $form = $this->createForm(MenuType::class, $menu, ['restaurant' => $restaurant]);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $restaurant->addMenu($menu);
+            $entityManager->persist($menu);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_produit_proprietaire', ['idRestau' => $idRestau]);
+        }
+
+        return $this->render('produit/menu/create.html.twig', [
             'form' => $form,
             'restaurant' => $restaurant,
         ]);
@@ -198,7 +222,7 @@ final class ProduitController extends AbstractController
                 $entityManager->remove($produit);
                 $entityManager->flush();
 
-                return $this->redirectToRoute('app_produit_proprio', ['idRestau' => $idRestau]);
+                return $this->redirectToRoute('app_produit_proprietaire', ['idRestau' => $idRestau]);
             }
 
             if ($form->get('cancel')->isClicked()) {
