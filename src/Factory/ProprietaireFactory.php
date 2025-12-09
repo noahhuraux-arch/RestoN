@@ -53,7 +53,7 @@ final class ProprietaireFactory extends PersistentProxyObjectFactory
                 'nom' => $nom,
                 'telephone' => $faker->numerify('0#########'),
                 'email' => $email,
-                'motdepasse' => $faker->password(8, 20),
+                'password' => $faker->password(8, 20),
             ];
         };
     }
