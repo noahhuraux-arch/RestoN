@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Repository\PersonneRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: PersonneRepository::class)]
 #[ORM\InheritanceType('SINGLE_TABLE')]
@@ -13,7 +15,7 @@ use Doctrine\ORM\Mapping as ORM;
     'serveur' => Serveur::class,
     'proprietaire' => Proprietaire::class,
 ])]
-abstract class Personne
+abstract class Personne implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -33,7 +35,10 @@ abstract class Personne
     private ?string $email = null;
 
     #[ORM\Column(length: 1024, nullable: true)]
-    private ?string $motdepasse = null;
+    private ?string $password = null;
+
+    #[ORM\Column]
+    private array $roles = [];
 
     public function getid(): ?int
     {
@@ -88,13 +93,54 @@ abstract class Personne
         return $this;
     }
 
-    public function getMotdepasse(): ?string
+    public function getPassword(): ?string
     {
-        return $this->motdepasse;
+        return $this->password;
     }
 
-    public function setMotdepasse(?string $motdepasse): void
+    public function setPassword(?string $password): void
     {
-        $this->motdepasse = $motdepasse;
+        $this->password = $password;
+    }
+
+    public function getUserIdentifier(): string
+    {
+        return (string) $this->email;
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function getRoles(): array
+    {
+        $roles = $this->roles;
+        // guarantee every user at least has ROLE_USER
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
+    }
+
+    /**
+     * @param list<string> $roles
+     */
+    public function setRoles(array $roles): static
+    {
+        $this->roles = $roles;
+
+        return $this;
+    }
+
+    public function __serialize(): array
+    {
+        $data = (array) $this;
+        $data["\0".self::class."\0password"] = hash('crc32c', $this->password);
+
+        return $data;
+    }
+
+    #[\Deprecated]
+    public function eraseCredentials(): void
+    {
+        // @deprecated, to be removed when upgrading to Symfony 8
     }
 }
