@@ -20,6 +20,9 @@ class Commande
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTime $dateCommande = null;
 
+    #[ORM\ManyToOne(inversedBy: 'commandes')]
+    private ?Serveur $serveur = null;
+
     public function getid(): ?int
     {
         return $this->id;
@@ -45,6 +48,18 @@ class Commande
     public function setDateCommande(\DateTime $dateCommande): static
     {
         $this->dateCommande = $dateCommande;
+
+        return $this;
+    }
+
+    public function getServeur(): ?Serveur
+    {
+        return $this->serveur;
+    }
+
+    public function setServeur(?Serveur $serveur): static
+    {
+        $this->serveur = $serveur;
 
         return $this;
     }
