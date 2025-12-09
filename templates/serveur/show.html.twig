@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Serveurs du restaurant {{ restaurant.librestau }}
+{% endblock %}
+
+{% block body %}
+    <h1>Serveurs du restaurant : {{ restaurant.librestau }}</h1>
+
+    {% if serveurs|length > 0 %}
+        <ul>
+            {% for serveur in serveurs %}
+                <li>{{ serveur.prenom }} {{ serveur.nom }} — {{ serveur.salaire|number_format(2, ',', ' ') }} €</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Aucun serveur n'est rattaché à ce restaurant.</p>
+    {% endif %}
+
+    <a href="{{ path('app_home') }}">Retour à l'accueil</a>
+{% endblock %}
