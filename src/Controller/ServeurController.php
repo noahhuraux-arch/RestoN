@@ -18,7 +18,7 @@ final class ServeurController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_serveur_show', requirements: ['id' => Requirement::DIGITS])]
+    #[Route('/serveur/restaurant/{id}', name: 'app_serveur_show', requirements: ['id' => Requirement::DIGITS])]
     public function show(Serveur $serveur): Response
     {
         return $this->render('serveur/show.html.twig', [
