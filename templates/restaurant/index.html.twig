@@ -1,6 +1,15 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Accueil du Restaurant {{ restaurant.libRestau }}{% endblock %}
+{% block title %}Accueil - {{ restaurant.libRestau }}{% endblock %}
+
+{% block favicon %}<link rel="icon" href="{{ asset('images/logos/logo' ~ restaurant.id ~ '.png') }}">{% endblock %}
+
+{% block navbar_brand %}
+    <a class="navbar-brand" href="{{ path('app_restaurant_home', {id: restaurant.id}) }}">
+        <img src="{{ asset('images/logos/logo' ~ restaurant.id ~ '.png') }}" alt="{{ restaurant.libRestau }} Logo" width="50" height="50" class="d-inline-block align-middle me-2">
+        {{ restaurant.libRestau }}
+    </a>
+{% endblock %}
 
 {% block body %}
     <div class="container">
