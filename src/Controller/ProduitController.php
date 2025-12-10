@@ -11,6 +11,7 @@ use App\Form\BoissonType;
 use App\Form\MenuType;
 use App\Form\PlatType;
 use App\Repository\BoissonRepository;
+use App\Repository\MenuRepository;
 use App\Repository\PlatRepository;
 use App\Repository\RestaurantRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -54,12 +55,13 @@ final class ProduitController extends AbstractController
     }
 
     #[Route('/{idRestau}/carte/proprietaire', name: 'app_produit_proprietaire', requirements: ['idRestau' => Requirement::DIGITS])]
-    public function listMenuProprietaire(BoissonRepository $boissonRep, PlatRepository $platRep, RestaurantRepository $restauRepo, int $idRestau): Response
+    public function listMenuProprietaire(BoissonRepository $boissonRep, PlatRepository $platRep, MenuRepository $menuRep, RestaurantRepository $restauRepo, int $idRestau): Response
     {
         $restaurant = $restauRepo->find($idRestau);
 
         $boisson = $boissonRep->findBy(['idRestau' => $idRestau], ['alcoolise' => 'ASC', 'prixProduit' => 'ASC']);
         $produit = $platRep->findBy(['idRestau' => $idRestau], ['libProduit' => 'ASC', 'prixProduit' => 'ASC']);
+        $menus = $menuRep->findBy(['idRestau' => $idRestau], ['libProduit' => 'ASC', 'prixProduit' => 'ASC']);
 
         $entrees = [];
         $plat = [];
@@ -81,6 +83,7 @@ final class ProduitController extends AbstractController
                 'entrees' => $entrees,
                 'plats' => $plat,
                 'desserts' => $dessert,
+                'menus' => $menus,
                 'restaurant' => $restaurant]);
     }
 
