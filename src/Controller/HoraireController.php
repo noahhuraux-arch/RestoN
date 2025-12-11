@@ -9,12 +9,18 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 final class HoraireController extends AbstractController
 {
     #[Route('/proprietaire/restaurant/{id}/horaires', name: 'app_restaurant_horaires')]
+    #[IsGranted('ROLE_PROPRIETAIRE')]
     public function update(Request $request, Restaurant $restaurant, EntityManagerInterface $entityManager): Response
     {
+        if ($restaurant->getProprietaire() !== $this->getUser()) {
+            throw $this->createAccessDeniedException('Accès interdit');
+        }
+
         $form = $this->createForm(RestaurantHorairesType::class, $restaurant);
 
         $form->handleRequest($request);
