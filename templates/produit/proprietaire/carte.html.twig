@@ -135,7 +135,7 @@
             <div class="listMenus mt-5">
 
                 {% if menus %}
-                    <h2 class="text-center mb-2 fst-italic">Nos Menus</h2>
+                    <h2 class="text-center mb-5 fst-italic">Nos Menus</h2>
                 {% endif %}
 
                 <div class="row menus text-center list-unstyled">
@@ -146,7 +146,7 @@
                                 <ul class="list-unstyled">
                                     {% for plat in menu.idPlat %}
                                         <li>
-                                            <span class="prodName">{{ plat.libProduit }} - </span>
+                                            <span class="prodName">{{ plat.libProduit }}</span>
                                         </li>
                                     {% endfor %}
                                 </ul>
