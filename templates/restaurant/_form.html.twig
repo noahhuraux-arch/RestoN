@@ -46,6 +46,17 @@
                 {{ form_widget(form) }}
 
                 <div class="mt-4 d-grid gap-2 d-md-flex justify-content-md-end">
+
+                    {% if submit_label == 'Modifier' %}
+                        <a href="{{ path('app_proprietaire_show', {'id': restaurant.id}) }}" class="btn btn-secondary me-md-2">
+                            Annuler
+                        </a>
+                    {% else %}
+                        <a href="{{ path('app_proprietaire') }}" class="btn btn-secondary me-md-2">
+                            Annuler
+                        </a>
+                    {% endif %}
+
                     <button type="submit" class="btn btn-primary px-4">
                         {{ submit_label }}
                     </button>
