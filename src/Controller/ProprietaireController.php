@@ -13,8 +13,8 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[IsGranted('ROLE_PROPRIETAIRE')]
 final class ProprietaireController extends AbstractController
 {
-    #[Route('/proprietaire/{id}', name: 'app_proprietaire', requirements: ['id' => Requirement::DIGITS])]
-    public function index(Proprietaire $proprietaire): Response
+    #[Route('/proprietaire', name: 'app_proprietaire', requirements: ['id' => Requirement::DIGITS])]
+    public function index(): Response
     {
         return $this->render('proprietaire/liste.html.twig', [
             'proprietaire' => $proprietaire,
