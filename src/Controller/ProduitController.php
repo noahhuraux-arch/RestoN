@@ -29,9 +29,9 @@ final class ProduitController extends AbstractController
     {
         $restaurant = $restauRepo->find($idRestau);
 
-        $boisson = $boissonRep->findBy(['idRestau' => $idRestau], ['alcoolise' => 'ASC', 'prixProduit' => 'ASC']);
-        $produit = $platRep->findBy(['idRestau' => $idRestau], ['libProduit' => 'ASC', 'prixProduit' => 'ASC']);
-        $menus = $menuRepo->findBy(['idRestau' => $idRestau], ['libProduit' => 'ASC', 'prixProduit' => 'ASC']);
+        $boisson = $boissonRep->findBy(['idRestau' => $idRestau], ['alcoolise' => 'ASC', 'prixProduit' => 'ASC', 'libProduit' => 'ASC']);
+        $produit = $platRep->findBy(['idRestau' => $idRestau], ['prixProduit' => 'ASC','libProduit' => 'ASC']);
+        $menus = $menuRepo->findBy(['idRestau' => $idRestau], ['prixProduit' => 'ASC', 'libProduit' => 'ASC']);
 
         $entrees = [];
         $plat = [];
@@ -61,9 +61,9 @@ final class ProduitController extends AbstractController
     {
         $restaurant = $restauRepo->find($idRestau);
 
-        $boisson = $boissonRep->findBy(['idRestau' => $idRestau], ['alcoolise' => 'ASC', 'prixProduit' => 'ASC']);
-        $produit = $platRep->findBy(['idRestau' => $idRestau], ['libProduit' => 'ASC', 'prixProduit' => 'ASC']);
-        $menus = $menuRep->findBy(['idRestau' => $idRestau], ['libProduit' => 'ASC', 'prixProduit' => 'ASC']);
+        $boisson = $boissonRep->findBy(['idRestau' => $idRestau], ['alcoolise' => 'ASC', 'prixProduit' => 'ASC', 'libProduit' => 'ASC']);
+        $produit = $platRep->findBy(['idRestau' => $idRestau], ['prixProduit' => 'ASC', 'libProduit' => 'ASC']);
+        $menus = $menuRep->findBy(['idRestau' => $idRestau], ['prixProduit' => 'ASC', 'libProduit' => 'ASC']);
 
         $entrees = [];
         $plat = [];
