@@ -16,6 +16,12 @@ final class ProprietaireController extends AbstractController
     #[Route('/proprietaire', name: 'app_proprietaire', requirements: ['id' => Requirement::DIGITS])]
     public function index(): Response
     {
+        $proprietaire = $this->getUser();
+
+        if (!$proprietaire) {
+            return $this->redirectToRoute('app_login');
+        }
+
         return $this->render('proprietaire/liste.html.twig', [
             'proprietaire' => $proprietaire,
             'restaurants' => $proprietaire->getRestaurants(),
