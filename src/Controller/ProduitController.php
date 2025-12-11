@@ -11,6 +11,7 @@ use App\Form\BoissonType;
 use App\Form\MenuType;
 use App\Form\PlatType;
 use App\Repository\BoissonRepository;
+use App\Repository\MenuRepository;
 use App\Repository\PlatRepository;
 use App\Repository\RestaurantRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -24,12 +25,13 @@ use Symfony\Component\Routing\Requirement\Requirement;
 final class ProduitController extends AbstractController
 {
     #[Route('/{idRestau}/carte', name: 'app_produit', requirements: ['idRestau' => Requirement::DIGITS])]
-    public function listMenu(BoissonRepository $boissonRep, PlatRepository $platRep, RestaurantRepository $restauRepo, int $idRestau): Response
+    public function listMenu(BoissonRepository $boissonRep, PlatRepository $platRep, RestaurantRepository $restauRepo, MenuRepository $menuRepo, int $idRestau): Response
     {
         $restaurant = $restauRepo->find($idRestau);
 
-        $boisson = $boissonRep->findBy(['idRestau' => $idRestau], ['alcoolise' => 'ASC', 'prixProduit' => 'ASC']);
-        $produit = $platRep->findBy(['idRestau' => $idRestau], ['libProduit' => 'ASC', 'prixProduit' => 'ASC']);
+        $boisson = $boissonRep->findBy(['idRestau' => $idRestau], ['alcoolise' => 'ASC', 'prixProduit' => 'ASC', 'libProduit' => 'ASC']);
+        $produit = $platRep->findBy(['idRestau' => $idRestau], ['prixProduit' => 'ASC','libProduit' => 'ASC']);
+        $menus = $menuRepo->findBy(['idRestau' => $idRestau], ['prixProduit' => 'ASC', 'libProduit' => 'ASC']);
 
         $entrees = [];
         $plat = [];
@@ -50,16 +52,18 @@ final class ProduitController extends AbstractController
             ['boissons' => $boisson,
                 'entrees' => $entrees,
                 'plats' => $plat,
-                'desserts' => $dessert]);
+                'desserts' => $dessert,
+                'menus' => $menus,]);
     }
 
     #[Route('/{idRestau}/carte/proprietaire', name: 'app_produit_proprietaire', requirements: ['idRestau' => Requirement::DIGITS])]
-    public function listMenuProprietaire(BoissonRepository $boissonRep, PlatRepository $platRep, RestaurantRepository $restauRepo, int $idRestau): Response
+    public function listMenuProprietaire(BoissonRepository $boissonRep, PlatRepository $platRep, MenuRepository $menuRep, RestaurantRepository $restauRepo, int $idRestau): Response
     {
         $restaurant = $restauRepo->find($idRestau);
 
-        $boisson = $boissonRep->findBy(['idRestau' => $idRestau], ['alcoolise' => 'ASC', 'prixProduit' => 'ASC']);
-        $produit = $platRep->findBy(['idRestau' => $idRestau], ['libProduit' => 'ASC', 'prixProduit' => 'ASC']);
+        $boisson = $boissonRep->findBy(['idRestau' => $idRestau], ['alcoolise' => 'ASC', 'prixProduit' => 'ASC', 'libProduit' => 'ASC']);
+        $produit = $platRep->findBy(['idRestau' => $idRestau], ['prixProduit' => 'ASC', 'libProduit' => 'ASC']);
+        $menus = $menuRep->findBy(['idRestau' => $idRestau], ['prixProduit' => 'ASC', 'libProduit' => 'ASC']);
 
         $entrees = [];
         $plat = [];
@@ -81,6 +85,7 @@ final class ProduitController extends AbstractController
                 'entrees' => $entrees,
                 'plats' => $plat,
                 'desserts' => $dessert,
+                'menus' => $menus,
                 'restaurant' => $restaurant]);
     }
 

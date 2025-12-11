@@ -131,6 +131,40 @@
                     </li>
                 {% endfor %}
             </ul>
+
+            <div class="listMenus mt-5">
+
+                {% if menus %}
+                    <h2 class="text-center mb-5 fst-italic">Nos Menus</h2>
+                {% endif %}
+
+                <div class="row menus text-center list-unstyled">
+                    {% for menu in menus %}
+                        <div class="col-md-6 mb-4">
+                            {% if not menu.visible %}
+                                <h5 class="fw-bold">{{ menu.libProduit }} {{ menu.prixProduit|number_format(2, ',', ' ') }} € <span class="badge bg-danger">Hors carte</span></h5>
+                                <ul class="list-unstyled">
+                                    {% for plat in menu.idPlat %}
+                                        <li>
+                                            <span class="prodName">{{ plat.libProduit }}</span>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            {% else %}
+                                <h5 class="fw-bold">{{ menu.libProduit }} {{ menu.prixProduit|number_format(2, ',', ' ') }} €</h5>
+                                <ul class="list-unstyled">
+                                    {% for plat in menu.idPlat %}
+                                        <li>
+                                            <span class="prodName">{{ plat.libProduit }}</span>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                </div>
+
+            </div>
         </div>
     {% endif %}
 
