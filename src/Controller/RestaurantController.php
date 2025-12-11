@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Entity\Horaire;
 use App\Entity\Restaurant;
 use App\Form\RestaurantType;
-use App\Repository\ProprietaireRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -13,6 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Requirement\Requirement;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 final class RestaurantController extends AbstractController
 {
@@ -31,7 +31,7 @@ final class RestaurantController extends AbstractController
         $nomJourActuel = $joursSemaine[date('l')];
 
         $horaireDuJour = null;
-        $texteHoraire = "Non défini";
+        $texteHoraire = 'Non défini';
 
         foreach ($restaurant->getHoraires() as $horaire) {
             if ($horaire->getJour() === $nomJourActuel) {
@@ -42,17 +42,17 @@ final class RestaurantController extends AbstractController
 
         if ($horaireDuJour) {
             if ($horaireDuJour->isFerme()) {
-                $texteHoraire = "Fermé";
+                $texteHoraire = 'Fermé';
             } else {
                 $plages = [];
                 if ($horaireDuJour->getOuvertureMidi() && $horaireDuJour->getFermetureMidi()) {
-                    $plages[] = $horaireDuJour->getOuvertureMidi()->format('H:i') . ' - ' . $horaireDuJour->getFermetureMidi()->format('H:i');
+                    $plages[] = $horaireDuJour->getOuvertureMidi()->format('H:i').' - '.$horaireDuJour->getFermetureMidi()->format('H:i');
                 }
                 if ($horaireDuJour->getOuvertureSoir() && $horaireDuJour->getFermetureSoir()) {
-                    $plages[] = $horaireDuJour->getOuvertureSoir()->format('H:i') . ' - ' . $horaireDuJour->getFermetureSoir()->format('H:i');
+                    $plages[] = $horaireDuJour->getOuvertureSoir()->format('H:i').' - '.$horaireDuJour->getFermetureSoir()->format('H:i');
                 }
                 if (empty($plages)) {
-                    $texteHoraire = "Ouvert (Horaires non spécifiés)";
+                    $texteHoraire = 'Ouvert (Horaires non spécifiés)';
                 } else {
                     $texteHoraire = implode(' | ', $plages);
                 }
@@ -62,13 +62,18 @@ final class RestaurantController extends AbstractController
         return $this->render('restaurant/index.html.twig', [
             'restaurant' => $restaurant,
             'nom_jour_actuel' => $nomJourActuel,
-            'texte_horaire_actuel' => $texteHoraire
+            'texte_horaire_actuel' => $texteHoraire,
         ]);
     }
 
     #[Route('/restaurant/{id}/update', name: 'app_restaurant_update', requirements: ['id' => Requirement::DIGITS])]
+    #[IsGranted('ROLE_PROPRIETAIRE')]
     public function update(Request $request, Restaurant $restaurant, EntityManagerInterface $entityManager): Response
     {
+        if ($restaurant->getProprietaire() !== $this->getUser()) {
+            throw $this->createAccessDeniedException('Accès interdit');
+        }
+
         $form = $this->createForm(RestaurantType::class, $restaurant);
 
         $form->handleRequest($request);
@@ -85,8 +90,9 @@ final class RestaurantController extends AbstractController
         ]);
     }
 
-    #[Route('/proprietaire/{idProprio}/restaurant/create', name: 'app_restaurant_create', requirements: ['idProprio' => Requirement::DIGITS])]
-    public function create(Request $request, EntityManagerInterface $entityManager, ProprietaireRepository $proprietaireRepo, int $idProprio): Response
+    #[Route('/proprietaire/restaurant/create', name: 'app_restaurant_create')]
+    #[IsGranted('ROLE_PROPRIETAIRE')]
+    public function create(Request $request, EntityManagerInterface $entityManager): Response
     {
         $restaurant = new Restaurant();
         $form = $this->createForm(RestaurantType::class, $restaurant);
@@ -94,24 +100,23 @@ final class RestaurantController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $proprietaire = $proprietaireRepo->find($idProprio);
+            $proprietaire = $this->getUser();
+
             $restaurant->setProprietaire($proprietaire);
 
             $jours = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'];
-
             foreach ($jours as $jour) {
                 $horaire = new Horaire();
                 $horaire->setJour($jour);
                 $horaire->setFerme(true);
                 $horaire->setRestaurant($restaurant);
-
                 $entityManager->persist($horaire);
             }
 
             $entityManager->persist($restaurant);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_proprietaire_show', ['id' => $restaurant->getid()]);
+            return $this->redirectToRoute('app_proprietaire_show', ['id' => $restaurant->getId()]);
         }
 
         return $this->render('restaurant/create.html.twig', [
@@ -120,8 +125,13 @@ final class RestaurantController extends AbstractController
     }
 
     #[Route('/restaurant/{id}/delete', name: 'app_restaurant_delete')]
+    #[IsGranted('ROLE_PROPRIETAIRE')]
     public function delete(Request $request, Restaurant $restaurant, EntityManagerInterface $entityManager): Response
     {
+        if ($restaurant->getProprietaire() !== $this->getUser()) {
+            throw $this->createAccessDeniedException('Accès interdit');
+        }
+
         $form = $this->createFormBuilder()
             ->add('delete', SubmitType::class)
             ->add('cancel', SubmitType::class)
