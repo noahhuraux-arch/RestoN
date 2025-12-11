@@ -8,7 +8,10 @@
         <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-3">
             <h1 class="h2">Gestion de mon restaurant</h1>
             <div>
-                <a href="{{ path('app_restaurant_update', {id: restaurant.id}) }}" class="btn btn-primary btn-sm">
+                <a href="{{ path('app_produit_proprietaire', {idRestau: restaurant.id}) }}" class="btn btn-success btn-sm me-2">
+                    Gérer la carte
+                </a>
+                <a href="{{ path('app_restaurant_update', {id: restaurant.id}) }}" class="btn btn-primary btn-sm me-1">
                     Modifier
                 </a>
                 <a href="{{ path('app_restaurant_delete', {id: restaurant.id}) }}" class="btn btn-danger btn-sm">
