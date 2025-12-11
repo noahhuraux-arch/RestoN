@@ -6,7 +6,7 @@
 {% block body %}
 
     <div class="container py-5">
-        <h1 class="mb-4">Créer un menu pour {{ restaurant.libRestau }}</h1>
+        <h1 class="mb-4">Créer un menu</h1>
 
         <div class="card shadow-sm">
             <div class="card-body">
@@ -24,11 +24,20 @@
 
                 {{ form_row(form.visible) }}
 
-                <h2 class="h5 mt-4 mb-3">Composition du Menu</h2>
-                <div class="row">
-                    <div class="col-md-6">
-                        {{ form_row(form.idPlat) }}
-                    </div>
+                <h6 class="fst-italic">Choisissez vos plats à mettre dans votre menu</h6>
+
+                <div class="row g-2">
+                    {% for plat in form.idPlat%}
+                        <div class="col-lg-3">
+                            <div class="card shadow-sm h-100">
+                                <div class="card-body p-2">
+                                    <div class="form-check">
+                                        {{ form_widget(plat)}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
                 </div>
 
                 <div class="mt-4 d-grid gap-2 d-md-flex justify-content-between">
