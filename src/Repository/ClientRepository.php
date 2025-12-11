@@ -40,4 +40,20 @@ class ClientRepository extends ServiceEntityRepository
     //            ->getOneOrNullResult()
     //        ;
     //    }
+
+    public function findExistingByClient(string $nom, string $prenom, string $email, string $telephone)
+    {
+        $qb = $this->createQueryBuilder('c')
+            ->where('c.nom = :nom')
+            ->andWhere('c.prenom = :prenom')
+            ->andWhere('c.email = :email')
+            ->andWhere('c.telephone = :telephone')
+            ->setParameter('nom', $nom)
+            ->setParameter('prenom', $prenom)
+            ->setParameter('email', $email)
+            ->setParameter('telephone', $telephone);
+        $query = $qb->getQuery();
+
+        return $query->getOneOrNullResult();
+    }
 }
