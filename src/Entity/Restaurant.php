@@ -78,7 +78,6 @@ class Restaurant
         $this->reservations = $reservations;
     }
 
-
     /**
      * @var Collection<int, Boisson>
      */
