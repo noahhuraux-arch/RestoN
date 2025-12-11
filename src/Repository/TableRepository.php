@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Restaurant;
 use App\Entity\Table;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -50,13 +51,15 @@ class TableRepository extends ServiceEntityRepository
      *
      * @return Table|null Un objet Table si une place est trouvée, sinon null
      */
-    public function findAvailableTables(\DateTime $date, \DateTime $heure, int $nbPersType): ?Table
+    public function findAvailableTables(Restaurant $restaurant, \DateTime $date, \DateTime $heure, int $nbPersType): ?Table
     {
         $qb = $this->createQueryBuilder('t')
             ->leftJoin('t.reservations', 'r', 'WITH', 'r.date = :date AND r.heure = :heure')
             ->where('t.nbPlace >= :nbPers')
             ->andWhere('t.disponible = true')
+            ->andWhere('t.restaurant = :restaurant')
             ->andWhere('r.id IS NULL')
+            ->setParameter('restaurant', $restaurant)
             ->setParameter('date', $date)
             ->setParameter('heure', $heure)
             ->setParameter('nbPers', $nbPersType);
