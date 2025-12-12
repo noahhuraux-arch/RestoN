@@ -114,28 +114,30 @@
                     <strong>{{ produit.idRestau.libRestau ?? 'Non renseigné' }}</strong>
                 </p>
 
-                <div class="d-flex justify-content-between mt-4">
+                <div class="mt-4 d-flex justify-content-between align-items-center">
                     <a href="{{ path('app_produit_proprietaire', {idRestau: produit.idRestau.id, idBoisson: produit.id}) }}" class="btn btn-light border rounded-3 px-4 fs-6">
                         ← Retour à la carte
                     </a>
 
-                    {% if produit.alcoolise is defined %}
-                        <a href="{{ path('app_produit_boisson_update', {idRestau: produit.idRestau.id, idBoisson: produit.id}) }}" class="btn btn-outline-primary rounded-3 px-4 fs-6 fw-bold">
-                            Modifier
-                        </a>
-                    {% elseif produit.typePlat is defined %}
-                        <a href="{{ path('app_produit_plat_update', {idRestau: produit.idRestau.id, idPlat: produit.id}) }}" class="btn btn-outline-primary rounded-3 px-4 fs-6 fw-bold">
-                            Modifier
-                        </a>
-                    {% elseif plats %}
-                        <a href="{{ path('app_produit_menu_update', {idRestau: produit.idRestau.id, idMenu: produit.id}) }}" class="btn btn-outline-primary rounded-3 px-4 fs-6 fw-bold">
-                            Modifier
-                        </a>
-                    {% endif %}
+                    <div class="d-flex gap-2">
+                        {% if produit.alcoolise is defined %}
+                            <a href="{{ path('app_produit_boisson_update', {idRestau: produit.idRestau.id, idBoisson: produit.id}) }}" class="btn btn-outline-primary rounded-3 px-4 fs-6 fw-bold">
+                                Modifier
+                            </a>
+                        {% elseif produit.typePlat is defined %}
+                            <a href="{{ path('app_produit_plat_update', {idRestau: produit.idRestau.id, idPlat: produit.id}) }}" class="btn btn-outline-primary rounded-3 px-4 fs-6 fw-bold">
+                                Modifier
+                            </a>
+                        {% elseif plats %}
+                            <a href="{{ path('app_produit_menu_update', {idRestau: produit.idRestau.id, idMenu: produit.id}) }}" class="btn btn-outline-primary rounded-3 px-4 fs-6 fw-bold">
+                                Modifier
+                            </a>
+                        {% endif %}
 
-                    <a href="{{ path('app_produit_delete', {id: produit.id}) }}" class="btn btn-danger border rounded-3 px-4 fs-6">
-                        Supprimer
-                    </a>
+                        <a href="{{ path('app_produit_delete', {id: produit.id}) }}" class="btn btn-danger border rounded-3 px-4 fs-6">
+                            Supprimer
+                        </a>
+                    </div>
 
                 </div>
 
