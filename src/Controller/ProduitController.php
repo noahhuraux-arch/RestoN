@@ -92,15 +92,34 @@ final class ProduitController extends AbstractController
     #[Route('/produit/{id}/', name: 'app_produit_details', requirements: ['id' => Requirement::DIGITS])]
     public function Produit(Produit $produit): Response
     {
-        $plat = null;
+        $plats = [];
         if ($produit instanceof Menu) {
-            $plat = $produit->getIdPlat();
+            $plats = $produit->getIdPlat();
+            $entrees = [];
+            $plat = [];
+            $dessert = [];
+            foreach ($plats as $pl) {
+                $typeId = $pl->getTypePlat()->getId();
+                if (1 === $typeId) {
+                    $entrees[] = $pl;
+                } elseif (2 === $typeId) {
+                    $plat[] = $pl;
+                } else {
+                    $dessert[] = $pl;
+                }
+            }
         }
 
-        return $this->render('produit/produit.html.twig', [
-            'produit' => $produit,
-            'plats' => $plat,
-        ]);
+        if ([] === $plats) {
+            return $this->render('produit/produit.html.twig', ['produit' => $produit, 'plats' => $plats]);
+        } else {
+            return $this->render('produit/produit.html.twig', [
+                'produit' => $produit,
+                'entrees' => $entrees,
+                'plats' => $plat,
+                'desserts' => $dessert,
+            ]);
+        }
     }
 
     #[Route('/{idRestau}/boisson/create', name: 'app_produit_boisson_create', requirements: ['idRestau' => Requirement::DIGITS])]
