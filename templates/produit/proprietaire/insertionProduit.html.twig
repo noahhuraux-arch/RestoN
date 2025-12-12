@@ -1,0 +1,33 @@
+{% extends "base.html.twig" %}
+{% block title %}Gestion des Produits | Votre Restaurant{% endblock %}
+
+{% block body %}
+
+    <div class="container py-5">
+
+            <h1 class="gestionProduitName text-center">Gestion des Produits</h1>
+            <h5 class="text-center text-muted pb-3">Que voulez-vous ajouter ?</h5>
+
+        <div class="row justify-content-center">
+
+            <div class="lstProduct col-6  d-grid gap-4 p-4">
+
+                <a href="{{ path('app_produit_plat_create', {idRestau: restaurant.id}) }}" class="btn btn-outline-secondary rounded-3 fs-5 fw-bold btn-lg">
+                   Ajouter un Plat
+                </a>
+
+                <a href="{{ path('app_produit_boisson_create', {idRestau: restaurant.id}) }}" class="btn btn-outline-secondary rounded-3 fs-5 fw-bold btn-lg">
+                    Ajouter une Boisson
+                </a>
+
+                <a href="{{ path('app_produit_menu_create', {idRestau: restaurant.id}) }}" class="btn btn-outline-secondary rounded-3 fs-5 fw-bold btn-lg">
+                    Ajouter un Menu
+                </a>
+            </div>
+
+        </div>
+
+    </div>
+
+
+{% endblock %}
