@@ -43,7 +43,11 @@
                         <ul class="list-unstyled">
                             <h6>Entrées :</h6>
                             {% for entree in entrees %}
-                                <li>{{ entree.libProduit }} </li>
+                                <div>
+                                    <a href="{{ path('app_produit_details', {id: entree.id}) }}" class="text-decoration-none text-body">
+                                        {{ entree.libProduit }}
+                                    </a>
+                                </div>
                             {% endfor %}
                         </ul>
                     {% endif %}
@@ -52,7 +56,11 @@
                         <ul class="list-unstyled">
                             <h6>Plats :</h6>
                             {% for pl in plats %}
-                                <li>{{ pl.libProduit }} </li>
+                                <div>
+                                    <a href="{{ path('app_produit_details', {id: pl.id}) }}" class="text-decoration-none text-body">
+                                        {{ pl.libProduit }}
+                                    </a>
+                                </div>
                             {% endfor %}
                         </ul>
                     {% endif %}
@@ -61,7 +69,11 @@
                         <ul class="list-unstyled">
                             <h6>Desserts :</h6>
                             {% for dessert in desserts %}
-                                <li>{{ dessert.libProduit }} </li>
+                                <div>
+                                    <a href="{{ path('app_produit_details', {id: dessert.id}) }}" class="text-decoration-none text-body">
+                                        {{ dessert.libProduit }}
+                                    </a>
+                                </div>
                             {% endfor %}
                         </ul>
                     {% endif %}
