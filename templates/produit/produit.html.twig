@@ -36,6 +36,37 @@
                     </p>
                 {% endif %}
 
+                {% if plats %}
+                    <hr>
+                    <h5>Composition du menu :</h5>
+                    {% if entrees %}
+                        <ul class="list-unstyled">
+                            <h6>Entrées :</h6>
+                            {% for entree in entrees %}
+                                <li>{{ entree.libProduit }} </li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+
+                    {% if plats %}
+                        <ul class="list-unstyled">
+                            <h6>Plats :</h6>
+                            {% for pl in plats %}
+                                <li>{{ pl.libProduit }} </li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+
+                    {% if desserts %}
+                        <ul class="list-unstyled">
+                            <h6>Desserts :</h6>
+                            {% for dessert in desserts %}
+                                <li>{{ dessert.libProduit }} </li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+
+                {% endif %}
                 <hr>
 
                 <div class="d-flex justify-content-start align-items-center mt-4">
