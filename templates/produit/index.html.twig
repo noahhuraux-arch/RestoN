@@ -85,9 +85,27 @@
                             <h5 class="menuName">{{ menu.libProduit }} {{ menu.prixProduit|number_format(2, ',', ' ') }} €</h5>
                             <ul class="list-unstyled">
                                 {% for plat in menu.idPlat %}
-                                    <li>
-                                        <span class="prodName">{{ plat.libProduit }}</span>
-                                    </li>
+                                    {% if plat.typePlat.id == 1 %}
+                                        <li>
+                                            <span class="prodName">{{ plat.libProduit }}</span>
+                                        </li>
+                                    {% endif %}
+                                {% endfor %}
+                                <br>
+                                {% for plat in menu.idPlat %}
+                                    {% if plat.typePlat.id == 2 %}
+                                        <li>
+                                            <span class="prodName">{{ plat.libProduit }}</span>
+                                        </li>
+                                    {% endif %}
+                                {% endfor %}
+                                <br>
+                                {% for plat in menu.idPlat %}
+                                    {% if plat.typePlat.id == 3 %}
+                                        <li>
+                                            <span class="prodName">{{ plat.libProduit }}</span>
+                                        </li>
+                                    {% endif %}
                                 {% endfor %}
                             </ul>
                         </div>
