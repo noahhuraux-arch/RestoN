@@ -43,3 +43,27 @@
 .info-card i, .info-card h4 {
     color: #ff5722;
 }
+
+.prodName , .prodPrice{
+    font-family: "Playfair", serif;
+    font-size: 1.4rem;
+}
+
+.listCarte h2{
+    color: #ffc107;
+    font-family: "Playfair", serif;
+    font-size: 2.6rem;
+}
+
+.listCarte h1{
+    color: #ffc107;
+    font-family: "Lora", serif;
+    font-size: 3.5rem;
+    font-weight: lighter;
+}
+
+.menuName{
+    color: #ffc107;
+    font-family: "Playfair", serif;
+    font-size: 2rem;
+}
