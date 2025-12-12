@@ -14,23 +14,18 @@
 
                 <div class="row align-items-center">
 
-                    <div class="col-4 text-start">
-                        <a href="{{ path('app_produit_plat_create', {idRestau: restaurant.id}) }}" class="btn btn-outline-dark rounded-3 px-4 fs-6 fw-bold">
-                            Ajouter un plat
-                        </a>
+                    <div class="col-2"></div>
+
+                    <div class="col-8 text-center">
+                        <h1 class="font-weight-bold fst-italic mb-0">Notre Carte</h1>
                     </div>
 
-                    <div class="col-4">
-                        <h1 class="text-center font-weight-bold fst-italic mb-0">Notre Carte</h1>
-                    </div>
-
-                    <div class="col-4 text-end">
-                        <a href="{{ path('app_produit_boisson_create', {idRestau: restaurant.id}) }}" class="btn btn-outline-dark rounded-3 px-4 fs-6 fw-bold">
-                            Ajouter une boisson
+                    <div class="col-2 text-end">
+                        <a href="{{ path('app_produit_insert', {idRestau: restaurant.id}) }}" class="btn btn-outline-dark rounded-3 px-4 fs-6 fw-bold">
+                            Ajouter un produit
                         </a>
                     </div>
                 </div>
-
             </div>
 
             {% if entrees %}
