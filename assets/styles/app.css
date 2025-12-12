@@ -46,7 +46,7 @@
 
 .prodName , .prodPrice{
     font-family: "Playfair", serif;
-    font-size: 1.4rem;
+    font-size: 1.3rem;
 }
 
 .listCarte h2{
@@ -65,5 +65,18 @@
 .menuName{
     color: #ffc107;
     font-family: "Playfair", serif;
-    font-size: 2rem;
+    font-size: 2.3rem;
+}
+
+.gestionProduitName{
+    color: #ffc107;
+    font-family: "Lora", serif;
+    font-size: 3rem;
+}
+
+.lstProduct{
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 16px;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.05);
 }

@@ -92,9 +92,34 @@ final class ProduitController extends AbstractController
     #[Route('/produit/{id}/', name: 'app_produit_details', requirements: ['id' => Requirement::DIGITS])]
     public function Produit(Produit $produit): Response
     {
-        return $this->render('produit/produit.html.twig', [
-            'produit' => $produit,
-        ]);
+        $plats = [];
+        if ($produit instanceof Menu) {
+            $plats = $produit->getIdPlat();
+            $entrees = [];
+            $plat = [];
+            $dessert = [];
+            foreach ($plats as $pl) {
+                $typeId = $pl->getTypePlat()->getId();
+                if (1 === $typeId) {
+                    $entrees[] = $pl;
+                } elseif (2 === $typeId) {
+                    $plat[] = $pl;
+                } else {
+                    $dessert[] = $pl;
+                }
+            }
+        }
+
+        if ([] === $plats) {
+            return $this->render('produit/produit.html.twig', ['produit' => $produit, 'plats' => $plats]);
+        } else {
+            return $this->render('produit/produit.html.twig', [
+                'produit' => $produit,
+                'entrees' => $entrees,
+                'plats' => $plat,
+                'desserts' => $dessert,
+            ]);
+        }
     }
 
     #[Route('/{idRestau}/boisson/create', name: 'app_produit_boisson_create', requirements: ['idRestau' => Requirement::DIGITS])]
@@ -210,6 +235,27 @@ final class ProduitController extends AbstractController
         ]);
     }
 
+    #[Route('{idRestau}/menu/{idMenu}/update', name: 'app_produit_menu_update', requirements: ['idRestau' => Requirement::DIGITS, 'idMenu' => Requirement::DIGITS])]
+    public function updateMenu(Request $request, Menu $idMenu, int $idRestau, EntityManagerInterface $entityManager): Response
+    {
+        $restaurant = $entityManager->getRepository(Restaurant::class)->find($idRestau);
+        $form = $this->createForm(MenuType::class, $idMenu, ['restaurant' => $restaurant]);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_produit_details', ['id' => $idMenu->getId()]);
+        }
+
+        return $this->render('produit/menu/update.html.twig', [
+            'menu' => $idMenu,
+            'form' => $form,
+            'restaurant' => $restaurant,
+        ]);
+    }
+
     #[Route('/produit/{id}/delete', name: 'app_produit_delete')]
     public function delete(Request $request, Produit $produit, EntityManagerInterface $entityManager): Response
     {
@@ -240,5 +286,11 @@ final class ProduitController extends AbstractController
             'idRestau' => $idRestau,
             'form' => $form->createView(),
         ]);
+    }
+
+    #[Route('{idRestau}/insertion', name: 'app_produit_insert')]
+    public function insertProduct(Restaurant $idRestau): Response
+    {
+        return $this->render('produit/proprietaire/insertionProduit.html.twig', ['restaurant' => $idRestau]);
     }
 }

@@ -72,30 +72,48 @@
             {% endfor %}
         </ul>
 
-        <div class="listMenus mt-5">
+            <div class="listMenus mt-5">
 
-            {% if menus %}
-                <h2 class="text-center mb-5 fst-italic">Nos Menus</h2>
-            {% endif %}
+                {% if menus %}
+                    <h2 class="text-center mb-5 fst-italic">Nos Menus</h2>
+                {% endif %}
 
-            <div class="row menus text-center list-unstyled">
-                {% for menu in menus %}
-                    {% if menu.visible %}
-                        <div class="col-md-6 mb-4">
-                            <h5 class="menuName">{{ menu.libProduit }} {{ menu.prixProduit|number_format(2, ',', ' ') }} €</h5>
-                            <ul class="list-unstyled">
-                                {% for plat in menu.idPlat %}
-                                    <li>
-                                        <span class="prodName">{{ plat.libProduit }}</span>
-                                    </li>
-                                {% endfor %}
-                            </ul>
-                        </div>
-                    {% endif %}
-                {% endfor %}
+                <div class="row menus text-center list-unstyled">
+                    {% for menu in menus %}
+                        {% if menu.visible %}
+                            <div class="col-md-6 mb-4">
+                                <h5 class="menuName">{{ menu.libProduit }} - {{ menu.prixProduit|number_format(2, ',', ' ') }} €</h5>
+                                <ul class="list-unstyled">
+                                    {% for plat in menu.idPlat %}
+                                        {% if plat.typePlat.id == 1 %}
+                                            <li>
+                                                <span class="prodName">{{ plat.libProduit }}</span>
+                                            </li>
+                                        {% endif %}
+                                    {% endfor %}
+                                    <br>
+                                    {% for plat in menu.idPlat %}
+                                        {% if plat.typePlat.id == 2 %}
+                                            <li>
+                                                <span class="prodName">{{ plat.libProduit }}</span>
+                                            </li>
+                                        {% endif %}
+                                    {% endfor %}
+                                    <br>
+                                    {% for plat in menu.idPlat %}
+                                        {% if plat.typePlat.id == 3 %}
+                                            <li>
+                                                <span class="prodName">{{ plat.libProduit }}</span>
+                                            </li>
+                                        {% endif %}
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+
             </div>
-
-        </div>
     </div>
 
     {% endif %}
