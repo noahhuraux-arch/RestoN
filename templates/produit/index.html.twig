@@ -33,7 +33,7 @@
 
         <ul class="plat text-center list-unstyled">
             {% for plat in plats %}
-                <li class="">
+                <li class="plat">
                     {% if plat.isVisible %}
                         <span class="prodName">{{ plat.libProduit }} - </span>
                         <span class="prodPrice">{{ plat.prixProduit|number_format(2, ',', ' ') }} €</span>
@@ -46,7 +46,7 @@
             <h2 class="text-center mb-2 fst-italic">Desserts</h2>
         {% endif %}
 
-        <ul class="entrée text-center list-unstyled">
+        <ul class="dessert text-center list-unstyled">
             {% for dessert in desserts %}
                 <li class="">
                     {% if dessert.isVisible %}
@@ -82,7 +82,7 @@
                 {% for menu in menus %}
                     {% if menu.visible %}
                         <div class="col-md-6 mb-4">
-                            <h5 class="fw-bold">{{ menu.libProduit }} {{ menu.prixProduit|number_format(2, ',', ' ') }} €</h5>
+                            <h5 class="menuName">{{ menu.libProduit }} {{ menu.prixProduit|number_format(2, ',', ' ') }} €</h5>
                             <ul class="list-unstyled">
                                 {% for plat in menu.idPlat %}
                                     <li>
