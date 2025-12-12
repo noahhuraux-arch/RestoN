@@ -26,12 +26,13 @@ class MenuType extends AbstractType
             ->add('descriptionProduit', TextType::class, ['label' => 'Description du menu', 'required' => false])
             ->add('idPlat', EntityType::class, [
                 'class' => Plat::class,
-                'choice_label' => function (Plat $plat) {return $plat->getLibProduit().' ('.$plat->getTypePlat()->getLib().')'; },
+                'choice_label' => function (Plat $plat) {return $plat->getLibProduit(); },
                 'label' => 'Plats inclus',
                 'multiple' => true,
                 'expanded' => true,
-                'query_builder' => $restaurant ? function (EntityRepository $er) use ($restaurant) {
-                    return $er->createQueryBuilder('p')
+                'group_by' => function (Plat $plat) {return $plat->getTypePlat()->getLib(); },
+                'query_builder' => $restaurant ? function (EntityRepository $entityRepository) use ($restaurant) {
+                    return $entityRepository->createQueryBuilder('p')
                         ->where('p.idRestau = :restaurant')
                         ->setParameter('restaurant', $restaurant)
                         ->orderBy('p.typePlat', 'ASC');
