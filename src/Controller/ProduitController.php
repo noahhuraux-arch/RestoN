@@ -92,8 +92,14 @@ final class ProduitController extends AbstractController
     #[Route('/produit/{id}/', name: 'app_produit_details', requirements: ['id' => Requirement::DIGITS])]
     public function Produit(Produit $produit): Response
     {
+        $plat = null;
+        if ($produit instanceof Menu) {
+            $plat = $produit->getIdPlat();
+        }
+
         return $this->render('produit/produit.html.twig', [
             'produit' => $produit,
+            'plats' => $plat,
         ]);
     }
 
