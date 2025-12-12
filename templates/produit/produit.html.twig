@@ -127,6 +127,10 @@
                         <a href="{{ path('app_produit_plat_update', {idRestau: produit.idRestau.id, idPlat: produit.id}) }}" class="btn btn-outline-primary rounded-3 px-4 fs-6 fw-bold">
                             Modifier
                         </a>
+                    {% elseif plats %}
+                        <a href="{{ path('app_produit_menu_update', {idRestau: produit.idRestau.id, idMenu: produit.id}) }}" class="btn btn-outline-primary rounded-3 px-4 fs-6 fw-bold">
+                            Modifier
+                        </a>
                     {% endif %}
 
                     <a href="{{ path('app_produit_delete', {id: produit.id}) }}" class="btn btn-danger border rounded-3 px-4 fs-6">
