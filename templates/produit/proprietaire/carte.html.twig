@@ -135,33 +135,48 @@
 
                 <div class="row menus text-center list-unstyled">
                     {% for menu in menus %}
-                        <div class="col-md-6 mb-4">
-                            {% if not menu.visible %}
-                                <a href="{{ path('app_produit_details', {id: menu.id}) }}" class="text-decoration-none text-body">
-                                    <h5 class="menuName fw-bold">{{ menu.libProduit }} {{ menu.prixProduit|number_format(2, ',', ' ') }} € <span class="badge bg-danger p-1">Hors carte</span></h5>
-                                </a>
-                                    <ul class="list-unstyled">
+                            <div class="col-md-6 mb-4">
+                                {% if not menu.visible %}
+                                    <a href="{{ path('app_produit_details', {id: menu.id}) }}" class="text-decoration-none text-body">
+                                        <h5 class="menuName">{{ menu.libProduit }} {{ menu.prixProduit|number_format(2, ',', ' ') }} € <span class="badge bg-danger p-1">Hors carte</span></h5>
+                                    </a>
+                                {% endif %}
+
+                                {% if menu.visible %}
+                                    <a href="{{ path('app_produit_details', {id: menu.id}) }}" class="text-decoration-none text-body">
+                                        <h5 class="menuName">{{ menu.libProduit }} {{ menu.prixProduit|number_format(2, ',', ' ') }} €</h5>
+                                    </a>
+                                {% endif %}
+                                <ul class="list-unstyled">
                                     {% for plat in menu.idPlat %}
-                                        <li>
-                                            <span class="prodName">{{ plat.libProduit }}</span>
-                                        </li>
+                                        {% if plat.typePlat.id == 1 %}
+                                            <li>
+                                                <span class="prodName">{{ plat.libProduit }}</span>
+                                            </li>
+                                        {% endif %}
+                                    {% endfor %}
+                                    <br>
+                                    {% for plat in menu.idPlat %}
+                                        {% if plat.typePlat.id == 2 %}
+                                            <li>
+                                                <span class="prodName">{{ plat.libProduit }}</span>
+                                            </li>
+                                        {% endif %}
+                                    {% endfor %}
+                                    <br>
+                                    {% for plat in menu.idPlat %}
+                                        {% if plat.typePlat.id == 3 %}
+                                            <li>
+                                                <span class="prodName">{{ plat.libProduit }}</span>
+                                            </li>
+                                        {% endif %}
                                     {% endfor %}
                                 </ul>
-                            {% else %}
-                                <a href="{{ path('app_produit_details', {id: menu.id}) }}" class="text-decoration-none text-body">
-                                    <h5 class="menuName fw-bold">{{ menu.libProduit }} {{ menu.prixProduit|number_format(2, ',', ' ') }} €</h5>
-                                </a>
-                                    <ul class="list-unstyled">
-                                    {% for plat in menu.idPlat %}
-                                        <li>
-                                            <span class="prodName">{{ plat.libProduit }}</span>
-                                        </li>
-                                    {% endfor %}
-                                </ul>
-                            {% endif %}
-                        </div>
+                            </div>
                     {% endfor %}
                 </div>
+
+            </div>
 
             </div>
         </div>
