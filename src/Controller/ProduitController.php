@@ -235,6 +235,27 @@ final class ProduitController extends AbstractController
         ]);
     }
 
+    #[Route('{idRestau}/menu/{idMenu}/update', name: 'app_produit_menu_update', requirements: ['idRestau' => Requirement::DIGITS, 'idMenu' => Requirement::DIGITS])]
+    public function updateMenu(Request $request, Menu $idMenu, int $idRestau, EntityManagerInterface $entityManager): Response
+    {
+        $restaurant = $entityManager->getRepository(Restaurant::class)->find($idRestau);
+        $form = $this->createForm(MenuType::class, $idMenu, ['restaurant' => $restaurant]);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_produit_details', ['id' => $idMenu->getId()]);
+        }
+
+        return $this->render('produit/menu/update.html.twig', [
+            'menu' => $idMenu,
+            'form' => $form,
+            'restaurant' => $restaurant,
+        ]);
+    }
+
     #[Route('/produit/{id}/delete', name: 'app_produit_delete')]
     public function delete(Request $request, Produit $produit, EntityManagerInterface $entityManager): Response
     {
