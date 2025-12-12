@@ -62,6 +62,22 @@ class Restaurant
     #[ORM\OneToMany(targetEntity: Horaire::class, mappedBy: 'restaurant')]
     private Collection $horaires;
 
+    #[ORM\OneToMany(targetEntity: Table::class, mappedBy: 'restaurant')]
+    private Collection $table;
+
+    #[ORM\OneToMany(targetEntity: Reservation::class, mappedBy: 'restaurant')]
+    private Collection $reservations;
+
+    public function getReservations(): Collection
+    {
+        return $this->reservations;
+    }
+
+    public function setReservations(Collection $reservations): void
+    {
+        $this->reservations = $reservations;
+    }
+
     /**
      * @var Collection<int, Boisson>
      */
