@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\Proprietaire;
 use App\Entity\Restaurant;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
