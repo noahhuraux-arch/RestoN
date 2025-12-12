@@ -30,7 +30,7 @@ final class ProduitController extends AbstractController
         $restaurant = $restauRepo->find($idRestau);
 
         $boisson = $boissonRep->findBy(['idRestau' => $idRestau], ['alcoolise' => 'ASC', 'prixProduit' => 'ASC', 'libProduit' => 'ASC']);
-        $produit = $platRep->findBy(['idRestau' => $idRestau], ['prixProduit' => 'ASC','libProduit' => 'ASC']);
+        $produit = $platRep->findBy(['idRestau' => $idRestau], ['prixProduit' => 'ASC', 'libProduit' => 'ASC']);
         $menus = $menuRepo->findBy(['idRestau' => $idRestau], ['prixProduit' => 'ASC', 'libProduit' => 'ASC']);
 
         $entrees = [];
@@ -53,7 +53,7 @@ final class ProduitController extends AbstractController
                 'entrees' => $entrees,
                 'plats' => $plat,
                 'desserts' => $dessert,
-                'menus' => $menus,]);
+                'menus' => $menus, ]);
     }
 
     #[Route('/{idRestau}/carte/proprietaire', name: 'app_produit_proprietaire', requirements: ['idRestau' => Requirement::DIGITS])]
