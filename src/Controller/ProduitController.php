@@ -241,4 +241,10 @@ final class ProduitController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+
+    #[Route('{idRestau}/insert', name: 'app_produit_insert')]
+    public function insertProduct(Restaurant $idRestau): Response
+    {
+        return $this->render('produit/proprietaire/insert.html.twig', ['restaurant' => $idRestau]);
+    }
 }
