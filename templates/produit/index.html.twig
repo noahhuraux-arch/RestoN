@@ -82,7 +82,7 @@
                     {% for menu in menus %}
                         {% if menu.visible %}
                             <div class="col-md-6 mb-4">
-                                <h5 class="menuName">{{ menu.libProduit }} {{ menu.prixProduit|number_format(2, ',', ' ') }} €</h5>
+                                <h5 class="menuName">{{ menu.libProduit }} - {{ menu.prixProduit|number_format(2, ',', ' ') }} €</h5>
                                 <ul class="list-unstyled">
                                     {% for plat in menu.idPlat %}
                                         {% if plat.typePlat.id == 1 %}

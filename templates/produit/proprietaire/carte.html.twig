@@ -138,13 +138,13 @@
                             <div class="col-md-6 mb-4">
                                 {% if not menu.visible %}
                                     <a href="{{ path('app_produit_details', {id: menu.id}) }}" class="text-decoration-none text-body">
-                                        <h5 class="menuName">{{ menu.libProduit }} {{ menu.prixProduit|number_format(2, ',', ' ') }} € <span class="badge bg-danger p-1">Hors carte</span></h5>
+                                        <h5 class="menuName">{{ menu.libProduit }} - {{ menu.prixProduit|number_format(2, ',', ' ') }} € <span class="badge bg-danger p-1">Hors carte</span></h5>
                                     </a>
                                 {% endif %}
 
                                 {% if menu.visible %}
                                     <a href="{{ path('app_produit_details', {id: menu.id}) }}" class="text-decoration-none text-body">
-                                        <h5 class="menuName">{{ menu.libProduit }} {{ menu.prixProduit|number_format(2, ',', ' ') }} €</h5>
+                                        <h5 class="menuName">{{ menu.libProduit }} - {{ menu.prixProduit|number_format(2, ',', ' ') }} €</h5>
                                     </a>
                                 {% endif %}
                                 <ul class="list-unstyled">
