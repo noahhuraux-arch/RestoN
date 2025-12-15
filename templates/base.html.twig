@@ -73,9 +73,11 @@
         <div class="row text-center text-md-start">
 
             <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mt-3">
-                <h5 class="text-uppercase mb-4 fw-bold text-warning">
-                    <img src="{{ asset('images/favicon.png') }}" alt="Logo" width="25" height="25" class="d-inline-block align-text-top me-2" style="filter: invert(1);">
-                    Resto'N
+                <h5 class="text-uppercase mb-4 fw-bold">
+                    <a href="{{ path('app_home') }}" class="text-warning text-decoration-none">
+                        <img src="{{ asset('images/favicon.png') }}" alt="Logo" width="25" height="25" class="d-inline-block align-text-top me-2" style="filter: invert(1);">
+                        Resto'N
+                    </a>
                 </h5>
                 <p><strong>La</strong> solution pour la gestion de restaurants. Simple, rapide et efficace.</p>
             </div>
@@ -90,8 +92,14 @@
             <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mt-3">
                 <h5 class="text-uppercase mb-4 fw-bold text-warning">Contact</h5>
                 <p><i class="fas fa-home me-2"></i> Resto'N, Reims</p>
-                <p><i class="fas fa-envelope me-2"></i> contact@reston.fr</p>
-                <p><i class="fas fa-phone me-2"></i> +33 1 23 45 67 89</p>
+                <p>
+                    <i class="fas fa-envelope me-2"></i>
+                    <a href="mailto:contact@reston.fr" class="text-white text-decoration-none">contact@reston.fr</a>
+                </p>
+                <p>
+                    <i class="fas fa-phone me-2"></i>
+                    <a href="tel:+33123456789" class="text-white text-decoration-none">+33 1 23 45 67 89</a>
+                </p>
             </div>
 
         </div>
