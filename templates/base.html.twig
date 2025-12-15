@@ -11,17 +11,27 @@
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4 sticky-top">
     <div class="container">
+
         {% block navbar_brand %}
-            <a class="navbar-brand" href="{{ path('app_home') }}"><img src="{{ asset('images/favicon.png') }}" alt="Logo" width="50" height="50" class="d-inline-block align-middle me-2" style="filter: invert(1);">
-                Resto'N
-            </a>
+            {% if restaurant is defined and restaurant is not null %}
+                <a class="navbar-brand" href="{{ path('app_restaurant_home', {id: restaurant.id}) }}">
+                    <img src="{{ asset('images/logos/logo' ~ restaurant.id ~ '.png') }}" alt="{{ restaurant.libRestau }}" width="50" height="50" class="d-inline-block align-middle me-2">
+                    {{ restaurant.libRestau }}
+                </a>
+            {% else %}
+                <a class="navbar-brand" href="{{ path('app_home') }}"><img src="{{ asset('images/favicon.png') }}" alt="Logo" width="50" height="50" class="d-inline-block align-middle me-2" style="filter: invert(1);">
+                    Resto'N
+                </a>
+            {% endif %}
         {% endblock %}
+
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
                 {% set current_route = app.request.attributes.get('_route') %}
+                {% set restauId = app.request.get('id') ? app.request.get('id') : app.request.get('idRestau') %}
 
                 {% if current_route == 'app_home' %}
                     <li class="nav-item">
@@ -33,12 +43,13 @@
                     <li class="nav-item">
                         <a class="nav-link" href="#partenaires">Nos Partenaires</a>
                     </li>
-                {% elseif current_route == 'app_restaurant_home' %}
+
+                {% elseif restauId %}
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ path('app_restaurant_home', {id: app.request.get('id')}) }}">Accueil</a>
+                        <a class="nav-link {{ current_route == 'app_restaurant_home' ? 'active' : '' }}" href="{{ path('app_restaurant_home', {id: restauId}) }}">Accueil</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">La Carte</a>
+                        <a class="nav-link {{ current_route == 'app_produit' ? 'active' : '' }}" href="{{ path('app_produit', {idRestau: restauId}) }}">La Carte</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">Réservations</a>
