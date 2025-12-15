@@ -24,6 +24,9 @@ class Table
     #[ORM\OneToMany(targetEntity: Reservation::class, mappedBy: 'table')]
     private Collection $reservations;
 
+    #[ORM\ManyToOne(targetEntity: Restaurant::class, inversedBy: 'restaurant')]
+    private ?Restaurant $restaurant = null;
+
     public function getReservations(): Collection
     {
         return $this->reservations;

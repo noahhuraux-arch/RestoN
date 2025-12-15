@@ -49,6 +49,19 @@ class Reservation
         $this->table = $table;
     }
 
+    #[ORM\ManyToOne(targetEntity: Restaurant::class, inversedBy: 'reservations')]
+    private ?Restaurant $restaurant = null;
+
+    public function getRestaurant(): ?Restaurant
+    {
+        return $this->restaurant;
+    }
+
+    public function setRestaurant(?Restaurant $restaurant): void
+    {
+        $this->restaurant = $restaurant;
+    }
+
     public function getid(): ?int
     {
         return $this->id;

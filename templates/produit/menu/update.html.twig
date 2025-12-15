@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modification du menu {{ menu.libProduit }}{% endblock %}
+
+{% block body %}
+    <div class="container py-5">
+        <h1 class="mb-4">Modification du menu {{ menu.libProduit }}</h1>
+
+        <div class="card shadow-sm">
+            <div class="card-body">
+
+                {{ form_start(form) }}
+
+                {{ form_row(form.libProduit) }}
+                {{ form_row(form.descriptionProduit) }}
+
+                <div class="row">
+                    <div class="col-md-4">
+                        {{ form_row(form.prixProduit) }}
+                    </div>
+                </div>
+
+                {{ form_row(form.visible) }}
+
+                <h6 class="fst-italic">Choisissez vos plats à mettre dans votre menu</h6>
+
+                <div class="row g-2">
+                    {% for label, group in form.idPlat.vars.choices %}
+                        <span>Les {{ label }}s</span>
+                        {% for choice in group.choices %}
+                            <div class="col-lg-3">
+                                <div class="card shadow-sm h-100">
+                                    <div class="card-body p-2">
+                                        <div>
+                                            {{ form_widget(form.idPlat[choice.value]) }}
+                                            {{ form_label(form.idPlat[choice.value]) }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% endfor %}
+                </div>
+
+                <div class="mt-4 d-grid gap-2 d-md-flex justify-content-between">
+                    <a href="{{ path('app_produit_proprietaire', {idRestau: restaurant.id}) }}" class="btn btn-outline-secondary rounded-3 px-4 fs-6">
+                        ← Retour à la carte
+                    </a>
+
+                    <button type="submit" class="btn btn-primary px-4 rounded-3">
+                        Modifier
+                    </button>
+                </div>
+
+                {{ form_end(form) }}
+
+            </div>
+        </div>
+    </div>
+{% endblock %}

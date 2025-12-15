@@ -15,7 +15,7 @@ class ProprietaireFixtures extends Fixture
             'password' => 'test',
             'nom' => 'Dupont',
             'prenom' => 'Albert',
-            'roles' => ['ROLE_ADMIN'],
+            'roles' => ['ROLE_PROPRIETAIRE'],
         ]);
 
         ProprietaireFactory::createMany(5);

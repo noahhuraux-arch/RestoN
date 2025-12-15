@@ -10,27 +10,22 @@
     {% else %}
 
         <div class="listCarte container-xxl">
-            <div class="mb-4 pb-2 border-bottom">
+            <div class="mb-3 pb-3 border-bottom">
 
                 <div class="row align-items-center">
 
-                    <div class="col-4 text-start">
-                        <a href="{{ path('app_produit_plat_create', {idRestau: restaurant.id}) }}" class="btn btn-outline-dark rounded-3 px-4 fs-6 fw-bold">
-                            Ajouter un plat
-                        </a>
+                    <div class="col-2"></div>
+
+                    <div class="col-8 text-center">
+                        <h1 class="font-weight-bold fst-italic mb-0">Notre Carte</h1>
                     </div>
 
-                    <div class="col-4">
-                        <h1 class="text-center font-weight-bold fst-italic mb-0">Notre Carte</h1>
-                    </div>
-
-                    <div class="col-4 text-end">
-                        <a href="{{ path('app_produit_boisson_create', {idRestau: restaurant.id}) }}" class="btn btn-outline-dark rounded-3 px-4 fs-6 fw-bold">
-                            Ajouter une boisson
+                    <div class="col-2 text-end">
+                        <a href="{{ path('app_produit_insert', {idRestau: restaurant.id}) }}" class="btn btn-outline-dark rounded-3 px-4 fs-6 fw-bold">
+                            Ajouter un produit
                         </a>
                     </div>
                 </div>
-
             </div>
 
             {% if entrees %}
@@ -40,7 +35,15 @@
             <ul class="entrée text-center list-unstyled">
                 {% for entree in entrees %}
                     <li class="">
-                        {% if entree.isVisible %}
+                        {% if not entree.visible %}
+                            <a href="{{ path('app_produit_details', {id: entree.id}) }}" class="text-decoration-none text-body">
+                                <span class="prodName text-muted">{{ entree.libProduit }} - </span>
+                                <span class="prodPrice text-muted">{{ entree.prixProduit|number_format(2, ',', ' ') }} €</span>
+                            </a>
+                            <span class="badge bg-danger">
+                                Hors carte
+                            </span>
+                        {% else %}
                             <a href="{{ path('app_produit_details', {id: entree.id}) }}" class="text-decoration-none text-body">
                                 <span class="prodName">{{ entree.libProduit }} - </span>
                                 <span class="prodPrice">{{ entree.prixProduit|number_format(2, ',', ' ') }} €</span>
@@ -57,7 +60,14 @@
             <ul class="plat text-center list-unstyled">
                 {% for plat in plats %}
                     <li class="">
-                        {% if plat.isVisible %}
+                        {% if not plat.visible %}
+                            <a href="{{ path('app_produit_details', {id: plat.id}) }}" class="text-decoration-none text-body">
+                                <span class="prodName text-muted">{{ plat.libProduit }} - </span>
+                            </a>
+                            <span class="badge bg-danger">
+                                Hors carte
+                            </span>
+                        {% else %}
                             <a href="{{ path('app_produit_details', {id: plat.id}) }}" class="text-decoration-none text-body">
                                 <span class="prodName">{{ plat.libProduit }} - </span>
                                 <span class="prodPrice">{{ plat.prixProduit|number_format(2, ',', ' ') }} €</span>
@@ -74,7 +84,15 @@
             <ul class="entrée text-center list-unstyled">
                 {% for dessert in desserts %}
                     <li class="">
-                        {% if dessert.isVisible %}
+                        {% if not dessert.visible %}
+                            <a href="{{ path('app_produit_details', {id: dessert.id}) }}" class="text-decoration-none text-body">
+                                <span class="prodName text-muted">{{ dessert.libProduit }} - </span>
+                                <span class="prodPrice text-muted">{{ dessert.prixProduit|number_format(2, ',', ' ') }} €</span>
+                            </a>
+                            <span class="badge bg-danger">
+                                Hors carte
+                            </span>
+                        {% else %}
                             <a href="{{ path('app_produit_details', {id: dessert.id}) }}" class="text-decoration-none text-body">
                                 <span class="prodName">{{ dessert.libProduit }} - </span>
                                 <span class="prodPrice">{{ dessert.prixProduit|number_format(2, ',', ' ') }} €</span>
@@ -91,7 +109,15 @@
             <ul class="boissons text-center list-unstyled">
                 {% for boisson in boissons %}
                     <li class="">
-                        {% if boisson.isVisible %}
+                        {% if not boisson.visible %}
+                            <a href="{{ path('app_produit_details', {id: boisson.id}) }}" class="text-decoration-none text-body">
+                                <span class="prodName text-muted">{{ boisson.libProduit }} - </span>
+                                <span class="prodPrice text-muted">{{ boisson.prixProduit|number_format(2, ',', ' ') }} €</span>
+                            </a>
+                            <span class="badge bg-danger">
+                                Hors carte
+                            </span>
+                        {% else %}
                             <a href="{{ path('app_produit_details', {id: boisson.id}) }}" class="text-decoration-none text-body">
                                 <span class="prodName">{{ boisson.libProduit }} - </span>
                                 <span class="prodPrice">{{ boisson.prixProduit|number_format(2, ',', ' ') }} €</span>
@@ -100,6 +126,59 @@
                     </li>
                 {% endfor %}
             </ul>
+
+            <div class="listMenus mt-5">
+
+                {% if menus %}
+                    <h2 class="text-center mb-5 fst-italic">Nos Menus</h2>
+                {% endif %}
+
+                <div class="row menus text-center list-unstyled">
+                    {% for menu in menus %}
+                            <div class="col-md-6 mb-4">
+                                {% if not menu.visible %}
+                                    <a href="{{ path('app_produit_details', {id: menu.id}) }}" class="text-decoration-none text-body">
+                                        <h5 class="menuName">{{ menu.libProduit }} - {{ menu.prixProduit|number_format(2, ',', ' ') }} € <span class="badge bg-danger p-1">Hors carte</span></h5>
+                                    </a>
+                                {% endif %}
+
+                                {% if menu.visible %}
+                                    <a href="{{ path('app_produit_details', {id: menu.id}) }}" class="text-decoration-none text-body">
+                                        <h5 class="menuName">{{ menu.libProduit }} - {{ menu.prixProduit|number_format(2, ',', ' ') }} €</h5>
+                                    </a>
+                                {% endif %}
+                                <ul class="list-unstyled">
+                                    {% for plat in menu.idPlat %}
+                                        {% if plat.typePlat.id == 1 %}
+                                            <li>
+                                                <span class="prodName">{{ plat.libProduit }}</span>
+                                            </li>
+                                        {% endif %}
+                                    {% endfor %}
+                                    <br>
+                                    {% for plat in menu.idPlat %}
+                                        {% if plat.typePlat.id == 2 %}
+                                            <li>
+                                                <span class="prodName">{{ plat.libProduit }}</span>
+                                            </li>
+                                        {% endif %}
+                                    {% endfor %}
+                                    <br>
+                                    {% for plat in menu.idPlat %}
+                                        {% if plat.typePlat.id == 3 %}
+                                            <li>
+                                                <span class="prodName">{{ plat.libProduit }}</span>
+                                            </li>
+                                        {% endif %}
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                    {% endfor %}
+                </div>
+
+            </div>
+
+            </div>
         </div>
     {% endif %}
 

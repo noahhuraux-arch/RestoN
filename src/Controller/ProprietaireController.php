@@ -2,18 +2,25 @@
 
 namespace App\Controller;
 
-use App\Entity\Proprietaire;
 use App\Entity\Restaurant;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Requirement\Requirement;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+#[IsGranted('ROLE_PROPRIETAIRE')]
 final class ProprietaireController extends AbstractController
 {
-    #[Route('/proprietaire/{id}', name: 'app_proprietaire', requirements: ['id' => Requirement::DIGITS])]
-    public function index(Proprietaire $proprietaire): Response
+    #[Route('/proprietaire', name: 'app_proprietaire', requirements: ['id' => Requirement::DIGITS])]
+    public function index(): Response
     {
+        $proprietaire = $this->getUser();
+
+        if (!$proprietaire) {
+            return $this->redirectToRoute('app_login');
+        }
+
         return $this->render('proprietaire/liste.html.twig', [
             'proprietaire' => $proprietaire,
             'restaurants' => $proprietaire->getRestaurants(),
@@ -23,6 +30,10 @@ final class ProprietaireController extends AbstractController
     #[Route('/proprietaire/restaurant/{id}', name: 'app_proprietaire_show', requirements: ['id' => Requirement::DIGITS])]
     public function show(Restaurant $restaurant): Response
     {
+        if ($restaurant->getProprietaire() !== $this->getUser()) {
+            throw $this->createAccessDeniedException('Accès interdit');
+        }
+
         return $this->render('proprietaire/index.html.twig', [
             'restaurant' => $restaurant,
         ]);
