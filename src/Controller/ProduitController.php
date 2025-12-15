@@ -53,7 +53,8 @@ final class ProduitController extends AbstractController
                 'entrees' => $entrees,
                 'plats' => $plat,
                 'desserts' => $dessert,
-                'menus' => $menus, ]);
+                'menus' => $menus,
+                'restaurant' => $restaurant]);
     }
 
     #[Route('/{idRestau}/carte/proprietaire', name: 'app_produit_proprietaire', requirements: ['idRestau' => Requirement::DIGITS])]
@@ -118,6 +119,7 @@ final class ProduitController extends AbstractController
                 'entrees' => $entrees,
                 'plats' => $plat,
                 'desserts' => $dessert,
+                'restaurant' => $produit->getIdRestau(),
             ]);
         }
     }
