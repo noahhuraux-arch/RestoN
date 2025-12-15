@@ -48,7 +48,8 @@ final class ProduitController extends AbstractController
             ['boissons' => $boisson,
                 'entrees' => $entrees,
                 'plats' => $plat,
-                'desserts' => $dessert]);
+                'desserts' => $dessert,
+                'restaurant' => $restaurant]);
     }
 
     #[Route('/{idRestau}/carte/proprietaire', name: 'app_produit_proprietaire', requirements: ['idRestau' => Requirement::DIGITS])]
@@ -87,6 +88,7 @@ final class ProduitController extends AbstractController
     {
         return $this->render('produit/produit.html.twig', [
             'produit' => $produit,
+            'restaurant' => $produit->getIdRestau(),
         ]);
     }
 
