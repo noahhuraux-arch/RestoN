@@ -30,6 +30,10 @@ final class ProprietaireController extends AbstractController
     #[Route('/proprietaire/restaurant/{id}', name: 'app_proprietaire_show', requirements: ['id' => Requirement::DIGITS])]
     public function show(Restaurant $restaurant): Response
     {
+        if ($restaurant->getProprietaire() !== $this->getUser()) {
+            throw $this->createAccessDeniedException('Accès interdit');
+        }
+
         return $this->render('proprietaire/index.html.twig', [
             'restaurant' => $restaurant,
         ]);
