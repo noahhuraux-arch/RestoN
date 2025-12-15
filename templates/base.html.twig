@@ -11,9 +11,8 @@
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4 sticky-top">
     <div class="container">
-
         {% block navbar_brand %}
-            {% if restaurant is defined and restaurant is not null %}
+            {% if restaurant is defined and restaurant is not null and restaurant.id is defined %}
                 <a class="navbar-brand" href="{{ path('app_restaurant_home', {id: restaurant.id}) }}">
                     <img src="{{ asset('images/logos/logo' ~ restaurant.id ~ '.png') }}" alt="{{ restaurant.libRestau }}" width="50" height="50" class="d-inline-block align-middle me-2">
                     {{ restaurant.libRestau }}
@@ -43,7 +42,6 @@
                     <li class="nav-item">
                         <a class="nav-link" href="#partenaires">Nos Partenaires</a>
                     </li>
-
                 {% elseif restauId %}
                     <li class="nav-item">
                         <a class="nav-link {{ current_route == 'app_restaurant_home' ? 'active' : '' }}" href="{{ path('app_restaurant_home', {id: restauId}) }}">Accueil</a>
@@ -52,7 +50,7 @@
                         <a class="nav-link {{ current_route == 'app_produit' ? 'active' : '' }}" href="{{ path('app_produit', {idRestau: restauId}) }}">La Carte</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Réservations</a>
+                        <a class="nav-link {{ current_route == 'app_reservation_creer' ? 'active' : '' }}" href="{{ path('app_reservation_creer') }}">Réservations</a>
                     </li>
                 {% else %}
                     <li class="nav-item">
