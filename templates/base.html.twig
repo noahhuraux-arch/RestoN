@@ -54,7 +54,7 @@
                         <a class="nav-link {{ current_route == 'app_produit' ? 'active' : '' }}" href="{{ path('app_produit', {idRestau: restauId}) }}">La Carte</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{ current_route == 'app_reservation_creer' ? 'active' : '' }}" href="{{ path('app_reservation_creer') }}">Réservations</a>
+                        <a class="nav-link {{ current_route == 'app_reservation_creer' ? 'active' : '' }}" href="{{ path('app_reservation_creer', {id: restauId}) }}">Réservations</a>
                     </li>
                 {% else %}
                     <li class="nav-item">
