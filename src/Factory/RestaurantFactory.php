@@ -53,7 +53,6 @@ final class RestaurantFactory extends PersistentProxyObjectFactory
                 'ville_restau' => $faker->city(),
                 'nb_table' => $faker->numberBetween(5, 40),
                 'nb_etoiles' => $faker->numberBetween(0, 3),
-                'proprietaire' => ProprietaireFactory::new(),
                 'tel_restau' => $faker->numerify('0#########'),
                 'email_restau' => $email,
             ];

@@ -43,7 +43,7 @@ class RestaurantFixtures extends Fixture
         RestaurantFactory::new()->create([
             'libRestau' => $nom,
             'email_restau' => $email,
-            'proprietaire' => $proprietaire ?: ProprietaireFactory::new(),
+            'proprietaire' => $proprietaire ?: ProprietaireFactory::createOne(),
         ]);
     }
 }
