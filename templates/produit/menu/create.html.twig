@@ -28,7 +28,11 @@
 
                 <div class="row g-2">
                     {% for label, group in form.idPlat.vars.choices %}
-                        <span>Les {{ label }}s</span>
+                        {% if label == 'plat Principal' %}
+                            <span> Les Plats </span>
+                        {% else %}
+                            <span>Les {{ label }}s</span>
+                        {% endif %}
                         {% for choice in group.choices %}
                             <div class="col-lg-3">
                                 <div class="card shadow-sm h-100">
