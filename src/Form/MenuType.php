@@ -9,6 +9,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -21,8 +22,8 @@ class MenuType extends AbstractType
 
         $builder
             ->add('libProduit', TextType::class, ['label' => 'Nom du menu'])
-            ->add('prixProduit', IntegerType::class, ['label' => 'Prix du menu', 'attr' => ['min' => 0]])
-            ->add('visible', CheckboxType::class, ['label' => 'Visible', 'required' => false])
+            ->add('prixProduit', NumberType::class, ['label' => 'Prix du menu', 'attr' => ['min' => 0]])
+            ->add('visible', CheckboxType::class, ['label' => 'Visible', 'required' => false, 'data' => true])
             ->add('descriptionProduit', TextType::class, ['label' => 'Description du menu', 'required' => false])
             ->add('idPlat', EntityType::class, [
                 'class' => Plat::class,
