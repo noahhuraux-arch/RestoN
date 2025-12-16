@@ -12,6 +12,8 @@ use Zenstruck\Foundry\Persistence\PersistentProxyObjectFactory;
  */
 final class ProprietaireFactory extends PersistentProxyObjectFactory
 {
+    private static int $i = 1;
+
     /**
      * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#factories-as-services
      *
@@ -39,26 +41,22 @@ final class ProprietaireFactory extends PersistentProxyObjectFactory
     {
         return function () {
             $faker = self::faker();
+            $i = self::$i;
 
             $prenom = $faker->firstName();
             $nom = $faker->lastName();
 
-            $email = null;
+            $email = "prop{$i}@example.com";
 
-            if (null !== $prenom && null !== $nom) {
-                $prenomSlug = strtolower(iconv('UTF-8', 'ASCII//TRANSLIT', $prenom));
-                $nomSlug = strtolower(iconv('UTF-8', 'ASCII//TRANSLIT', $nom));
-                $domain = strtolower($faker->domainName());
-                $email = "{$prenomSlug}.{$nomSlug}@{$domain}";
-            }
+            ++self::$i;
 
             return [
                 'prenom' => $prenom,
                 'nom' => $nom,
                 'telephone' => $faker->numerify('0#########'),
                 'email' => $email,
-                'password' => $faker->password(8, 20),
-                'roles' => [],
+                'password' => 'test',
+                'roles' => ['ROLE_PROPRIETAIRE'],
             ];
         };
     }
