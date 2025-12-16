@@ -23,7 +23,7 @@ class MenuType extends AbstractType
         $builder
             ->add('libProduit', TextType::class, ['label' => 'Nom du menu'])
             ->add('prixProduit', NumberType::class, ['label' => 'Prix du menu', 'attr' => ['min' => 0]])
-            ->add('visible', CheckboxType::class, ['label' => 'Visible', 'required' => false])
+            ->add('visible', CheckboxType::class, ['label' => 'Visible', 'required' => false, 'data' => true])
             ->add('descriptionProduit', TextType::class, ['label' => 'Description du menu', 'required' => false])
             ->add('idPlat', EntityType::class, [
                 'class' => Plat::class,
