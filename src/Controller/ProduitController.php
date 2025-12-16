@@ -21,11 +21,12 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Requirement\Requirement;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 final class ProduitController extends AbstractController
 {
     #[Route('/{idRestau}/carte', name: 'app_produit', requirements: ['idRestau' => Requirement::DIGITS])]
-    public function listMenu(BoissonRepository $boissonRep, PlatRepository $platRep, RestaurantRepository $restauRepo, MenuRepository $menuRepo, int $idRestau): Response
+    public function listMenu(BoissonRepository $boissonRep, PlatRepository $platRep, RestaurantRepository $restauRepo, MenuRepository $menuRepo, Restaurant $idRestau): Response
     {
         $restaurant = $restauRepo->find($idRestau);
 
@@ -57,9 +58,14 @@ final class ProduitController extends AbstractController
                 'restaurant' => $restaurant]);
     }
 
-    #[Route('/{idRestau}/carte/proprietaire', name: 'app_produit_proprietaire', requirements: ['idRestau' => Requirement::DIGITS])]
-    public function listMenuProprietaire(BoissonRepository $boissonRep, PlatRepository $platRep, MenuRepository $menuRep, RestaurantRepository $restauRepo, int $idRestau): Response
+    #[Route('/proprietaire/{idRestau}/carte', name: 'app_produit_proprietaire', requirements: ['idRestau' => Requirement::DIGITS])]
+    #[IsGranted('ROLE_PROPRIETAIRE')]
+    public function listMenuProprietaire(BoissonRepository $boissonRep, PlatRepository $platRep, MenuRepository $menuRep, RestaurantRepository $restauRepo, Restaurant $idRestau): Response
     {
+        if ($idRestau->getProprietaire() !== $this->getUser()) {
+            throw $this->createAccessDeniedException('Accès interdit');
+        }
+
         $restaurant = $restauRepo->find($idRestau);
 
         $boisson = $boissonRep->findBy(['idRestau' => $idRestau], ['alcoolise' => 'ASC', 'prixProduit' => 'ASC', 'libProduit' => 'ASC']);
@@ -125,8 +131,13 @@ final class ProduitController extends AbstractController
     }
 
     #[Route('/{idRestau}/boisson/create', name: 'app_produit_boisson_create', requirements: ['idRestau' => Requirement::DIGITS])]
-    public function createBoisson(Request $request, EntityManagerInterface $entityManager, int $idRestau, RestaurantRepository $restoRepo): Response
+    #[IsGranted('ROLE_PROPRIETAIRE')]
+    public function createBoisson(Request $request, EntityManagerInterface $entityManager, Restaurant $idRestau, RestaurantRepository $restoRepo): Response
     {
+        if ($idRestau->getProprietaire() !== $this->getUser()) {
+            throw $this->createAccessDeniedException('Accès interdit');
+        }
+
         $restaurant = $restoRepo->find($idRestau);
         $boisson = new Boisson();
         $form = $this->createForm(BoissonType::class, $boisson);
@@ -149,8 +160,13 @@ final class ProduitController extends AbstractController
     }
 
     #[Route('{idRestau}/boisson/{idBoisson}/update', name: 'app_produit_boisson_update', requirements: ['idRestau' => Requirement::DIGITS, 'idBoisson' => Requirement::DIGITS])]
-    public function updateBoisson(Request $request, Boisson $idBoisson, BoissonRepository $boissonRepo, int $idRestau, EntityManagerInterface $entityManager): Response
+    #[IsGranted('ROLE_PROPRIETAIRE')]
+    public function updateBoisson(Request $request, Boisson $idBoisson, BoissonRepository $boissonRepo, Restaurant $idRestau, EntityManagerInterface $entityManager): Response
     {
+        if ($idRestau->getProprietaire() !== $this->getUser()) {
+            throw $this->createAccessDeniedException('Accès interdit');
+        }
+
         $restaurant = $entityManager->getRepository(Restaurant::class)->find($idRestau);
 
         $form = $this->createForm(BoissonType::class, $idBoisson);
@@ -171,8 +187,13 @@ final class ProduitController extends AbstractController
     }
 
     #[Route('/{idRestau}/plat/create', name: 'app_produit_plat_create', requirements: ['idRestau' => Requirement::DIGITS])]
-    public function createPlat(Request $request, EntityManagerInterface $entityManager, int $idRestau, RestaurantRepository $restoRepo): Response
+    #[IsGranted('ROLE_PROPRIETAIRE')]
+    public function createPlat(Request $request, EntityManagerInterface $entityManager, Restaurant $idRestau, RestaurantRepository $restoRepo): Response
     {
+        if ($idRestau->getProprietaire() !== $this->getUser()) {
+            throw $this->createAccessDeniedException('Accès interdit');
+        }
+
         $restaurant = $restoRepo->find($idRestau);
 
         $plat = new Plat();
@@ -195,8 +216,13 @@ final class ProduitController extends AbstractController
     }
 
     #[Route('/{idRestau}/menu/create', name: 'app_produit_menu_create', requirements: ['idRestau' => Requirement::DIGITS])]
-    public function createMenu(Request $request, EntityManagerInterface $entityManager, int $idRestau)
+    #[IsGranted('ROLE_PROPRIETAIRE')]
+    public function createMenu(Request $request, EntityManagerInterface $entityManager, Restaurant $idRestau)
     {
+        if ($idRestau->getProprietaire() !== $this->getUser()) {
+            throw $this->createAccessDeniedException('Accès interdit');
+        }
+
         $restaurant = $entityManager->getRepository(Restaurant::class)->find($idRestau);
         $menu = new Menu();
         $form = $this->createForm(MenuType::class, $menu, ['restaurant' => $restaurant]);
@@ -217,8 +243,13 @@ final class ProduitController extends AbstractController
     }
 
     #[Route('{idRestau}/plat/{idPlat}/update', name: 'app_produit_plat_update', requirements: ['idRestau' => Requirement::DIGITS, 'idPlat' => Requirement::DIGITS])]
-    public function updatePlat(Request $request, Plat $idPlat, PlatRepository $platRepo, int $idRestau, EntityManagerInterface $entityManager): Response
+    #[IsGranted('ROLE_PROPRIETAIRE')]
+    public function updatePlat(Request $request, Plat $idPlat, PlatRepository $platRepo, Restaurant $idRestau, EntityManagerInterface $entityManager): Response
     {
+        if ($idRestau->getProprietaire() !== $this->getUser()) {
+            throw $this->createAccessDeniedException('Accès interdit');
+        }
+
         $restaurant = $entityManager->getRepository(Restaurant::class)->find($idRestau);
         $form = $this->createForm(PlatType::class, $idPlat);
 
@@ -238,8 +269,13 @@ final class ProduitController extends AbstractController
     }
 
     #[Route('{idRestau}/menu/{idMenu}/update', name: 'app_produit_menu_update', requirements: ['idRestau' => Requirement::DIGITS, 'idMenu' => Requirement::DIGITS])]
-    public function updateMenu(Request $request, Menu $idMenu, int $idRestau, EntityManagerInterface $entityManager): Response
+    #[IsGranted('ROLE_PROPRIETAIRE')]
+    public function updateMenu(Request $request, Menu $idMenu, Restaurant $idRestau, EntityManagerInterface $entityManager): Response
     {
+        if ($idRestau->getProprietaire() !== $this->getUser()) {
+            throw $this->createAccessDeniedException('Accès interdit');
+        }
+
         $restaurant = $entityManager->getRepository(Restaurant::class)->find($idRestau);
         $form = $this->createForm(MenuType::class, $idMenu, ['restaurant' => $restaurant]);
 
@@ -259,8 +295,13 @@ final class ProduitController extends AbstractController
     }
 
     #[Route('/produit/{id}/delete', name: 'app_produit_delete')]
+    #[IsGranted('ROLE_PROPRIETAIRE')]
     public function delete(Request $request, Produit $produit, EntityManagerInterface $entityManager): Response
     {
+        if ($produit->getIdRestau()->getProprietaire() !== $this->getUser()) {
+            throw $this->createAccessDeniedException('Accès interdit');
+        }
+
         $idRestau = $produit->getIdRestau()->getId();
 
         $form = $this->createFormBuilder()
@@ -291,8 +332,13 @@ final class ProduitController extends AbstractController
     }
 
     #[Route('{idRestau}/insertion', name: 'app_produit_insert')]
+    #[IsGranted('ROLE_PROPRIETAIRE')]
     public function insertProduct(Restaurant $idRestau): Response
     {
+        if ($idRestau->getProprietaire() !== $this->getUser()) {
+            throw $this->createAccessDeniedException('Accès interdit');
+        }
+
         return $this->render('produit/proprietaire/insertionProduit.html.twig', ['restaurant' => $idRestau]);
     }
 }
