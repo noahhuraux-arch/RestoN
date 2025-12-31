@@ -51,6 +51,27 @@ class ReservationController extends AbstractController
         return $this->render('reservation/creer.html.twig', [
             'form' => $form->createView(),
             'erreur' => $erreurMessage,
+            'restaurant' => $restaurant,
         ]);
+    }
+
+    /**
+     * @throws \Exception
+     */
+    #[Route('{id}/disponibilites/', name: 'api_disponibilites', methods: ['GET'])]
+    public function apiDisponibilites(Restaurant $restaurant, Request $request, TableRepository $tableRepo): Response
+    {
+        $date = new \DateTime($request->query->get('date'));
+        $nb = (int) $request->query->get('nbPers');
+        $creneaux = ['12:00', '13:00', '14:00', '19:00', '20:00', '21:00', '22:00'];
+        $dispos = [];
+
+        foreach ($creneaux as $horaire) {
+            $heure = new \DateTime($horaire);
+            if ($tableRepo->findAvailableTables($restaurant, $date, $heure, $nb)) {
+                $dispos[] = $horaire;
+            }
+        }
+        return $this->json($dispos);
     }
 }
