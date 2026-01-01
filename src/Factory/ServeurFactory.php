@@ -10,6 +10,8 @@ use Zenstruck\Foundry\Persistence\PersistentProxyObjectFactory;
  */
 final class ServeurFactory extends PersistentProxyObjectFactory
 {
+    private static int $i = 1;
+
     /**
      * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#factories-as-services
      *
@@ -33,15 +35,28 @@ final class ServeurFactory extends PersistentProxyObjectFactory
     #[\Override]
     protected function defaults(): array|callable
     {
-        return [
-            'prenom' => self::faker()->firstName(),
-            'nom' => self::faker()->lastName(),
-            'telephone' => self::faker()->numerify('0#########'),
-            'email' => self::faker()->unique()->safeEmail(),
-            'password' => 'password123',
-            'salaire' => self::faker()->randomFloat(2, 1200, 2500),
-            'restaurant' => RestaurantFactory::random(),
-        ];
+        return function () {
+            $faker = self::faker();
+            $i = self::$i;
+
+            $prenom = $faker->firstName();
+            $nom = $faker->lastName();
+
+            $email = "serv{$i}@example.com";
+
+            ++self::$i;
+
+            return [
+                'prenom' => $prenom,
+                'nom' => $nom,
+                'telephone' => $faker->numerify('0#########'),
+                'email' => $email,
+                'password' => 'test',
+                'salaire' => self::faker()->randomFloat(2, 1200, 2500),
+                'roles' => ['ROLE_SERVEUR'],
+                'restaurant' => RestaurantFactory::random(),
+            ];
+        };
     }
 
     /**
