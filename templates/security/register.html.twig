@@ -1,0 +1,41 @@
+{% extends '/base.html.twig' %}
+
+{% block title %}Inscription Propriétaire{% endblock %}
+
+{% block body %}
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6">
+                <div class="card shadow-sm border-0">
+                    <div class="card-body p-4">
+                        <h1 class="h3 mb-4 fw-normal text-center">Créer un compte propriétaire</h1>
+
+                        {{ form_start(registrationForm) }}
+                        <div class="row">
+                            <div class="col-md-6">{{ form_row(registrationForm.prenom) }}</div>
+                            <div class="col-md-6">{{ form_row(registrationForm.nom) }}</div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">{{ form_row(registrationForm.email) }}</div>
+                            <div class="col-md-6">{{ form_row(registrationForm.telephone) }}</div>
+                        </div>
+
+                        {{ form_row(registrationForm.password) }}
+
+                        <button type="submit" class="btn btn-primary w-100 btn-lg mt-3">
+                            S'inscrire
+                        </button>
+                        {{ form_end(registrationForm) }}
+
+                        <div class="text-center mt-3">
+                            <p class="text-muted small">
+                                Déjà un compte ? <a href="{{ path('app_login') }}" class="text-decoration-none">Se connecter</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
