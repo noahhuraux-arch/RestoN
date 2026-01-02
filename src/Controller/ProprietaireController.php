@@ -14,9 +14,9 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Requirement\Requirement;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-#[IsGranted('ROLE_PROPRIETAIRE')]
 final class ProprietaireController extends AbstractController
 {
+    #[IsGranted('ROLE_PROPRIETAIRE')]
     #[Route('/proprietaire', name: 'app_proprietaire', requirements: ['id' => Requirement::DIGITS])]
     public function index(): Response
     {
@@ -32,6 +32,7 @@ final class ProprietaireController extends AbstractController
         ]);
     }
 
+    #[IsGranted('ROLE_PROPRIETAIRE')]
     #[Route('/proprietaire/restaurant/{id}', name: 'app_proprietaire_show', requirements: ['id' => Requirement::DIGITS])]
     public function show(Restaurant $restaurant): Response
     {
