@@ -50,8 +50,8 @@
                 <div class="info-card">
                     <i class="fa fa-phone fa-3x mb-3"></i>
                     <h4>Contact</h4>
-                    <p class="mb-0">{{ restaurant.telRestau }}</p>
-                    <p>{{ restaurant.emailRestau }}</p>
+                    <p class="mb-0"><a href="tel:{{ restaurant.telRestau }}" class="text-decoration-none text-dark">{{ restaurant.telRestau }}</a></p>
+                    <p><a href="mailto:{{ restaurant.emailRestau }}" class="text-decoration-none text-dark">{{ restaurant.emailRestau }}</a></p>
                 </div>
             </div>
         </div>
