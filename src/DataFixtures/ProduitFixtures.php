@@ -5,6 +5,7 @@ namespace App\DataFixtures;
 use App\Entity\Restaurant;
 use App\Entity\TypePlat;
 use App\Factory\BoissonFactory;
+use App\Factory\MenuFactory;
 use App\Factory\PlatFactory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
@@ -35,6 +36,17 @@ class ProduitFixtures extends Fixture implements DependentFixtureInterface
         ['lib' => 'Assortiment de Fromages Affinés', 'prix' => 11.00, 'typePlat' => '3', 'descriptionProduit' => 'Sélection de trois fromages A.O.P. de la région.'],
     ];
 
+    private const menus = [
+        [
+            'lib' => 'Menu du Jour', 'prix' => 20, 'descriptionProduit' => 'Séléction de nos plats de la journée',
+            'compo' => ['Soupe à l\'Oignon Gratinée', 'Terrine de Campagne', 'Blanquette de Veau à l\'Ancienne', 'Cassoulet Toulousain', 'Île Flottante', 'Moelleux au Chocolat, cœur coulant'],
+        ],
+        [
+            'lib' => 'Menu Gourmand', 'prix' => 45.00, 'descriptionProduit' => 'Le meilleur de notre terroir pour les plus fins gourmets.',
+            'compo' => ['Escargots de Bourgogne (6 pièces)', 'Rillettes de Porc Maison', 'Côte de Bœuf (350g) Sauce au poivre', 'Magret de canard, sauce au miel', 'Mille-feuille à la vanille', 'Assortiment de Fromages Affinés'],
+        ],
+    ];
+
     public function load(ObjectManager $manager): void
     {
         $restaurants = $manager->getRepository(Restaurant::class)->findAll();
@@ -55,13 +67,31 @@ class ProduitFixtures extends Fixture implements DependentFixtureInterface
             foreach (self::plats as $plat) {
                 $typePlat = $typePlatRepository->findOneBy(['id' => $plat['typePlat']]);
 
-                PlatFactory::createOne([
+                $newPlat = PlatFactory::createOne([
                     'libProduit' => $plat['lib'],
                     'prixProduit' => $plat['prix'],
                     'descriptionProduit' => $plat['descriptionProduit'],
                     'visible' => true,
                     'idRestau' => $restaurant,
                     'typePlat' => $typePlat,
+                ]);
+
+                $platsCrees[$plat['lib']] = $newPlat;
+            }
+
+            foreach (self::menus as $menu) {
+                $platsMenu = [];
+                foreach ($menu['compo'] as $nomPlat) {
+                    $platsMenu[] = $platsCrees[$nomPlat];
+                }
+
+                MenuFactory::createOne([
+                    'libProduit' => $menu['lib'],
+                    'prixProduit' => $menu['prix'],
+                    'descriptionProduit' => $menu['descriptionProduit'],
+                    'visible' => true,
+                    'idRestau' => $restaurant,
+                    'idPlat' => $platsMenu,
                 ]);
             }
         }
