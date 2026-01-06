@@ -72,4 +72,31 @@ final class ProprietaireController extends AbstractController
             'registrationForm' => $form->createView(),
         ]);
     }
+
+    #[IsGranted('ROLE_PROPRIETAIRE')]
+    #[Route('/proprietaire/update', name: 'app_proprietaire_update')]
+    public function update(Request $request, EntityManagerInterface $em, UserPasswordHasherInterface $hasher): Response
+    {
+        $proprietaire = $this->getUser();
+
+        $form = $this->createForm(ProprietaireType::class, $proprietaire, [
+            'is_edit' => true,
+        ]);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $plainPassword = $form->get('password')->getData();
+
+            if (!empty($plainPassword)) {
+                $proprietaire->setPassword($hasher->hashPassword($proprietaire, $plainPassword));
+            }
+
+            $em->flush();
+
+            return $this->redirectToRoute('app_proprietaire');
+        }
+
+        return $this->render('proprietaire/update.html.twig', ['form' => $form->createView()]);
+    }
 }
