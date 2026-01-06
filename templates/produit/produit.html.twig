@@ -79,37 +79,32 @@
                     {% endif %}
 
                 {% endif %}
-                <hr>
 
-                <div class="d-flex justify-content-start align-items-center mt-4">
+                {% if is_granted('ROLE_PROPRIETAIRE') and app.user == produit.idRestau.proprietaire%}
+                    <hr class="mt-4 mb-4">
 
-                    {% if produit.visible %}
-                    <span class="badge bg-success px-3 py-2 me-3 ">
-                        Visible sur la carte
-                    </span>
-                    {% else %}
-                        <span class="badge bg-danger px-3 py-2 me-3">
-                            Non visible
-                        </span>
-                    {% endif %}
-
-                    {% if produit.alcoolise is defined %}
-                        {% if produit.alcoolise %}
-                            <span class="badge bg-danger px-3 py-2">
-                                Alcoolisé
-                            </span>
-                        {% else %}
-                            <span class="badge bg-success px-3 py-2">
-                                Sans alcool
-                            </span>
+                    <div class="d-flex justify-content-start align-items-center">
+                        {% if is_granted('ROLE_PROPRIETAIRE') and app.user == produit.idRestau.proprietaire%}
+                            {% if produit.visible %}
+                                <span class="badge bg-success px-3 py-2 me-3">Visible sur la carte</span>
+                            {% else %}
+                                <span class="badge bg-danger px-3 py-2 me-3">Non visible</span>
+                            {% endif %}
                         {% endif %}
-                    {% endif %}
 
-                </div>
+                        {% if produit.alcoolise is defined %}
+                            {% if produit.alcoolise %}
+                                <span class="badge bg-danger px-3 py-2">Alcoolisé</span>
+                            {% else %}
+                                <span class="badge bg-success px-3 py-2">Sans alcool</span>
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                {% endif %}
 
-                <hr>
+                <hr class="mt-4 mb-4">
 
-                <p class="text-muted mt-3 fs-5">
+                <p class="text-muted fs-5">
                     Restaurant :
                     <strong>{{ produit.idRestau.libRestau ?? 'Non renseigné' }}</strong>
                 </p>
@@ -119,26 +114,28 @@
                         ← Retour à la carte
                     </a>
 
-                    <div class="d-flex gap-2">
-                        {% if produit.alcoolise is defined %}
-                            <a href="{{ path('app_produit_boisson_update', {idRestau: produit.idRestau.id, idBoisson: produit.id}) }}" class="btn btn-outline-primary rounded-3 px-4 fs-6 fw-bold">
-                                Modifier
-                            </a>
-                        {% elseif produit.typePlat is defined %}
-                            <a href="{{ path('app_produit_plat_update', {idRestau: produit.idRestau.id, idPlat: produit.id}) }}" class="btn btn-outline-primary rounded-3 px-4 fs-6 fw-bold">
-                                Modifier
-                            </a>
-                        {% elseif plats %}
-                            <a href="{{ path('app_produit_menu_update', {idRestau: produit.idRestau.id, idMenu: produit.id}) }}" class="btn btn-outline-primary rounded-3 px-4 fs-6 fw-bold">
-                                Modifier
-                            </a>
-                        {% endif %}
+                    {% if is_granted('ROLE_PROPRIETAIRE') and app.user == produit.idRestau.proprietaire%}
 
-                        <a href="{{ path('app_produit_delete', {id: produit.id}) }}" class="btn btn-danger border rounded-3 px-4 fs-6">
-                            Supprimer
-                        </a>
-                    </div>
+                        <div class="d-flex gap-2">
+                            {% if produit.alcoolise is defined %}
+                                <a href="{{ path('app_produit_boisson_update', {idRestau: produit.idRestau.id, idBoisson: produit.id}) }}" class="btn btn-outline-primary rounded-3 px-4 fs-6 fw-bold">
+                                    Modifier
+                                </a>
+                            {% elseif produit.typePlat is defined %}
+                                <a href="{{ path('app_produit_plat_update', {idRestau: produit.idRestau.id, idPlat: produit.id}) }}" class="btn btn-outline-primary rounded-3 px-4 fs-6 fw-bold">
+                                    Modifier
+                                </a>
+                            {% elseif plats %}
+                                <a href="{{ path('app_produit_menu_update', {idRestau: produit.idRestau.id, idMenu: produit.id}) }}" class="btn btn-outline-primary rounded-3 px-4 fs-6 fw-bold">
+                                    Modifier
+                                </a>
+                            {% endif %}
 
+                            <a href="{{ path('app_produit_delete', {id: produit.id}) }}" class="btn btn-danger border rounded-3 px-4 fs-6">
+                                Supprimer
+                            </a>
+                        </div>
+                    {% endif  %}
                 </div>
 
             </div>
