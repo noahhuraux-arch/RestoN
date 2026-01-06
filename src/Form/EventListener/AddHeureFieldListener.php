@@ -59,7 +59,44 @@ class AddHeureFieldListener implements EventSubscriberInterface
         ));
         $form->add($builder->getForm());
     }
+
+    /**
+     * @throws \Exception
+     */
     public function onPreSubmit(PreSubmitEvent $event): void
-    {}
+    {
+        $reservation = $event->getData();
+        $form = $event->getForm();
+        $restaurant = $form->getConfig()->getOption('restaurant');
+
+        if (!$reservation) {
+            return;
+        }
+        $choices = [];
+        $dateStr = $reservation['date'];
+        $date = $dateStr ? new \DateTime($dateStr) : null;
+        $nbPers = $reservation['nbPers'];
+        if ($restaurant && $date && $nbPers) {
+            $creneaux = ['12:00', '13:00', '14:00', '19:00', '20:00', '21:00', '22:00'];
+            foreach ($creneaux as $horaire) {
+                $heure = new \DateTime($horaire);
+                if ($this->tableRepository->findAvailableTables($restaurant, $date, $heure, (int) $nbPers)) {
+                    $choices[$horaire] = $horaire;
+                }
+            }
+        }
+        $factory = $form->getConfig()->getFormFactory();
+        $builder= $factory->createNamedBuilder('heure',ChoiceType::class,null, ['choices' => $choices,'auto_initialize' => false]);
+        $builder->addModelTransformer(new CallbackTransformer(
+            function ($Date) {
+                return  ($Date instanceof \DateTimeInterface) ?$Date->format('H:i'): '';
+            },
+            function ($stringHeure) {
+                return new \DateTime($stringHeure);
+            }
+        ));
+        $form->add($builder->getForm());
+
+    }
 
 }
