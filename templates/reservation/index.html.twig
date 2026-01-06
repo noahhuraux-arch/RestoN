@@ -13,19 +13,16 @@
                 <th>Date</th>
                 <th>Heure</th>
                 <th>Client</th>
-                <th>Table n° (Places)</th>
             </tr>
             </thead>
             <tbody>
-            {% for reservation in reservations %}
+            {% for reservation in reservation %}
                 <tr>
                     <td>{{ reservation.date|date('d/m/Y') }}</td>
                     <td>{{ reservation.heure|date('H:i') }}</td>
                     <td>
                         {{ reservation.client.prenom }} {{ reservation.client.nom }}
-                        <br><small class="text-muted">{{ reservation.client.telephone }}</small>
                     </td>
-                    <td>{{ reservation.table.id }} ({{ reservation.table.nbPlace }} places)</td>
                 </tr>
             {% else %}
                 <tr>
