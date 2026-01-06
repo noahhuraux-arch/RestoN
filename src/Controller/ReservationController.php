@@ -8,6 +8,7 @@ use App\Form\ReservationType;
 use App\Repository\ClientRepository;
 use App\Repository\TableRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
@@ -71,12 +72,12 @@ class ReservationController extends AbstractController
     }
 
     #[IsGranted('ROLE_SERVEUR')]
-    #[Route('/reservation/{id}', name: 'app_reservation_show')]
-    public function showReservation(Restaurant $restaurant, Reservation $idReservation): Response
+    #[Route('{id}/reservation/{idReservation}', name: 'app_reservation_show')]
+    public function showReservation(Restaurant $restaurant, #[MapEntity(mapping: ['idReservation' => 'id'])] Reservation $reservation): Response
     {
         return $this->render('reservation/show.html.twig', [
             'restaurant' => $restaurant,
-            'reservation' => $idReservation,
+            'reservation' => $reservation,
         ]);
     }
 }
