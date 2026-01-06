@@ -9,6 +9,7 @@ use App\Repository\ClientRepository;
 use App\Repository\TableRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -66,6 +67,16 @@ class ReservationController extends AbstractController
         return $this->render('reservation/index.html.twig', [
             'restaurant' => $restaurant,
             'reservation' => $reservation,
+        ]);
+    }
+
+    #[IsGranted('ROLE_SERVEUR')]
+    #[Route('/reservation/{id}', name: 'app_reservation_show')]
+    public function showReservation(Restaurant $restaurant, Reservation $idReservation): Response
+    {
+        return $this->render('reservation/show.html.twig', [
+            'restaurant' => $restaurant,
+            'reservation' => $idReservation,
         ]);
     }
 }
