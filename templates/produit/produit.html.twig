@@ -110,9 +110,15 @@
                 </p>
 
                 <div class="mt-4 d-flex justify-content-between align-items-center">
-                    <a href="{{ path('app_produit_proprietaire', {idRestau: produit.idRestau.id, idBoisson: produit.id}) }}" class="btn btn-light border rounded-3 px-4 fs-6">
-                        ← Retour à la carte
-                    </a>
+                    {% if is_granted('ROLE_PROPRIETAIRE') and app.user == produit.idRestau.proprietaire%}
+                        <a href="{{ path('app_produit_proprietaire', {idRestau: produit.idRestau.id}) }}" class="btn btn-light border rounded-3 px-4 fs-6">
+                            ← Retour à la carte
+                        </a>
+                    {% else %}
+                        <a href="{{ path('app_produit', {idRestau: produit.idRestau.id}) }}" class="btn btn-light border rounded-3 px-4 fs-6">
+                            ← Retour à la carte
+                        </a>
+                    {% endif %}
 
                     {% if is_granted('ROLE_PROPRIETAIRE') and app.user == produit.idRestau.proprietaire%}
 
