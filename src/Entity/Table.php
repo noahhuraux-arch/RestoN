@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\TableRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -26,6 +27,17 @@ class Table
 
     #[ORM\ManyToOne(targetEntity: Restaurant::class, inversedBy: 'restaurant')]
     private ?Restaurant $restaurant = null;
+
+    /**
+     * @var Collection<int, Commande>
+     */
+    #[ORM\OneToMany(targetEntity: Commande::class, mappedBy: 'tables')]
+    private Collection $commande;
+
+    public function __construct()
+    {
+        $this->commande = new ArrayCollection();
+    }
 
     public function getReservations(): Collection
     {
@@ -62,6 +74,36 @@ class Table
     public function setDisponible(?bool $disponible): static
     {
         $this->disponible = $disponible;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Commande>
+     */
+    public function getCommande(): Collection
+    {
+        return $this->commande;
+    }
+
+    public function addCommande(Commande $commande): static
+    {
+        if (!$this->commande->contains($commande)) {
+            $this->commande->add($commande);
+            $commande->setTables($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCommande(Commande $commande): static
+    {
+        if ($this->commande->removeElement($commande)) {
+            // set the owning side to null (unless already changed)
+            if ($commande->getTables() === $this) {
+                $commande->setTables(null);
+            }
+        }
 
         return $this;
     }

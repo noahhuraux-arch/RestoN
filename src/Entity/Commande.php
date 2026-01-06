@@ -23,6 +23,9 @@ class Commande
     #[ORM\ManyToOne(inversedBy: 'commandes')]
     private ?Serveur $serveur = null;
 
+    #[ORM\ManyToOne(inversedBy: 'commande')]
+    private ?Table $tables = null;
+
     public function getid(): ?int
     {
         return $this->id;
@@ -60,6 +63,18 @@ class Commande
     public function setServeur(?Serveur $serveur): static
     {
         $this->serveur = $serveur;
+
+        return $this;
+    }
+
+    public function getTables(): ?Table
+    {
+        return $this->tables;
+    }
+
+    public function setTables(?Table $tables): static
+    {
+        $this->tables = $tables;
 
         return $this;
     }
