@@ -83,16 +83,15 @@
     box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.05);
 }
 
-/* --- Adaptation Mobile (Responsive) --- */
 @media (max-width: 768px) {
     .home-section {
-        min-height: 50vh; /* Hauteur réduite sur mobile */
-        padding: 3rem 1rem;
+        min-height: 20vh;
+        padding: 2rem 1rem;
     }
 
     .listCarte h1,
     .display-3 {
-        font-size: 2.5rem !important; /* Titres plus petits */
+        font-size: 2.5rem !important;
     }
 
     .listCarte h2,
