@@ -37,13 +37,15 @@
         <h1 class="text-center mb-4">Réserver votre table</h1>
     </div>
         {{ form_start(form, {'attr': {'id': 'reservation_form'}}) }}
-            {{ form_row(form.client.nom) }}
-            {{ form_row(form.client.prenom) }}
-            {{ form_row(form.client.email) }}
-            {{ form_row(form.client.telephone) }}
-            {{ form_row(form.date) }}
-            {{ form_row(form.nbPers) }}
-            {{ form_row(form.heure) }}
+            {{ form_row(form.client.nom, {label: 'Nom'}) }}
+            {{ form_row(form.client.prenom, {label: 'Prénom'}) }}
+            {{ form_row(form.client.email, {label: 'e-mail'}) }}
+            {{ form_row(form.client.telephone, {label: 'Téléphone'}) }}
+            {{ form_row(form.date, {label: 'Date'}) }}
+            {{ form_row(form.nbPers, {label: 'nombre de Personne'}) }}
+            {{ form_row(form.heure, {
+                label: 'Heure',
+            }) }}
             {{ form_rest(form) }}
         <div class="d-grid mt-3">
             <button type="submit" class="btn btn-primary btn-lg">Valider</button>
