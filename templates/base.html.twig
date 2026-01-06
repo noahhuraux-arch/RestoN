@@ -232,6 +232,8 @@
                 response = "Resto'N est une plateforme complète pour la gestion de votre restaurant.";
             } else if (msg.includes('support') || msg.includes('contact')) {
                 response = "Besoin d'aide ? Contactez notre support à contact@reston.fr.";
+            } else if (msg.includes('partenaires') || msg.includes('partenariat')) {
+                response = "La liste de nos 'Partenaires' est visible sur notre carousel. Chaque restaurant utilisant Resto'N est un partenaire.";
             }
             addMessage(response, 'bot');
         }, 1000);
