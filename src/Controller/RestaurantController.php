@@ -159,4 +159,15 @@ final class RestaurantController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+
+    #[Route('/{id}/reservations', name: 'app_restaurant_reservations', requirements: ['id' => Requirement::DIGITS])]
+    public function listReservations(Restaurant $restaurant): Response
+    {
+        $reservations = $restaurant->getReservations();
+
+        return $this->render('restaurant/reservations.html.twig', [
+            'restaurant' => $restaurant,
+            'reservations' => $reservations,
+        ]);
+    }
 }
