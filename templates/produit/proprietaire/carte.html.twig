@@ -47,6 +47,9 @@
                             <a href="{{ path('app_produit_details', {id: entree.id}) }}" class="text-decoration-none text-body">
                                 <span class="prodName">{{ entree.libProduit }} - </span>
                                 <span class="prodPrice">{{ entree.prixProduit|number_format(2, ',', ' ') }} €</span>
+                                {% if entree.vegetarien == 1 %}
+                                    <span>🌱</span>
+                                {% endif %}
                             </a>
                         {% endif %}
                     </li>
@@ -71,6 +74,9 @@
                             <a href="{{ path('app_produit_details', {id: plat.id}) }}" class="text-decoration-none text-body">
                                 <span class="prodName">{{ plat.libProduit }} - </span>
                                 <span class="prodPrice">{{ plat.prixProduit|number_format(2, ',', ' ') }} €</span>
+                                {% if plat.vegetarien == 1 %}
+                                    <span>🌱</span>
+                                {% endif %}
                             </a>
                         {% endif %}
                     </li>
@@ -152,6 +158,9 @@
                                         {% if plat.typePlat.id == 1 %}
                                             <li>
                                                 <span class="prodName">{{ plat.libProduit }}</span>
+                                                {% if plat.vegetarien == 1 %}
+                                                    <span>🌱</span>
+                                                {% endif %}
                                             </li>
                                         {% endif %}
                                     {% endfor %}
@@ -160,6 +169,9 @@
                                         {% if plat.typePlat.id == 2 %}
                                             <li>
                                                 <span class="prodName">{{ plat.libProduit }}</span>
+                                                {% if plat.vegetarien == 1 %}
+                                                    <span>🌱</span>
+                                                {% endif %}
                                             </li>
                                         {% endif %}
                                     {% endfor %}
