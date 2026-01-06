@@ -80,27 +80,32 @@
 
                 {% endif %}
 
-                {% if is_granted('ROLE_PROPRIETAIRE') and app.user == produit.idRestau.proprietaire%}
-                    <hr class="mt-4 mb-4">
+                <hr>
 
-                    <div class="d-flex justify-content-start align-items-center">
-                        {% if is_granted('ROLE_PROPRIETAIRE') and app.user == produit.idRestau.proprietaire%}
-                            {% if produit.visible %}
-                                <span class="badge bg-success px-3 py-2 me-3">Visible sur la carte</span>
-                            {% else %}
-                                <span class="badge bg-danger px-3 py-2 me-3">Non visible</span>
-                            {% endif %}
+                <div class="d-flex justify-content-start align-items-center">
+                    {% if is_granted('ROLE_PROPRIETAIRE') and app.user == produit.idRestau.proprietaire%}
+                        {% if produit.visible %}
+                            <span class="badge bg-success px-3 py-2 me-3">Visible sur la carte</span>
+                        {% else %}
+                            <span class="badge bg-danger px-3 py-2 me-3">Non visible</span>
                         {% endif %}
-
-                        {% if produit.alcoolise is defined %}
-                            {% if produit.alcoolise %}
-                                <span class="badge bg-danger px-3 py-2">Alcoolisé</span>
-                            {% else %}
-                                <span class="badge bg-success px-3 py-2">Sans alcool</span>
-                            {% endif %}
-                        {% endif %}
-                    </div>
                 {% endif %}
+
+                {% if produit.alcoolise is defined %}
+                    {% if produit.alcoolise %}
+                        <span class="badge bg-danger px-3 py-2">Alcoolisé</span>
+                    {% else %}
+                        <span class="badge bg-success px-3 py-2">Sans alcool</span>
+                    {% endif %}
+                {% endif %}
+
+                {% if produit.vegetarien is defined %}
+                    {% if produit.vegetarien is not null and produit.vegetarien == 1 %}
+                        <span class="badge bg-success px-3 py-2">🌱 Végétarien</span>
+                    {% endif %}
+                {% endif %}
+
+                </div>
 
                 <hr class="mt-4 mb-4">
 
