@@ -80,4 +80,36 @@ class ReservationController extends AbstractController
             'reservation' => $reservation,
         ]);
     }
+    #[Route('{id}/reservation/{idReservation}/delete', name: 'app_reservation_delete')]
+    #[IsGranted('ROLE_SERVEUR')]
+    public function deleteReservation(Request $request, #[MapEntity(mapping: ['idReservation' => 'id'])] Reservation $reservation, EntityManagerInterface $entityManager): Response
+    {
+        $restaurant = $reservation->getRestaurant();
+        $form = $this->createFormBuilder()
+            ->add('delete', SubmitType::class)
+            ->add('cancel', SubmitType::class)
+            ->getForm();
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            if ($form->get('delete')->isClicked()) {
+                $entityManager->remove($reservation);
+                $entityManager->flush();
+
+                return $this->redirectToRoute('app_reservation', ['id' => $restaurant->getId()]);
+            }
+
+            if ($form->get('cancel')->isClicked()) {
+                return $this->redirectToRoute('app_reservation_show', ['id' => $restaurant->getId(),'idReservation' => $reservation->getId()]);
+            }
+        }
+
+        return $this->render('reservation/delete.html.twig', [
+            'reservation' => $reservation,
+            'form' => $form->createView(),
+        ]);
+
+    }
+
 }
