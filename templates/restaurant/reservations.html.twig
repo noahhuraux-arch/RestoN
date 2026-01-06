@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Réservations - {{ restaurant.libRestau }}{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+        <h1>Réservations pour {{ restaurant.libRestau }}</h1>
+        <a href="{{ path('app_restaurant_home', {id: restaurant.id}) }}" class="btn btn-secondary mb-3">Retour à l'accueil</a>
+
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Date</th>
+                <th>Heure</th>
+                <th>Client</th>
+                <th>Table n° (Places)</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for reservation in reservations %}
+                <tr>
+                    <td>{{ reservation.date|date('d/m/Y') }}</td>
+                    <td>{{ reservation.heure|date('H:i') }}</td>
+                    <td>
+                        {{ reservation.client.prenom }} {{ reservation.client.nom }}
+                        <br><small class="text-muted">{{ reservation.client.telephone }}</small>
+                    </td>
+                    <td>{{ reservation.table.id }} ({{ reservation.table.nbPlace }} places)</td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="4" class="text-center">Aucune réservation pour le moment.</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
