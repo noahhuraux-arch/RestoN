@@ -24,6 +24,9 @@ class Plat extends Produit
     #[ORM\ManyToMany(targetEntity: Menu::class, mappedBy: 'idPlat')]
     private Collection $menus;
 
+    #[ORM\Column]
+    private ?bool $vegetarien = null;
+
     public function __construct()
     {
         $this->menus = new ArrayCollection();
@@ -76,6 +79,18 @@ class Plat extends Produit
         if ($this->menus->removeElement($menu)) {
             $menu->removeIdPlat($this);
         }
+
+        return $this;
+    }
+
+    public function isVegetarien(): ?bool
+    {
+        return $this->vegetarien;
+    }
+
+    public function setVegetarien(bool $vegetarien): static
+    {
+        $this->vegetarien = $vegetarien;
 
         return $this;
     }
