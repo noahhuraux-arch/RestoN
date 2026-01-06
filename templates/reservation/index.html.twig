@@ -21,7 +21,9 @@
                     <td>{{ reservation.date|date('d/m/Y') }}</td>
                     <td>{{ reservation.heure|date('H:i') }}</td>
                     <td>
-                        {{ reservation.client.prenom }} {{ reservation.client.nom }}
+                        <a href="{{ path('app_reservation_show', {id: restaurant.id, idReservation: reservation.id}) }}">
+                            {{ reservation.client.prenom }} {{ reservation.client.nom }}
+                        </a>
                     </td>
                 </tr>
             {% else %}

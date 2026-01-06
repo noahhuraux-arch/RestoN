@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Détail de la réservation n°{{ reservation.id }}</h1>
+
+    <ul>
+        <li>Client:{{ reservation.client.nom }} {{ reservation.client.prenom }}</li>
+        <li>Téléphone:{{ reservation.client.telephone }}</li>
+        <li>Email: {{ reservation.client.email }}</li>
+        <li>Date: {{ reservation.date|date('d/m/Y') }}</li>
+        <li>Heure: {{ reservation.heure|date('H:i') }}</li>
+        <li>Nombre de personnes: {{ reservation.nbPers }}</li>
+        <li>Table assignée: N°{{ reservation.id}}</li>
+    </ul>
+
+    <a href="{{ path('app_reservation', {id: reservation.restaurant.id}) }}">Retour à la liste</a>
+{% endblock %}
