@@ -32,9 +32,6 @@ abstract class Produit
     #[ORM\Column(length: 1024, nullable: true)]
     private ?string $descriptionProduit = null;
 
-    #[ORM\Column]
-    private ?bool $vegetarien = null;
-
     public function getId(): ?int
     {
         return $this->id;
@@ -84,18 +81,6 @@ abstract class Produit
     public function setDescriptionProduit(?string $descriptionProduit): static
     {
         $this->descriptionProduit = $descriptionProduit;
-
-        return $this;
-    }
-
-    public function isVegetarien(): ?bool
-    {
-        return $this->vegetarien;
-    }
-
-    public function setVegetarien(bool $vegetarien): static
-    {
-        $this->vegetarien = $vegetarien;
 
         return $this;
     }
