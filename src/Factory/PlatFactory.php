@@ -38,6 +38,7 @@ final class PlatFactory extends PersistentObjectFactory
             'prixProduit' => self::faker()->randomFloat(2, 2, 15),
             'visible' => true,
             'descriptionProduit' => self::faker()->text(150),
+            'vegetarien' => false,
         ];
     }
 
