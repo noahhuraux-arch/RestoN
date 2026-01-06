@@ -25,31 +25,19 @@ class Table
     #[ORM\OneToMany(targetEntity: Reservation::class, mappedBy: 'table')]
     private Collection $reservations;
 
-    #[ORM\ManyToOne(targetEntity: Restaurant::class, inversedBy: 'restaurant')]
+    #[ORM\ManyToOne(targetEntity: Restaurant::class, inversedBy: 'table')]
     private ?Restaurant $restaurant = null;
 
-    /**
-     * @var Collection<int, Commande>
-     */
-    #[ORM\OneToMany(targetEntity: Commande::class, mappedBy: 'tables')]
+    #[ORM\OneToMany(targetEntity: Commande::class, mappedBy: 'table')]
     private Collection $commande;
 
     public function __construct()
     {
         $this->commande = new ArrayCollection();
+        $this->reservations = new ArrayCollection();
     }
 
-    public function getReservations(): Collection
-    {
-        return $this->reservations;
-    }
-
-    public function setReservations(Collection $reservations): void
-    {
-        $this->reservations = $reservations;
-    }
-
-    public function getid(): ?int
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -62,7 +50,6 @@ class Table
     public function setNbPlace(int $nbPlace): static
     {
         $this->nbPlace = $nbPlace;
-
         return $this;
     }
 
@@ -74,13 +61,25 @@ class Table
     public function setDisponible(?bool $disponible): static
     {
         $this->disponible = $disponible;
-
         return $this;
     }
 
-    /**
-     * @return Collection<int, Commande>
-     */
+    public function getRestaurant(): ?Restaurant
+    {
+        return $this->restaurant;
+    }
+
+    public function setRestaurant(?Restaurant $restaurant): static
+    {
+        $this->restaurant = $restaurant;
+        return $this;
+    }
+
+    public function getReservations(): Collection
+    {
+        return $this->reservations;
+    }
+
     public function getCommande(): Collection
     {
         return $this->commande;
@@ -92,19 +91,16 @@ class Table
             $this->commande->add($commande);
             $commande->setTables($this);
         }
-
         return $this;
     }
 
     public function removeCommande(Commande $commande): static
     {
         if ($this->commande->removeElement($commande)) {
-            // set the owning side to null (unless already changed)
             if ($commande->getTables() === $this) {
                 $commande->setTables(null);
             }
         }
-
         return $this;
     }
 }

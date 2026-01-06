@@ -34,7 +34,7 @@ final class TableFactory extends PersistentProxyObjectFactory
     protected function defaults(): array|callable
     {
         return [
-            'nbPlace' => self::faker()->randomNumber(),
+            'nbPlace' => self::faker()->randomElement([2, 2, 4, 4, 6, 8]),
         ];
     }
 
