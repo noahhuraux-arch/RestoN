@@ -16,8 +16,8 @@ use Symfony\Component\Routing\Requirement\Requirement;
 
 class ReservationController extends AbstractController
 {
-    #[Route('{id}/reserver', name: 'app_reservation_creer', requirements: ['id' => Requirement::DIGITS], methods: ['GET', 'POST'])]
-    public function creerReservation(Request $request, Restaurant $restaurant, TableRepository $tableRepository, ClientRepository $clientRepository, EntityManagerInterface $entityManager): Response
+    #[Route('{id}/reserver', name: 'app_reservation_create', requirements: ['id' => Requirement::DIGITS], methods: ['GET', 'POST'])]
+    public function createReservation(Request $request, Restaurant $restaurant, TableRepository $tableRepository, ClientRepository $clientRepository, EntityManagerInterface $entityManager): Response
     {
         $reservation = new Reservation();
         $form = $this->createForm(ReservationType::class, $reservation, ['restaurant' => $restaurant]);
@@ -25,7 +25,7 @@ class ReservationController extends AbstractController
         $form->handleRequest($request);
 
         if ($request->isXmlHttpRequest()) {
-            return $this->render('reservation/creer.html.twig', [
+            return $this->render('reservation/create.html.twig', [
                 'form' => $form->createView(),
                 'restaurant' => $restaurant,
             ]);
@@ -51,7 +51,7 @@ class ReservationController extends AbstractController
             return $this->redirectToRoute('app_home');
         }
 
-        return $this->render('reservation/creer.html.twig', [
+        return $this->render('reservation/create.html.twig', [
             'form' => $form->createView(),
             'restaurant' => $restaurant,
         ]);
