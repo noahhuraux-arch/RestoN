@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Reservation;
+use App\Entity\Restaurant;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -16,28 +17,24 @@ class ReservationRepository extends ServiceEntityRepository
         parent::__construct($registry, Reservation::class);
     }
 
-    //    /**
-    //     * @return Reservation[] Returns an array of Reservation objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('r')
-    //            ->andWhere('r.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('r.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
-
-    //    public function findOneBySomeField($value): ?Reservation
-    //    {
-    //        return $this->createQueryBuilder('r')
-    //            ->andWhere('r.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+    /**
+     * Récupère toutes les réservations d'un restaurant avec les données
+     * client et table jointes (Eager Loading) pour éviter le N+1.
+     *
+     * * @return Reservation[]
+     */
+    public function findByRestaurantWithDetails(Restaurant $restaurant): array
+    {
+        return $this->createQueryBuilder('r')
+            ->leftJoin('r.client', 'c')
+            ->addSelect('c')
+            ->leftJoin('r.table', 't')
+            ->addSelect('t')
+            ->andWhere('r.restaurant = :restaurant')
+            ->setParameter('restaurant', $restaurant)
+            ->orderBy('r.date', 'ASC')
+            ->addOrderBy('r.heure', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
 }
