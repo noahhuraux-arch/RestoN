@@ -22,18 +22,18 @@ class ProduitFixtures extends Fixture implements DependentFixtureInterface
     ];
 
     private const plats = [
-        ['lib' => 'Soupe à l\'Oignon Gratinée', 'prix' => 9.00, 'typePlat' => '1', 'descriptionProduit' => 'Traditionnelle, avec croûtons et fromage fondu.'],
-        ['lib' => 'Escargots de Bourgogne (6 pièces)', 'prix' => 14.00, 'typePlat' => '1', 'descriptionProduit' => 'Préparés au beurre persillé et à l\'ail.'],
-        ['lib' => 'Terrine de Campagne', 'prix' => 9.50, 'typePlat' => '1', 'descriptionProduit' => 'Servie avec cornichons et pain de campagne.'],
-        ['lib' => 'Rillettes de Porc Maison', 'prix' => 10.00, 'typePlat' => '1', 'descriptionProduit' => 'Servies sur pain grillé, recette de grand-mère.'],
-        ['lib' => 'Côte de Bœuf (350g) Sauce au poivre', 'prix' => 32.00, 'typePlat' => '2', 'descriptionProduit' => 'Coupée au couteau, maturée, servie avec frites maison.'],
-        ['lib' => 'Magret de canard, sauce au miel', 'prix' => 24.00, 'typePlat' => '2', 'descriptionProduit' => 'Accompagné de pommes de terre sarladaises.'],
-        ['lib' => 'Blanquette de Veau à l\'Ancienne', 'prix' => 23.50, 'typePlat' => '2', 'descriptionProduit' => 'Morceaux de veau mijotés dans une sauce crémeuse aux champignons.'],
-        ['lib' => 'Cassoulet Toulousain', 'prix' => 25.00, 'typePlat' => '2', 'descriptionProduit' => 'plat du Sud-Ouest à base de haricots blancs, saucisse et confit de canard.'],
-        ['lib' => 'Mille-feuille à la vanille', 'prix' => 8.50, 'typePlat' => '3', 'descriptionProduit' => 'Pâte feuilletée croustillante et crème pâtissière légère.'],
-        ['lib' => 'Île Flottante', 'prix' => 7.00, 'typePlat' => '3', 'descriptionProduit' => 'Meringue légère sur lit de crème anglaise.'],
-        ['lib' => 'Moelleux au Chocolat, cœur coulant', 'prix' => 9.00, 'typePlat' => '3', 'descriptionProduit' => 'Servi avec une boule de glace vanille.'],
-        ['lib' => 'Assortiment de Fromages Affinés', 'prix' => 11.00, 'typePlat' => '3', 'descriptionProduit' => 'Sélection de trois fromages A.O.P. de la région.'],
+        ['lib' => 'Soupe à l\'Oignon Gratinée', 'prix' => 9.00, 'vegetarien' => true, 'typePlat' => '1', 'descriptionProduit' => 'Traditionnelle, avec croûtons et fromage fondu.'],
+        ['lib' => 'Escargots de Bourgogne (6 pièces)', 'prix' => 14.00, 'vegetarien' => false, 'typePlat' => '1', 'descriptionProduit' => 'Préparés au beurre persillé et à l\'ail.'],
+        ['lib' => 'Terrine de Campagne', 'prix' => 9.50, 'vegetarien' => false, 'typePlat' => '1', 'descriptionProduit' => 'Servie avec cornichons et pain de campagne.'],
+        ['lib' => 'Rillettes de Porc Maison', 'prix' => 10.00, 'vegetarien' => false, 'typePlat' => '1', 'descriptionProduit' => 'Servies sur pain grillé, recette de grand-mère.'],
+        ['lib' => 'Côte de Bœuf (350g) Sauce au poivre', 'prix' => 32.00, 'vegetarien' => false, 'typePlat' => '2', 'descriptionProduit' => 'Coupée au couteau, maturée, servie avec frites maison.'],
+        ['lib' => 'Magret de canard, sauce au miel', 'prix' => 24.00, 'vegetarien' => false, 'typePlat' => '2', 'descriptionProduit' => 'Accompagné de pommes de terre sarladaises.'],
+        ['lib' => 'Blanquette de Veau à l\'Ancienne', 'prix' => 23.50, 'vegetarien' => false, 'typePlat' => '2', 'descriptionProduit' => 'Morceaux de veau mijotés dans une sauce crémeuse aux champignons.'],
+        ['lib' => 'Cassoulet Toulousain', 'prix' => 25.00, 'vegetarien' => false, 'typePlat' => '2', 'descriptionProduit' => 'plat du Sud-Ouest à base de haricots blancs, saucisse et confit de canard.'],
+        ['lib' => 'Mille-feuille à la vanille', 'prix' => 8.50, 'vegetarien' => false, 'typePlat' => '3', 'descriptionProduit' => 'Pâte feuilletée croustillante et crème pâtissière légère.'],
+        ['lib' => 'Île Flottante', 'prix' => 7.00, 'vegetarien' => false, 'typePlat' => '3', 'descriptionProduit' => 'Meringue légère sur lit de crème anglaise.'],
+        ['lib' => 'Moelleux au Chocolat, cœur coulant', 'prix' => 9.00, 'vegetarien' => false, 'typePlat' => '3', 'descriptionProduit' => 'Servi avec une boule de glace vanille.'],
+        ['lib' => 'Assortiment de Fromages Affinés', 'prix' => 11.00, 'vegetarien' => false, 'typePlat' => '3', 'descriptionProduit' => 'Sélection de trois fromages A.O.P. de la région.'],
     ];
 
     private const menus = [
@@ -72,6 +72,7 @@ class ProduitFixtures extends Fixture implements DependentFixtureInterface
                     'prixProduit' => $plat['prix'],
                     'descriptionProduit' => $plat['descriptionProduit'],
                     'visible' => true,
+                    'vegetarien' => $plat['vegetarien'],
                     'idRestau' => $restaurant,
                     'typePlat' => $typePlat,
                 ]);
