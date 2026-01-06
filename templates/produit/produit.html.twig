@@ -80,38 +80,31 @@
 
                 {% endif %}
 
-                <div class="d-flex justify-content-start align-items-center mt-4">
+                {% if is_granted('ROLE_PROPRIETAIRE') and app.user == produit.idRestau.proprietaire%}
+                    <hr class="mt-4 mb-4">
 
-                    {% if is_granted('ROLE_PROPRIETAIRE') %}
-                        <hr>
-                        {% if produit.visible %}
-                        <span class="badge bg-success px-3 py-2 me-3 ">
-                            Visible sur la carte
-                        </span>
-                        {% else %}
-                            <span class="badge bg-danger px-3 py-2 me-3">
-                                Non visible
-                            </span>
+                    <div class="d-flex justify-content-start align-items-center">
+                        {% if is_granted('ROLE_PROPRIETAIRE') and app.user == produit.idRestau.proprietaire%}
+                            {% if produit.visible %}
+                                <span class="badge bg-success px-3 py-2 me-3">Visible sur la carte</span>
+                            {% else %}
+                                <span class="badge bg-danger px-3 py-2 me-3">Non visible</span>
+                            {% endif %}
                         {% endif %}
-                    {% endif %}
 
-                    {% if produit.alcoolise is defined %}
-                        {% if produit.alcoolise %}
-                            <span class="badge bg-danger px-3 py-2">
-                                Alcoolisé
-                            </span>
-                        {% else %}
-                            <span class="badge bg-success px-3 py-2">
-                                Sans alcool
-                            </span>
+                        {% if produit.alcoolise is defined %}
+                            {% if produit.alcoolise %}
+                                <span class="badge bg-danger px-3 py-2">Alcoolisé</span>
+                            {% else %}
+                                <span class="badge bg-success px-3 py-2">Sans alcool</span>
+                            {% endif %}
                         {% endif %}
-                    {% endif %}
+                    </div>
+                {% endif %}
 
-                </div>
+                <hr class="mt-4 mb-4">
 
-                <hr>
-
-                <p class="text-muted mt-3 fs-5">
+                <p class="text-muted fs-5">
                     Restaurant :
                     <strong>{{ produit.idRestau.libRestau ?? 'Non renseigné' }}</strong>
                 </p>
@@ -121,7 +114,7 @@
                         ← Retour à la carte
                     </a>
 
-                    {% if is_granted('ROLE_PROPRIETAIRE') %}
+                    {% if is_granted('ROLE_PROPRIETAIRE') and app.user == produit.idRestau.proprietaire%}
 
                         <div class="d-flex gap-2">
                             {% if produit.alcoolise is defined %}
