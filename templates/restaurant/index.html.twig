@@ -15,14 +15,14 @@
     <div class="container">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-        <div class="home-section" style="background-image: url('{{ asset('images/thumbnails/thumbnail' ~ restaurant.id ~ '.png') }}'); height: 60vh;">
+        <div class="home-section" style="background-image: url('{{ asset('images/thumbnails/thumbnail' ~ restaurant.id ~ '.png') }}');">
             <div class="home-overlay"></div>
             <div class="home-content">
                 <h1 class="display-3 fw-bold">{{ restaurant.libRestau }}</h1>
                 <p class="lead mb-4">Une expérience culinaire authentique et moderne.</p>
                 <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
-                    <a href="#" class="btn btn-warning btn-lg px-4 gap-3">Voir la Carte</a>
-                    <a href="#" class="btn btn-light btn-lg px-4">Réserver une table</a>
+                    <a href="{{ path('app_produit', {idRestau: restaurant.id}) }}" class="btn btn-warning btn-lg px-4 gap-3">Voir la Carte</a>
+                    <a href="{{ path('app_reservation_create', {id: restaurant.id}) }}" class="btn btn-light btn-lg px-4">Réserver une table</a>
                 </div>
             </div>
         </div>
@@ -50,8 +50,8 @@
                 <div class="info-card">
                     <i class="fa fa-phone fa-3x mb-3"></i>
                     <h4>Contact</h4>
-                    <p class="mb-0">{{ restaurant.telRestau }}</p>
-                    <p>{{ restaurant.emailRestau }}</p>
+                    <p class="mb-0"><a href="tel:{{ restaurant.telRestau }}" class="text-decoration-none text-dark">{{ restaurant.telRestau }}</a></p>
+                    <p><a href="mailto:{{ restaurant.emailRestau }}" class="text-decoration-none text-dark">{{ restaurant.emailRestau }}</a></p>
                 </div>
             </div>
         </div>

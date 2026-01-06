@@ -1,7 +1,7 @@
 .home-section {
     background-size: cover;
     background-position: center;
-    height: 60vh;
+    min-height: 60vh;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -37,46 +37,65 @@
     border: 1px solid #dee2e6;
     border-radius: 0.5rem;
     padding: 1.5rem;
-    box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.05);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.05);
 }
 
-.info-card i, .info-card h4 {
+.info-card i,
+.info-card h4 {
     color: #ff5722;
 }
 
-.prodName , .prodPrice{
+.prodName,
+.prodPrice {
     font-family: "Playfair", serif;
     font-size: 1.3rem;
 }
 
-.listCarte h2{
+.listCarte h2 {
     color: #ffc107;
     font-family: "Playfair", serif;
     font-size: 2.6rem;
 }
 
-.listCarte h1{
+.listCarte h1 {
     color: #ffc107;
     font-family: "Lora", serif;
     font-size: 3.5rem;
     font-weight: lighter;
 }
 
-.menuName{
+.menuName {
     color: #ffc107;
     font-family: "Playfair", serif;
     font-size: 2.3rem;
 }
 
-.gestionProduitName{
+.gestionProduitName {
     color: #ffc107;
     font-family: "Lora", serif;
     font-size: 3rem;
 }
 
-.lstProduct{
+.lstProduct {
     background-color: #f8f9fa;
     border: 1px solid #dee2e6;
     border-radius: 16px;
     box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.05);
+}
+
+@media (max-width: 768px) {
+    .home-section {
+        min-height: 20vh;
+        padding: 2rem 1rem;
+    }
+
+    .listCarte h1,
+    .display-3 {
+        font-size: 2.5rem !important;
+    }
+
+    .listCarte h2,
+    .gestionProduitName {
+        font-size: 1.8rem;
+    }
 }

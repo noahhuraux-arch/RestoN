@@ -6,14 +6,14 @@
     <div class="container">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-        <div class="home-section" style="background-image: url('{{ asset('images/home_restaurant.jpg') }}'); height: 60vh;">
+        <div class="home-section" style="background-image: url('{{ asset('images/home_restaurant.jpg') }}');">
             <div class="home-overlay" style="background: none;"></div>
             <div class="home-content">
                 <h1 class="display-3 fw-bold">Resto'N</h1>
                 <p class="lead mb-4">Besoin de gérer votre restaurant ? Contactez-nous !</p>
 
                 <div class="d-grid gap-3 d-sm-flex justify-content-sm-center">
-                    <a href="#" class="btn btn-warning btn-lg px-4">S'inscrire</a>
+                    <a href="{{ path('app_proprietaire_register') }}" class="btn btn-warning btn-lg px-4">S'inscrire</a>
                     <a href="#about" class="btn btn-light btn-lg px-4">Plus d'informations</a>
                 </div>
             </div>
