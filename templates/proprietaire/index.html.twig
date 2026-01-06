@@ -12,6 +12,10 @@
                     <i class="bi bi-eye"></i> Voir le restaurant
                 </a>
 
+                <a href="{{ path('app_restaurant_reservations', {id: restaurant.id}) }}" class="btn btn-primary btn-sm me-2 shadow-sm">
+                    <i class="bi bi-calendar2-check me-1"></i> Gérer les réservations
+                </a>
+
                 <a href="{{ path('app_produit_proprietaire', {idRestau: restaurant.id}) }}" class="btn btn-success btn-sm me-2">
                     <i class="bi bi-egg-fried"></i> Gérer la carte
                 </a>
