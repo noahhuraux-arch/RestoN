@@ -79,18 +79,20 @@
                     {% endif %}
 
                 {% endif %}
-                <hr>
 
                 <div class="d-flex justify-content-start align-items-center mt-4">
 
-                    {% if produit.visible %}
-                    <span class="badge bg-success px-3 py-2 me-3 ">
-                        Visible sur la carte
-                    </span>
-                    {% else %}
-                        <span class="badge bg-danger px-3 py-2 me-3">
-                            Non visible
+                    {% if is_granted('ROLE_PROPRIETAIRE') %}
+                        <hr>
+                        {% if produit.visible %}
+                        <span class="badge bg-success px-3 py-2 me-3 ">
+                            Visible sur la carte
                         </span>
+                        {% else %}
+                            <span class="badge bg-danger px-3 py-2 me-3">
+                                Non visible
+                            </span>
+                        {% endif %}
                     {% endif %}
 
                     {% if produit.alcoolise is defined %}
