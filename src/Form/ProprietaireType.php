@@ -20,14 +20,17 @@ class ProprietaireType extends AbstractType
             ->add('nom', TextType::class, ['label' => 'Nom'])
             ->add('telephone', TelType::class, ['label' => 'Téléphone'])
             ->add('email', EmailType::class, ['label' => 'Email'])
-            ->add('password', PasswordType::class, ['label' => 'Mot de passe'])
-        ;
+            ->add('password', PasswordType::class, ['label' => 'Mot de passe',
+                'mapped' => false,
+                'required' => !$options['is_edit'],
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => Proprietaire::class,
+            'is_edit' => false,
         ]);
     }
 }

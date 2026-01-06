@@ -69,8 +69,8 @@
                             {{ app.user.nom }}
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item" href="{{ path('app_proprietaire') }}">Gérer mon profil</a></li>
                             {% if is_granted('ROLE_PROPRIETAIRE') %}
+                                <li><a class="dropdown-item" href="{{ path('app_proprietaire_update') }}">Gérer mon profil</a></li>
                                 <li><a class="dropdown-item" href="{{ path('app_proprietaire') }}">Mes restaurants</a></li>
                             {% endif %}
                             <li><hr class="dropdown-divider"></li>
