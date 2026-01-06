@@ -16,14 +16,21 @@ use Symfony\Component\Routing\Requirement\Requirement;
 
 class ReservationController extends AbstractController
 {
-    #[Route('{id}/reserver', name: 'app_reservation_creer', requirements: ['id' => Requirement::DIGITS], methods: ['GET', 'POST'])]
-    public function creerReservation(Request $request, Restaurant $restaurant, TableRepository $tableRepository, ClientRepository $clientRepository, EntityManagerInterface $entityManager): Response
+    #[Route('{id}/reserver', name: 'app_reservation_create', requirements: ['id' => Requirement::DIGITS], methods: ['GET', 'POST'])]
+    public function createReservation(Request $request, Restaurant $restaurant, TableRepository $tableRepository, ClientRepository $clientRepository, EntityManagerInterface $entityManager): Response
     {
         $reservation = new Reservation();
-        $form = $this->createForm(ReservationType::class, $reservation);
-        $erreurMessage = null;
+        $form = $this->createForm(ReservationType::class, $reservation, ['restaurant' => $restaurant]);
 
         $form->handleRequest($request);
+
+        if ($request->isXmlHttpRequest()) {
+            return $this->render('reservation/create.html.twig', [
+                'form' => $form->createView(),
+                'restaurant' => $restaurant,
+            ]);
+        }
+
         if ($form->isSubmitted() && $form->isValid()) {
             $reservation->setRestaurant($restaurant);
             $NouveauClient = $reservation->getClient();
@@ -37,20 +44,16 @@ class ReservationController extends AbstractController
             if ($Client) {
                 $reservation->setClient($Client);
             }
-            if (null === $tableDisponible) {
-                $erreurMessage = 'Désolé, ce créneau n\'est plus disponible.';
-            } else {
-                $reservation->setTable($tableDisponible);
-                $entityManager->persist($reservation);
-                $entityManager->flush();
+            $reservation->setTable($tableDisponible);
+            $entityManager->persist($reservation);
+            $entityManager->flush();
 
-                return $this->redirectToRoute('app_home');
-            }
+            return $this->redirectToRoute('app_home');
         }
 
-        return $this->render('reservation/creer.html.twig', [
+        return $this->render('reservation/create.html.twig', [
             'form' => $form->createView(),
-            'erreur' => $erreurMessage,
+            'restaurant' => $restaurant,
         ]);
     }
 }

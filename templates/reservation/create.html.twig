@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Réserver {% endblock %}
+{% block javascripts %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('reservation_form');
+            const dateInput = document.getElementById('reservation_date');
+            const nbPersInput = document.getElementById('reservation_nbPers');
+
+            const updateForm = async () => {
+                const data = new FormData(form);
+                const response = await fetch(window.location.href, {
+                    method: 'POST',
+                    body: data,
+                    headers: { 'X-Requested-With': 'XMLHttpRequest' }
+                });
+
+                const html = await response.text();
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
+                const newHeure = doc.getElementById('reservation_heure');
+                const oldHeure = document.getElementById('reservation_heure');
+                if (newHeure && oldHeure) {
+                    oldHeure.innerHTML = newHeure.innerHTML;
+                }
+            };
+
+            dateInput.addEventListener('change', updateForm);
+            nbPersInput.addEventListener('input', updateForm);
+        });
+    </script>
+{% endblock %}
+
+{% block body %}
+    <div class="container my-5">
+        <h1 class="text-center mb-4">Réserver votre table</h1>
+    </div>
+        {{ form_start(form, {attr: {id: 'reservation_form'}}) }}
+            {{ form_row(form.client.nom, {label: 'Nom'}) }}
+            {{ form_row(form.client.prenom, {label: 'Prénom'}) }}
+            {{ form_row(form.client.email, {label: 'e-mail'}) }}
+            {{ form_row(form.client.telephone, {label: 'Téléphone'}) }}
+            {{ form_row(form.date, {label: 'Date'}) }}
+            {{ form_row(form.nbPers, {label: 'nombre de Personne'}) }}
+            {{ form_row(form.heure, {
+                label: 'Heure',
+            }) }}
+            {{ form_rest(form) }}
+        <div class="d-grid mt-3">
+            <button type="submit" class="btn btn-primary btn-lg">Valider</button>
+        </div>
+
+        {{ form_end(form) }}
+
+    </div>
+{% endblock %}
