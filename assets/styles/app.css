@@ -83,6 +83,31 @@
     box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.05);
 }
 
+/* --- Chatbot --- */
+#chatbot-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1050;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+#chatbot-toggler {
+    transition: transform 0.3s ease;
+    border: 2px solid #ffc107;
+}
+
+#chatbot-toggler:hover {
+    transform: scale(1.1);
+}
+
+#chatbot-window {
+    width: 350px;
+    margin-bottom: 15px;
+}
+
 @media (max-width: 768px) {
     .home-section {
         min-height: 20vh;
@@ -97,5 +122,9 @@
     .listCarte h2,
     .gestionProduitName {
         font-size: 1.8rem;
+    }
+
+    #chatbot-window {
+        width: 300px; /* Un peu plus petit sur mobile */
     }
 }
