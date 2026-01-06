@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Requirement\Requirement;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class ReservationController extends AbstractController
 {
@@ -54,6 +55,17 @@ class ReservationController extends AbstractController
         return $this->render('reservation/create.html.twig', [
             'form' => $form->createView(),
             'restaurant' => $restaurant,
+        ]);
+    }
+    #[IsGranted('ROLE_SERVEUR')]
+    #[Route('{id}/reservation', name: 'app_reservation')]
+    public function indexReservation(Restaurant $restaurant): Response
+    {
+        $reservation = $restaurant->getReservations();
+
+        return $this->render('reservation/index.html.twig', [
+            'restaurant' => $restaurant,
+            'reservation' => $reservation,
         ]);
     }
 }

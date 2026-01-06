@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Entity\Horaire;
 use App\Entity\Restaurant;
 use App\Form\RestaurantType;
-use App\Repository\ReservationRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -181,17 +180,6 @@ final class RestaurantController extends AbstractController
         return $this->render('restaurant/delete.html.twig', [
             'restaurant' => $restaurant,
             'form' => $form->createView(),
-        ]);
-    }
-
-    #[Route('/{id}/reservations', name: 'app_restaurant_reservations', requirements: ['id' => Requirement::DIGITS])]
-    public function listReservations(Restaurant $restaurant, ReservationRepository $reservationRepository): Response
-    {
-        $reservations = $reservationRepository->findByRestaurantWithDetails($restaurant);
-
-        return $this->render('restaurant/reservations.html.twig', [
-            'restaurant' => $restaurant,
-            'reservations' => $reservations,
         ]);
     }
 }
