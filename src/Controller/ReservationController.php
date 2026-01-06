@@ -50,6 +50,7 @@ class ReservationController extends AbstractController
 
             return $this->redirectToRoute('app_home');
         }
+
         return $this->render('reservation/creer.html.twig', [
             'form' => $form->createView(),
             'restaurant' => $restaurant,

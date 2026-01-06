@@ -86,17 +86,15 @@ class AddHeureFieldListener implements EventSubscriberInterface
             }
         }
         $factory = $form->getConfig()->getFormFactory();
-        $builder= $factory->createNamedBuilder('heure',ChoiceType::class,null, ['choices' => $choices,'auto_initialize' => false]);
+        $builder = $factory->createNamedBuilder('heure', ChoiceType::class, null, ['choices' => $choices, 'auto_initialize' => false]);
         $builder->addModelTransformer(new CallbackTransformer(
             function ($Date) {
-                return  ($Date instanceof \DateTimeInterface) ?$Date->format('H:i'): '';
+                return ($Date instanceof \DateTimeInterface) ? $Date->format('H:i') : '';
             },
             function ($stringHeure) {
                 return new \DateTime($stringHeure);
             }
         ));
         $form->add($builder->getForm());
-
     }
-
 }
