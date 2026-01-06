@@ -20,7 +20,15 @@
                     </div>
                 </div>
 
-                {{ form_row(form.visible) }}
+                <div class="row">
+                    <div class="col-md-1">
+                        {{ form_row(form.visible) }}
+                    </div>
+                    <div class="col-md-1">
+                        {{ form_row(form.vegetarien) }}
+                    </div>
+                </div>
+
                 {{ form_row(form.typePlat) }}
 
                 <div class="mt-4 d-grid gap-2 d-md-flex justify-content-between">

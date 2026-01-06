@@ -21,6 +21,7 @@ class PlatType extends AbstractType
             ->add('libProduit', TextType::class, ['label' => 'Nom'])
             ->add('prixProduit', NumberType::class, ['label' => 'Prix', 'attr' => ['min' => 0]])
             ->add('visible', CheckboxType::class, ['label' => 'Visible', 'required' => false, 'data' => true])
+            ->add('vegetarien', CheckboxType::class, ['label' => 'Végétarien', 'required' => false])
             ->add('descriptionProduit', TextType::class, ['label' => 'Description', 'required' => false])
             ->add('typePlat', EntityType::class, [
                 'class' => TypePlat::class,

@@ -6,7 +6,9 @@
 
     {% if not boissons and not entrees and not plats and not desserts %}
         <p class="text-center fw-bold fs-1">La carte n'est pas disponible</p>
-
+        <a href="{{ path('app_produit_insert', {idRestau: restaurant.id}) }}" class="btn btn-outline-dark rounded-3 px-4 fs-6 fw-bold">
+            Ajouter un produit
+        </a>
     {% else %}
 
         <div class="listCarte container-xxl">
@@ -47,6 +49,9 @@
                             <a href="{{ path('app_produit_details', {id: entree.id}) }}" class="text-decoration-none text-body">
                                 <span class="prodName">{{ entree.libProduit }} - </span>
                                 <span class="prodPrice">{{ entree.prixProduit|number_format(2, ',', ' ') }} €</span>
+                                {% if entree.vegetarien == 1 %}
+                                    <span>🌱</span>
+                                {% endif %}
                             </a>
                         {% endif %}
                     </li>
@@ -71,6 +76,9 @@
                             <a href="{{ path('app_produit_details', {id: plat.id}) }}" class="text-decoration-none text-body">
                                 <span class="prodName">{{ plat.libProduit }} - </span>
                                 <span class="prodPrice">{{ plat.prixProduit|number_format(2, ',', ' ') }} €</span>
+                                {% if plat.vegetarien == 1 %}
+                                    <span>🌱</span>
+                                {% endif %}
                             </a>
                         {% endif %}
                     </li>
@@ -152,6 +160,9 @@
                                         {% if plat.typePlat.id == 1 %}
                                             <li>
                                                 <span class="prodName">{{ plat.libProduit }}</span>
+                                                {% if plat.vegetarien == 1 %}
+                                                    <span>🌱</span>
+                                                {% endif %}
                                             </li>
                                         {% endif %}
                                     {% endfor %}
@@ -160,6 +171,9 @@
                                         {% if plat.typePlat.id == 2 %}
                                             <li>
                                                 <span class="prodName">{{ plat.libProduit }}</span>
+                                                {% if plat.vegetarien == 1 %}
+                                                    <span>🌱</span>
+                                                {% endif %}
                                             </li>
                                         {% endif %}
                                     {% endfor %}
