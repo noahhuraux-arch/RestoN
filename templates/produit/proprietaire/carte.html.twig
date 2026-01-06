@@ -6,7 +6,9 @@
 
     {% if not boissons and not entrees and not plats and not desserts %}
         <p class="text-center fw-bold fs-1">La carte n'est pas disponible</p>
-
+        <a href="{{ path('app_produit_insert', {idRestau: restaurant.id}) }}" class="btn btn-outline-dark rounded-3 px-4 fs-6 fw-bold">
+            Ajouter un produit
+        </a>
     {% else %}
 
         <div class="listCarte container-xxl">
