@@ -37,7 +37,7 @@ class ReservationController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $reservation->setRestaurant($restaurant);
             $NouveauClient = $reservation->getClient();
-            $Client = $clientRepository->findExistingByClient($NouveauClient->getNom(), $NouveauClient->getPrenom(), $NouveauClient->getEmail(), $NouveauClient->getTelephone());
+            $Client = $clientRepository->findExistingByClient($NouveauClient->getEmail());
             $tableDisponible = $tableRepository->findAvailableTables(
                 $restaurant,
                 $reservation->getDate(),
@@ -45,7 +45,9 @@ class ReservationController extends AbstractController
                 $reservation->getNbPers()
             );
             if ($Client) {
+                $Client->setRoles(['ROLE_CLIENT']);
                 $reservation->setClient($Client);
+
             }
             $reservation->setTable($tableDisponible);
             $entityManager->persist($reservation);
