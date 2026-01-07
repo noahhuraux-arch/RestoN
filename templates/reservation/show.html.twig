@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Détails Réservation n°{{ reservation.id }}{% endblock %}
+{% block title %}Détails Réservation n°{{ reservations.id }}{% endblock %}
 
 {% block body %}
     <div class="container py-5">
@@ -18,11 +18,11 @@
                                     <div class="row">
                                         <div class="col-6">
                                             <small class="text-muted d-block text-uppercase" style="font-size: 0.75rem;">Client</small>
-                                            <span class="h6 mb-0 fw-bold">{{ reservation.client.prenom }} {{ reservation.client.nom }}</span>
+                                            <span class="h6 mb-0 fw-bold">{{ reservations.client.prenom }} {{ reservations.client.nom }}</span>
                                         </div>
                                         <div class="col-6">
                                             <small class="text-muted d-block text-uppercase" style="font-size: 0.75rem;">Numero de Reservation</small>
-                                            <span class="h6 mb-0 fw-bold">{{ reservation.id }}</span>
+                                            <span class="h6 mb-0 fw-bold">{{ reservations.id }}</span>
                                         </div>
                                      </div>
                                 </li>
@@ -30,11 +30,11 @@
                                 <div class="row">
                                     <div class="col-6">
                                         <small class="text-muted d-block text-uppercase " style="font-size: 0.75rem;">Téléphone</small>
-                                        <span class="fw-bold">{{ reservation.client.telephone }}</span>
+                                        <span class="fw-bold">{{ reservations.client.telephone }}</span>
                                     </div>
                                     <div class="col-6 text-break">
                                         <small class="text-muted d-block text-uppercase" style="font-size: 0.75rem;">Email</small>
-                                        <span class="fw-bold">{{ reservation.client.email }}</span>
+                                        <span class="fw-bold">{{ reservations.client.email }}</span>
                                     </div>
                                 </div>
                             </li>
@@ -42,22 +42,22 @@
                                 <div class="row text-center">
                                     <div class="col-4 border-0">
                                         <small class="text-muted d-block text-uppercase" style="font-size: 0.65rem;">Date</small>
-                                        <span class="fw-bold">{{ reservation.date|date('d/m/Y') }}</span>
+                                        <span class="fw-bold">{{ reservations.date|date('d/m/Y') }}</span>
                                     </div>
                                     <div class="col-4 border-0">
                                         <small class="text-muted d-block text-uppercase" style="font-size: 0.65rem;">Heure</small>
-                                        <span class="fw-bold">{{ reservation.heure|date('H:i') }}</span>
+                                        <span class="fw-bold">{{ reservations.heure|date('H:i') }}</span>
                                     </div>
                                     <div class="col-4">
                                         <small class="text-muted d-block text-uppercase" style="font-size: 0.65rem;">Couverts</small>
-                                        <span class="fw-bold">{{ reservation.nbPers }} pers.</span>
+                                        <span class="fw-bold">{{ reservations.nbPers }} pers.</span>
                                     </div>
                                 </div>
                             </li>
 
                             <li class="list-group-item py-3 border-0">
                                 <small class="text-muted d-block text-uppercase" style="font-size: 0.75rem;">Table assignée</small>
-                                <span class="fw-bold">N°{{ reservation.table.id }}</span>
+                                <span class="fw-bold">N°{{ reservations.table.id }}</span>
                             </li>
                         </ul>
                     </div>
@@ -66,7 +66,7 @@
                         <a href="{{ path('app_reservation', {id: restaurant.id}) }}" class="btn btn-outline-secondary">
                             <span class="bi bi-arrow-left me-1"> Retour</span>
                         </a>
-                        <a href="{{ path('app_reservation_delete', {id: restaurant.id, idReservation: reservation.id}) }}" class="btn btn-danger">
+                        <a href="{{ path('app_reservation_delete', {id: restaurant.id, idReservation: reservations.id}) }}" class="btn btn-danger">
                             <span class="bi bi-trash me-1"> Supprimer</span>
                         </a>
                     </div>

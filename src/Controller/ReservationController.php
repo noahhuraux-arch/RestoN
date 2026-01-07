@@ -65,11 +65,11 @@ class ReservationController extends AbstractController
     #[Route('{id}/reservation', name: 'app_reservation')]
     public function indexReservation(Restaurant $restaurant): Response
     {
-        $reservation = $restaurant->getReservations();
+        $reservations = $restaurant->getReservations();
 
         return $this->render('reservation/index.html.twig', [
             'restaurant' => $restaurant,
-            'reservation' => $reservation,
+            'reservations' => $reservations,
         ]);
     }
 
@@ -79,7 +79,7 @@ class ReservationController extends AbstractController
     {
         return $this->render('reservation/show.html.twig', [
             'restaurant' => $restaurant,
-            'reservation' => $reservation,
+            'reservations' => $reservation,
         ]);
     }
     #[Route('{id}/reservation/{idReservation}/delete', name: 'app_reservation_delete')]
