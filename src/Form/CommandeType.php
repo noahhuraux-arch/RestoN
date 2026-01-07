@@ -4,12 +4,13 @@ namespace App\Form;
 
 use App\Entity\Commande;
 use App\Entity\Produit;
-use App\Entity\Reservation;
 use App\Entity\Serveur;
+use App\Entity\Reservation;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Doctrine\ORM\EntityRepository;
 
 class CommandeType extends AbstractType
 {
@@ -28,20 +29,20 @@ class CommandeType extends AbstractType
                 'class' => Reservation::class,
                 'choices' => $restaurant->getReservations(),
                 'choice_label' => function (Reservation $r) {
-                    return 'Table n°' . ($r->getTable() ? $r->getTable()->getId() : '?') . ' (' . $r->getHeure()->format('H:i') . ')';
+                    return 'Table n°' . ($r->getTable() ? $r->getTable()->getId() : '?');
                 },
-                'placeholder' => 'Sans réservation / Vente directe',
-                'mapped' => false, // On gère manuellement dans le controller
+                'placeholder' => 'Vente directe',
+                'mapped' => false,
                 'required' => false,
                 'attr' => ['class' => 'form-select']
             ])
             ->add('produits', EntityType::class, [
                 'class' => Produit::class,
-                'choices' => array_merge(
-                    $restaurant->getPlats()->toArray(),
-                    $restaurant->getBoissons()->toArray(),
-                    $restaurant->getMenus()->toArray()
-                ),
+                'query_builder' => function (EntityRepository $er) use ($restaurant) {
+                    return $er->createQueryBuilder('p')
+                        ->where('p.idRestau = :res')
+                        ->setParameter('res', $restaurant);
+                },
                 'multiple' => true,
                 'expanded' => true,
                 'choice_label' => 'libProduit',
