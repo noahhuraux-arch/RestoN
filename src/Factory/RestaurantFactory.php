@@ -66,7 +66,11 @@ final class RestaurantFactory extends PersistentProxyObjectFactory
     protected function initialize(): static
     {
         return $this
-            // ->afterInstantiate(function(Restaurant $restaurant): void {})
+            ->afterPersist(function (Restaurant $restaurant): void {
+                $id = $restaurant->getId();
+                $restaurant->setLogo("logo{$id}.png");
+                $restaurant->setBanniere("thumbnail{$id}.png");
+            })
         ;
     }
 }
