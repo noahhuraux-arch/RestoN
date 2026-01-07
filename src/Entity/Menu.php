@@ -22,6 +22,7 @@ class Menu extends Produit
 
     public function __construct()
     {
+        parent::__construct();
         $this->idPlat = new ArrayCollection();
     }
 

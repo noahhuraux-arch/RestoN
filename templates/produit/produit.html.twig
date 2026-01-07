@@ -80,8 +80,6 @@
 
                 {% endif %}
 
-                <hr>
-
                 <div class="d-flex justify-content-start align-items-center">
                     {% if is_granted('ROLE_PROPRIETAIRE') and app.user == produit.idRestau.proprietaire%}
                         {% if produit.visible %}
@@ -106,6 +104,20 @@
                 {% endif %}
 
                 </div>
+
+                {% if produit.allergenes is not empty %}
+                    <hr>
+                    <div class="mb-4">
+                        <h5 class="text-danger">Allergènes :</h5>
+                        <div class="d-flex flex-wrap gap-2 mt-2">
+                            {% for allergene in produit.allergenes %}
+                                <span class="badge bg-light text-dark border px-3 py-2">
+                                    {{ allergene.name }}
+                                </span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endif %}
 
                 <hr class="mt-4 mb-4">
 

@@ -15,6 +15,11 @@ class Boisson extends Produit
     #[ORM\JoinColumn(nullable: false)]
     private ?Restaurant $idRestau = null;
 
+    public function __construct()
+    {
+        parent::__construct();
+    }
+
     public function isAlcoolise(): ?bool
     {
         return $this->alcoolise;
