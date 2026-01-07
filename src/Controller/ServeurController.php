@@ -47,6 +47,7 @@ final class ServeurController extends AbstractController
             $serveur->setRestaurant($restaurant);
             $serveur->setRoles(['ROLE_SERVEUR']);
             $serveur->setMustChangePassword(true);
+            $tempPass = bin2hex(random_bytes(4));
 
             $tempPass = 'Bienvenue2026!';
             $serveur->setPassword($hasher->hashPassword($serveur, $tempPass));
