@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Supprimer un membre de l'équipe - {{ serveur.prenom }}{% endblock %}
+
+{% block body %}
+    <div class="container py-5">
+        <div class="alert alert-danger text-center shadow-sm">
+            <h1 class="h3"><i class="fas fa-exclamation-triangle me-2"></i> Attention !</h1>
+            <p class="lead">
+                Êtes-vous sûr de vouloir supprimer définitivement le serveur
+                <strong>"{{ serveur.prenom }} {{ serveur.nom }}"</strong> de l'établissement
+                <strong>"{{ restaurant.librestau }}"</strong> ?
+            </p>
+            <p class="mb-0 small">Cette action est irréversible et supprimera son accès à l'application.</p>
+        </div>
+
+        <div class="card shadow-sm border-0 mt-4">
+            <div class="card-body p-4">
+                <div class="d-flex justify-content-center mt-2">
+                    {{ form_start(form, {attr: {class: 'd-flex gap-3 align-items-center'}}) }}
+
+                    {{ form_widget(form.delete, {
+                        attr: {class: 'btn btn-danger px-4'},
+                    }) }}
+
+                    {{ form_widget(form.cancel, {
+                        attr: {class: 'btn btn-secondary px-4'},
+                    }) }}
+
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
