@@ -8,19 +8,6 @@
     {% endif %}
 {% endblock %}
 
-{% block navbar_brand %}
-    <a class="navbar-brand" href="{{ path('app_restaurant_home', {id: restaurant.id}) }}">
-        {% if restaurant.logo %}
-            <img src="{{ asset('images/logos/' ~ restaurant.logo) }}"
-                 alt="{{ restaurant.libRestau }} Logo"
-                 width="50" height="50"
-                 class="d-inline-block align-middle me-2 rounded-circle"
-                 style="object-fit: cover;">
-        {% endif %}
-        {{ restaurant.libRestau }}
-    </a>
-{% endblock %}
-
 {% block body %}
     <div class="container">
         <div class="home-section" style="{% if restaurant.banniere %}background-image: url('{{ asset('images/thumbnails/' ~ restaurant.banniere) }}');{% endif %} background-color: #343a40;">

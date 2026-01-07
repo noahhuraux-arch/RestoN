@@ -19,29 +19,28 @@
 
         {% block navbar_brand %}
             {% if restaurant is defined and restaurant is not null and restaurant.id is defined %}
-                <a class="navbar-brand d-flex align-items-center" href="{{ path('app_restaurant_home', {id: restaurant.id}) }}">
+                <a class="navbar-brand" href="{{ path('app_restaurant_home', {id: restaurant.id}) }}">
                     {% if restaurant.logo %}
                         <img src="{{ asset('images/logos/' ~ restaurant.logo) }}"
                              alt="{{ restaurant.libRestau }}"
-                             width="45" height="45"
+                             width="50" height="50"
                              class="d-inline-block align-middle me-2 rounded-circle"
                              style="object-fit: cover;">
                     {% else %}
                         <img src="{{ asset('images/favicon.png') }}"
-                             alt="Logo" width="40" height="40"
+                             alt="Logo" width="50" height="50"
                              class="d-inline-block align-middle me-2"
                              style="filter: invert(1);">
                     {% endif %}
-
-                    <span class="fw-bold">{{ restaurant.libRestau }}</span>
+                    {{ restaurant.libRestau }}
                 </a>
             {% else %}
-                <a class="navbar-brand d-flex align-items-center" href="{{ path('app_home') }}">
+                <a class="navbar-brand" href="{{ path('app_home') }}">
                     <img src="{{ asset('images/favicon.png') }}"
                          alt="Logo Resto'N" width="50" height="50"
                          class="d-inline-block align-middle me-2"
                          style="filter: invert(1);">
-                    <span class="fw-bold">Resto'N</span>
+                    Resto'N
                 </a>
             {% endif %}
         {% endblock %}
@@ -91,8 +90,8 @@
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
                             {% if is_granted('ROLE_PROPRIETAIRE') %}
-                                <li><a class="dropdown-item" href="{{ path('app_proprietaire_update') }}">Gérer mon profil</a></li>
-                                <li><a class="dropdown-item" href="{{ path('app_proprietaire') }}">Mes restaurants</a></li>
+                                <li><a class="dropdown-item" href="{{ path('app_proprietaire_update') }}"><i class="fas fa-user-cog me-2"></i>Gérer mon profil</a></li>
+                                <li><a class="dropdown-item" href="{{ path('app_proprietaire') }}"><i class="fas fa-store me-2"></i>Mes restaurants</a></li>
                             {% endif %}
                             <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item text-danger" href="{{ path('app_logout') }}">Déconnexion</a></li>
