@@ -102,6 +102,12 @@ class Restaurant
     #[ORM\OneToMany(targetEntity: Menu::class, mappedBy: 'idRestau')]
     private Collection $menus;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $logo = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $banniere = null;
+
     public function __construct()
     {
         $this->horaires = new ArrayCollection();
@@ -370,6 +376,30 @@ class Restaurant
                 $menu->setIdRestau(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getLogo(): ?string
+    {
+        return $this->logo;
+    }
+
+    public function setLogo(?string $logo): static
+    {
+        $this->logo = $logo;
+
+        return $this;
+    }
+
+    public function getBanniere(): ?string
+    {
+        return $this->banniere;
+    }
+
+    public function setBanniere(?string $banniere): static
+    {
+        $this->banniere = $banniere;
 
         return $this;
     }
