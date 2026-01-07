@@ -29,6 +29,16 @@
                     </div>
                 </div>
 
+                <span>Allergènes</span>
+                <div class=" mb-2 mt-2 p-3 border rounded bg-light d-flex flex-wrap gap-2">
+                    {% for allergene in form.allergenes %}
+                        <div class="form-check form-check-inline m-0">
+                            {{ form_widget(allergene) }}
+                            {{ form_label(allergene) }}
+                        </div>
+                    {% endfor %}
+                </div>
+
                 {{ form_row(form.typePlat) }}
 
                 <div class="mt-4 d-grid gap-2 d-md-flex justify-content-between">

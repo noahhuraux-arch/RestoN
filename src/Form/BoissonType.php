@@ -33,7 +33,7 @@ class BoissonType extends AbstractType
             ])
             ->add('allergenes', EntityType::class, [
                 'class' => Allergene::class,
-                'choice_label' => 'nanme',
+                'choice_label' => 'name',
                 'multiple' => true,
                 'expanded' => true,
                 'label' => 'Allergènes',
