@@ -2,8 +2,17 @@
 
 {% block title %}{{ produit.libProduit }}{% endblock %}
 
+{% block favicon %}<link rel="icon" href="{{ asset('images/logos/logo' ~ produit.idRestau.id ~ '.png') }}">{% endblock %}
+
+{% block navbar_brand %}
+    <a class="navbar-brand" href="{{ path('app_restaurant_home', {id: produit.idRestau.id}) }}">
+        <img src="{{ asset('images/logos/logo' ~ produit.idRestau.id ~ '.png') }}" alt="{{ produit.idRestau.libRestau }}" width="50" height="50" class="d-inline-block align-middle me-2">
+        {{ produit.idRestau.libRestau }}
+    </a>
+{% endblock %}
+
 {% block body %}
-    <div class="container mt-5" style="max-width: 900px;">
+    <div class="container my-5" style="max-width: 900px;">
         <div class="card shadow-sm border-0 rounded-4">
             <div class="card-body p-4">
 

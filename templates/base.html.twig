@@ -9,6 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair:ital,opsz,wght@0,5..1200,300..900;1,5..1200,300..900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="{{ asset('styles/app.css') }}">
     {% block stylesheets %}{% endblock %}
 </head>
@@ -53,6 +54,10 @@
                 {% set current_route = app.request.attributes.get('_route') %}
                 {% set restauId = app.request.get('id') ? app.request.get('id') : app.request.get('idRestau') %}
 
+                {% if current_route == 'app_produit_details' and produit is defined %}
+                    {% set restauId = produit.idRestau.id %}
+                {% endif %}
+
                 {% if current_route == 'app_home' %}
                     <li class="nav-item">
                         <a class="nav-link active" href="{{ path('app_home') }}">Accueil</a>
@@ -76,7 +81,7 @@
                     </li>
                 {% else %}
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Lien À Compléter</a>
+                        <a class="nav-link" href="{{ path('app_home') }}">Accueil</a>
                     </li>
                 {% endif %}
                 {% if app.user %}

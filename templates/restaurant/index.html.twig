@@ -23,8 +23,6 @@
 
 {% block body %}
     <div class="container">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
         <div class="home-section" style="{% if restaurant.banniere %}background-image: url('{{ asset('images/thumbnails/' ~ restaurant.banniere) }}');{% endif %} background-color: #343a40;">
             <div class="home-overlay"></div>
             <div class="home-content">
@@ -51,8 +49,10 @@
                 <div class="info-card">
                     <i class="fa fa-map-marker-alt fa-3x mb-3"></i>
                     <h4>Nous trouver</h4>
-                    <p class="mb-0">{{ restaurant.adrRestau }}</p>
-                    <p class="text-muted">{{ restaurant.cpRestau }} {{ restaurant.villeRestau }}</p>
+                    <a href="https://www.google.com/maps/search/?api=1&query={{ (restaurant.adrRestau ~ ' ' ~ restaurant.cpRestau ~ ' ' ~ restaurant.villeRestau)|url_encode }}" target="_blank" class="text-decoration-none text-dark">
+                        <p class="mb-0">{{ restaurant.adrRestau }}</p>
+                        <p class="text-muted">{{ restaurant.cpRestau }} {{ restaurant.villeRestau }}</p>
+                    </a>
                 </div>
             </div>
 
@@ -60,7 +60,7 @@
                 <div class="info-card">
                     <i class="fa fa-phone fa-3x mb-3"></i>
                     <h4>Contact</h4>
-                    <p class="mb-0"><a href="tel:{{ restaurant.telRestau }}" class="text-decoration-none text-dark">{{ restaurant.telRestau }}</a></p>
+                    <p class="mb-0"><a href="tel:+33{{ restaurant.telRestau|slice(1) }}" class="text-decoration-none text-dark">+33 {{ restaurant.telRestau|slice(1, 1) }} {{ restaurant.telRestau|slice(2, 2) }} {{ restaurant.telRestau|slice(4, 2) }} {{ restaurant.telRestau|slice(6, 2) }} {{ restaurant.telRestau|slice(8, 2) }}</a></p>
                     <p><a href="mailto:{{ restaurant.emailRestau }}" class="text-decoration-none text-dark">{{ restaurant.emailRestau }}</a></p>
                 </div>
             </div>

@@ -1,6 +1,7 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Réserver {% endblock %}
+{% block title %}Réserver - {{ restaurant.libRestau }}{% endblock %}
+{% block favicon %}<link rel="icon" href="{{ asset('images/logos/logo' ~ restaurant.id ~ '.png') }}">{% endblock %}
 {% block javascripts %}
     <script>
         document.addEventListener('DOMContentLoaded', function() {
