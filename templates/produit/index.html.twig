@@ -13,7 +13,8 @@
 
     {% else %}
 
-    <div class="listCarte container-xxl">
+    <div class="container-xxl my-5">
+        <div class="card shadow border-0 p-4 p-md-5 listCarte">
         <h1 class="text-center mb-2 font-weight-bold fst-italic border-bottom pb-2">Notre Carte</h1>
 
         {% if entrees %}
@@ -25,11 +26,13 @@
                 <li class="">
                     {% if entree.isVisible %}
                         <a href="{{ path('app_produit_details', {id: entree.id}) }}" class="text-decoration-none text-body">
-                            <span class="prodName">{{ entree.libProduit }} - </span>
-                            <span class="prodPrice">{{ entree.prixProduit|number_format(2, ',', ' ') }} €</span>
-                            {% if entree.vegetarien == 1 %}
-                                <span>🌱</span>
-                            {% endif %}
+                            <span class="prodName">{{ entree.libProduit }}</span>
+                            <span>
+                                <span class="prodPrice"> - {{ entree.prixProduit|number_format(2, ',', ' ') }} €</span>
+                                {% if entree.vegetarien == 1 %}
+                                    <span>🌱</span>
+                                {% endif %}
+                            </span>
                         </a>
                     {% endif %}
                 </li>
@@ -45,11 +48,13 @@
                 <li class="plat">
                     {% if plat.isVisible %}
                         <a href="{{ path('app_produit_details', {id: plat.id}) }}" class="text-decoration-none text-body">
-                            <span class="prodName">{{ plat.libProduit }} - </span>
-                            <span class="prodPrice">{{ plat.prixProduit|number_format(2, ',', ' ') }} €</span>
-                            {% if plat.vegetarien == 1 %}
-                                <span>🌱</span>
-                            {% endif %}
+                            <span class="prodName">{{ plat.libProduit }}</span>
+                            <span>
+                                <span class="prodPrice"> - {{ plat.prixProduit|number_format(2, ',', ' ') }} €</span>
+                                {% if plat.vegetarien == 1 %}
+                                    <span>🌱</span>
+                                {% endif %}
+                            </span>
                         </a>
                     {% endif %}
                 </li>
@@ -65,8 +70,10 @@
                 <li class="">
                     {% if dessert.isVisible %}
                         <a href="{{ path('app_produit_details', {id: dessert.id}) }}" class="text-decoration-none text-body">
-                            <span class="prodName">{{ dessert.libProduit }} - </span>
-                            <span class="prodPrice">{{ dessert.prixProduit|number_format(2, ',', ' ') }} €</span>
+                            <span class="prodName">{{ dessert.libProduit }}</span>
+                            <span>
+                                <span class="prodPrice"> - {{ dessert.prixProduit|number_format(2, ',', ' ') }} €</span>
+                            </span>
                         </a>
                     {% endif %}
                 </li>
@@ -82,8 +89,10 @@
                 <li class="">
                     {% if boisson.isVisible %}
                         <a href="{{ path('app_produit_details', {id: boisson.id}) }}" class="text-decoration-none text-body">
-                            <span class="prodName">{{ boisson.libProduit }} - </span>
-                            <span class="prodPrice">{{ boisson.prixProduit|number_format(2, ',', ' ') }} €</span>
+                            <span class="prodName">{{ boisson.libProduit }}</span>
+                            <span>
+                                <span class="prodPrice"> - {{ boisson.prixProduit|number_format(2, ',', ' ') }} €</span>
+                            </span>
                         </a>
                     {% endif %}
                 </li>
@@ -101,7 +110,7 @@
                         {% if menu.visible %}
                             <div class="col-md-6 mb-4">
                                 <a href="{{ path('app_produit_details', {id: menu.id}) }}" class="text-decoration-none text-body">
-                                    <h5 class="menuName">{{ menu.libProduit }} - {{ menu.prixProduit|number_format(2, ',', ' ') }} €</h5>
+                                    <h5 class="menuName"><span>{{ menu.libProduit }}</span> <span class="text-nowrap">- {{ menu.prixProduit|number_format(2, ',', ' ') }} €</span></h5>
                                 </a>
                                 <ul class="list-unstyled">
                                     {% for plat in menu.idPlat %}
@@ -134,9 +143,10 @@
                 </div>
 
             </div>
-            <small class="fs-6">
-                🌱 Végétarien
-            </small>
+            <div class="mt-4">
+                <span class="badge bg-success">🌱 Végétarien</span>
+            </div>
+        </div>
     </div>
 
     {% endif %}

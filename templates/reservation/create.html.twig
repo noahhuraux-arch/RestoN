@@ -34,24 +34,48 @@
 
 {% block body %}
     <div class="container my-5">
-        <h1 class="text-center mb-4">Réserver votre table</h1>
-    </div>
-        {{ form_start(form, {attr: {id: 'reservation_form'}}) }}
-            {{ form_row(form.client.nom, {label: 'Nom'}) }}
-            {{ form_row(form.client.prenom, {label: 'Prénom'}) }}
-            {{ form_row(form.client.email, {label: 'e-mail'}) }}
-            {{ form_row(form.client.telephone, {label: 'Téléphone'}) }}
-            {{ form_row(form.date, {label: 'Date'}) }}
-            {{ form_row(form.nbPers, {label: 'nombre de Personne'}) }}
-            {{ form_row(form.heure, {
-                label: 'Heure',
-            }) }}
-            {{ form_rest(form) }}
-        <div class="d-grid mt-3">
-            <button type="submit" class="btn btn-primary btn-lg">Valider</button>
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card shadow border-0">
+                    <div class="card-body p-5">
+                        <h1 class="text-center mb-4 fw-bold">Réserver votre table</h1>
+
+                        {{ form_start(form, {attr: {id: 'reservation_form'}}) }}
+
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                {{ form_row(form.client.nom, {label: 'Nom'}) }}
+                            </div>
+                            <div class="col-md-6">
+                                {{ form_row(form.client.prenom, {label: 'Prénom'}) }}
+                            </div>
+                            <div class="col-md-6">
+                                {{ form_row(form.client.email, {label: 'E-mail'}) }}
+                            </div>
+                            <div class="col-md-6">
+                                {{ form_row(form.client.telephone, {label: 'Téléphone'}) }}
+                            </div>
+                            <div class="col-md-6">
+                                {{ form_row(form.date, {label: 'Date'}) }}
+                            </div>
+                            <div class="col-md-6">
+                                {{ form_row(form.nbPers, {label: 'Nombre de personnes'}) }}
+                            </div>
+                            <div class="col-12">
+                                {{ form_row(form.heure, {label: 'Heure'}) }}
+                            </div>
+                        </div>
+
+                        {{ form_rest(form) }}
+
+                        <div class="d-grid mt-4">
+                            <button type="submit" class="btn btn-warning btn-lg text-white">Valider</button>
+                        </div>
+
+                        {{ form_end(form) }}
+                    </div>
+                </div>
+            </div>
         </div>
-
-        {{ form_end(form) }}
-
     </div>
 {% endblock %}

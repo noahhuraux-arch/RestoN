@@ -51,6 +51,10 @@
     font-size: 1.3rem;
 }
 
+.prodPrice {
+    white-space: nowrap;
+}
+
 .listCarte h2 {
     color: #ffc107;
     font-family: "Playfair", serif;
@@ -119,11 +123,26 @@
     }
 
     .listCarte h2,
-    .gestionProduitName {
+    .gestionProduitName,
+    .menuName {
         font-size: 1.8rem;
     }
 
     #chatbot-window {
         width: 300px;
+    }
+
+    .listCarte ul li a {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        text-align: left;
+    }
+
+    .menuName {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        text-align: left;
     }
 }
