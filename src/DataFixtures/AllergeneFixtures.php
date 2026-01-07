@@ -16,7 +16,7 @@ class AllergeneFixtures extends Fixture
 
         foreach ($allergenes as $allergene) {
             AllergeneFactory::createOne([
-                'nom' => $allergene['name'],
+                'name' => $allergene['name'],
             ]);
         }
 
