@@ -80,6 +80,7 @@ final class RestaurantController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $this->handleFileUpload($form, $restaurant);
             $entityManager->flush();
 
             return $this->redirectToRoute('app_proprietaire_show', ['id' => $restaurant->getId()]);
@@ -101,9 +102,7 @@ final class RestaurantController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $proprietaire = $this->getUser();
-
-            $restaurant->setProprietaire($proprietaire);
+            $restaurant->setProprietaire($this->getUser());
 
             $jours = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'];
             foreach ($jours as $jour) {
@@ -117,12 +116,36 @@ final class RestaurantController extends AbstractController
             $entityManager->persist($restaurant);
             $entityManager->flush();
 
+            $this->handleFileUpload($form, $restaurant);
+            $entityManager->flush();
+
             return $this->redirectToRoute('app_proprietaire_show', ['id' => $restaurant->getId()]);
         }
 
         return $this->render('restaurant/create.html.twig', [
             'form' => $form,
         ]);
+    }
+
+    private function handleFileUpload($form, Restaurant $restaurant): void
+    {
+        $logoFile = $form->get('logoFile')->getData();
+        $thumbnailFile = $form->get('banniereFile')->getData();
+
+        $logosDir = $this->getParameter('logos_directory');
+        $bannersDir = $this->getParameter('banners_directory');
+
+        if ($logoFile) {
+            $logoName = 'logo'.$restaurant->getId().'.'.$logoFile->guessExtension();
+            $logoFile->move($logosDir, $logoName);
+            $restaurant->setLogo($logoName);
+        }
+
+        if ($thumbnailFile) {
+            $bannerName = 'thumbnail'.$restaurant->getId().'.'.$thumbnailFile->guessExtension();
+            $thumbnailFile->move($bannersDir, $bannerName);
+            $restaurant->setBanniere($bannerName);
+        }
     }
 
     #[Route('/restaurant/{id}/delete', name: 'app_restaurant_delete')]
