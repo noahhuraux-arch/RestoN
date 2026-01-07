@@ -80,6 +80,7 @@ final class RestaurantController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $this->handleFileUpload($form, $restaurant);
             $entityManager->flush();
 
             return $this->redirectToRoute('app_proprietaire_show', ['id' => $restaurant->getId()]);
