@@ -3,8 +3,6 @@
 namespace App\Entity;
 
 use App\Repository\CommandeRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -20,29 +18,15 @@ class Commande
     private ?float $prixCommande = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?\DateTimeInterface $dateCommande = null;
+    private ?\DateTime $dateCommande = null;
 
     #[ORM\ManyToOne(inversedBy: 'commandes')]
     private ?Serveur $serveur = null;
 
-    #[ORM\ManyToOne]
+    #[ORM\ManyToOne(inversedBy: 'commande')]
     private ?Table $tables = null;
 
-    /**
-     * Relation ManyToMany vers l'entité Produit (classe mère)
-     * On utilise une Collection pour stocker la liste des articles sélectionnés
-     */
-    #[ORM\ManyToMany(targetEntity: Produit::class)]
-    #[ORM\JoinTable(name: 'commande_produit')]
-    private Collection $produits;
-
-    public function __construct()
-    {
-        $this->produits = new ArrayCollection();
-        $this->dateCommande = new \DateTime();
-    }
-
-    public function getId(): ?int
+    public function getid(): ?int
     {
         return $this->id;
     }
@@ -55,17 +39,19 @@ class Commande
     public function setPrixCommande(float $prixCommande): static
     {
         $this->prixCommande = $prixCommande;
+
         return $this;
     }
 
-    public function getDateCommande(): ?\DateTimeInterface
+    public function getDateCommande(): ?\DateTime
     {
         return $this->dateCommande;
     }
 
-    public function setDateCommande(\DateTimeInterface $dateCommande): static
+    public function setDateCommande(\DateTime $dateCommande): static
     {
         $this->dateCommande = $dateCommande;
+
         return $this;
     }
 
@@ -77,6 +63,7 @@ class Commande
     public function setServeur(?Serveur $serveur): static
     {
         $this->serveur = $serveur;
+
         return $this;
     }
 
@@ -88,28 +75,7 @@ class Commande
     public function setTables(?Table $tables): static
     {
         $this->tables = $tables;
-        return $this;
-    }
 
-    /**
-     * @return Collection<int, Produit>
-     */
-    public function getProduits(): Collection
-    {
-        return $this->produits;
-    }
-
-    public function addProduit(Produit $produit): static
-    {
-        if (!$this->produits->contains($produit)) {
-            $this->produits->add($produit);
-        }
-        return $this;
-    }
-
-    public function removeProduit(Produit $produit): static
-    {
-        $this->produits->removeElement($produit);
         return $this;
     }
 }
