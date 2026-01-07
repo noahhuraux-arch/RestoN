@@ -125,6 +125,27 @@ final class RestaurantController extends AbstractController
         ]);
     }
 
+    private function handleFileUpload($form, Restaurant $restaurant): void
+    {
+        $logoFile = $form->get('logoFile')->getData();
+        $thumbnailFile = $form->get('banniereFile')->getData();
+
+        $logosDir = $this->getParameter('logos_directory');
+        $bannersDir = $this->getParameter('banners_directory');
+
+        if ($logoFile) {
+            $logoName = 'logo'.$restaurant->getId().'.'.$logoFile->guessExtension();
+            $logoFile->move($logosDir, $logoName);
+            $restaurant->setLogo($logoName);
+        }
+
+        if ($thumbnailFile) {
+            $bannerName = 'thumbnail'.$restaurant->getId().'.'.$thumbnailFile->guessExtension();
+            $thumbnailFile->move($bannersDir, $bannerName);
+            $restaurant->setBanniere($bannerName);
+        }
+    }
+
     #[Route('/restaurant/{id}/delete', name: 'app_restaurant_delete')]
     #[IsGranted('ROLE_PROPRIETAIRE')]
     public function delete(Request $request, Restaurant $restaurant, EntityManagerInterface $entityManager): Response
