@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use App\Entity\Allergene;
 use App\Entity\Plat;
 use App\Entity\TypePlat;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -27,6 +28,14 @@ class PlatType extends AbstractType
                 'class' => TypePlat::class,
                 'placeholder' => 'Choisissez un type',
                 'choice_label' => 'lib',
+            ])
+            ->add('allergenes', EntityType::class, [
+                'class' => Allergene::class,
+                'choice_label' => 'name',
+                'multiple' => true,
+                'expanded' => true,
+                'label' => 'Allergènes',
+                'by_reference' => false,
             ])
         ;
     }

@@ -2,7 +2,9 @@
 
 namespace App\Form;
 
+use App\Entity\Allergene;
 use App\Entity\Boisson;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
@@ -21,6 +23,22 @@ class BoissonType extends AbstractType
             ->add('visible', CheckboxType::class, ['label' => 'Visible ', 'required' => false, 'data' => true])
             ->add('descriptionProduit', TextType::class, ['label' => 'Description boisson', 'required' => false])
             ->add('alcoolise', CheckboxType::class, ['label' => 'Alcoolise ', 'required' => false])
+            ->add('allergenes', EntityType::class, [
+                'class' => Allergene::class,
+                'choice_label' => 'nom',
+                'multiple' => true,
+                'expanded' => true,
+                'label' => 'Allergènes',
+                'by_reference' => false,
+            ])
+            ->add('allergenes', EntityType::class, [
+                'class' => Allergene::class,
+                'choice_label' => 'nanme',
+                'multiple' => true,
+                'expanded' => true,
+                'label' => 'Allergènes',
+                'by_reference' => false,
+            ])
         ;
     }
 
