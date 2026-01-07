@@ -17,7 +17,7 @@
     <div class="container">
 
         {% block navbar_brand %}
-            {% if restaurant is defined and restaurant is not null %}
+            {% if restaurant is defined and restaurant is not null and restaurant.id is defined %}
                 <a class="navbar-brand d-flex align-items-center" href="{{ path('app_restaurant_home', {id: restaurant.id}) }}">
                     {% if restaurant.logo %}
                         <img src="{{ asset('images/logos/' ~ restaurant.logo) }}"
