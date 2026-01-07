@@ -8,6 +8,7 @@ use App\Form\ServeurType;
 use App\Repository\ServeurRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -53,14 +54,42 @@ final class ServeurController extends AbstractController
             $em->persist($serveur);
             $em->flush();
 
-            $this->addFlash('success', 'Le serveur a été créé. Mot de passe provisoire : '.$tempPass);
-
             return $this->redirectToRoute('app_serveur_show', ['id' => $restaurant->getId()]);
         }
 
         return $this->render('serveur/create.html.twig', [
             'form' => $form->createView(),
             'restaurant' => $restaurant,
+        ]);
+    }
+
+    #[Route('/{restaurant}/serveur/{serveur}/delete', name: 'app_serveur_delete', requirements: ['serveur_id' => Requirement::DIGITS, 'restaurant_id' => Requirement::DIGITS])]
+    public function delete(Request $request, Restaurant $restaurant, Serveur $serveur, EntityManagerInterface $entityManager): Response
+    {
+        if ($restaurant->getProprietaire() !== $this->getUser() || $serveur->getRestaurant() !== $restaurant) {
+            throw $this->createAccessDeniedException('Accès interdit.');
+        }
+
+        $form = $this->createFormBuilder()
+            ->add('delete', SubmitType::class, ['label' => 'Supprimer'])
+            ->add('cancel', SubmitType::class, ['label' => 'Annuler'])
+            ->getForm();
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            if ($form->get('delete')->isClicked()) {
+                $entityManager->remove($serveur);
+                $entityManager->flush();
+            }
+
+            return $this->redirectToRoute('app_serveur_show', ['id' => $restaurant->getId()]);
+        }
+
+        return $this->render('serveur/delete.html.twig', [
+            'restaurant' => $restaurant,
+            'serveur' => $serveur,
+            'form' => $form->createView(),
         ]);
     }
 }
