@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Menu;
+use App\Entity\Restaurant;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -14,6 +15,20 @@ class MenuRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Menu::class);
+    }
+
+
+    public function findAllPlats(Restaurant $restaurant)
+    {
+        return $this->createQueryBuilder('menu')
+            ->addSelect('plat')
+            ->join('menu.idPlat', 'plat')
+            ->where('menu.idRestau = :restaurant')
+            ->setParameter('restaurant', $restaurant)
+            ->orderBy('menu.prixProduit', 'ASC')
+            ->addOrderBy('menu.libProduit', 'ASC')
+            ->getQuery()
+            ->getResult();
     }
 
     //    /**
