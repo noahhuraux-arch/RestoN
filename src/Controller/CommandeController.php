@@ -13,6 +13,16 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class CommandeController extends AbstractController
 {
+    #[Route('/restaurant/{id}/commandes', name: 'app_commande_index')]
+    public function index(Restaurant $restaurant, EntityManagerInterface $em): Response
+    {
+        $commandes = $em->getRepository(Commande::class)->findAll();
+        return $this->render('commande/index.html.twig', [
+            'restaurant' => $restaurant,
+            'commandes' => $commandes,
+        ]);
+    }
+
     #[Route('/{id}/commande/create', name: 'app_commande_create')]
     public function create(Restaurant $restaurant, Request $request, EntityManagerInterface $em): Response
     {
