@@ -102,9 +102,7 @@ final class RestaurantController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $proprietaire = $this->getUser();
-
-            $restaurant->setProprietaire($proprietaire);
+            $restaurant->setProprietaire($this->getUser());
 
             $jours = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'];
             foreach ($jours as $jour) {
@@ -116,6 +114,9 @@ final class RestaurantController extends AbstractController
             }
 
             $entityManager->persist($restaurant);
+            $entityManager->flush();
+
+            $this->handleFileUpload($form, $restaurant);
             $entityManager->flush();
 
             return $this->redirectToRoute('app_proprietaire_show', ['id' => $restaurant->getId()]);
