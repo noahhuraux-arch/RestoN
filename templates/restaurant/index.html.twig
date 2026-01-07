@@ -23,8 +23,6 @@
 
 {% block body %}
     <div class="container">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
         <div class="home-section" style="{% if restaurant.banniere %}background-image: url('{{ asset('images/thumbnails/' ~ restaurant.banniere) }}');{% endif %} background-color: #343a40;">
             <div class="home-overlay"></div>
             <div class="home-content">
