@@ -29,6 +29,7 @@ class Plat extends Produit
 
     public function __construct()
     {
+        parent::__construct();
         $this->menus = new ArrayCollection();
     }
 
