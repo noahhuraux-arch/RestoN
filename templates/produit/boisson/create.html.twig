@@ -1,50 +1,26 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Création de la boisson{% endblock %}
+{% block title %}Création d'une boisson{% endblock %}
 
 {% block body %}
-    <div class="container py-5">
-        <h1 class="mb-4">Créer une boisson</h1>
+    {% set title_type = 'boisson' %}
 
+    <div class="container py-5">
         <div class="card shadow-sm">
             <div class="card-body">
-
                 {{ form_start(form) }}
 
-                {{ form_row(form.libProduit) }}
-                {{ form_row(form.descriptionProduit) }}
+                <h1 class="mb-4">Créer une {{ title_type }}</h1>
 
-                <div class="row">
-                    <div class="col-md-4">
-                        {{ form_row(form.prixProduit) }}
-                    </div>
-                </div>
-
-                {{ form_row(form.visible) }}
-                {{ form_row(form.alcoolise) }}
-
-                <span>Allergènes</span>
-                <div class=" mb-2 mt-2 p-3 border rounded bg-light d-flex flex-wrap gap-2">
-                    {% for allergene in form.allergenes %}
-                        <div class="form-check form-check-inline m-0">
-                            {{ form_widget(allergene) }}
-                            {{ form_label(allergene) }}
-                        </div>
-                    {% endfor %}
-                </div>
+                {% include 'produit/_create.html.twig' %}
 
                 <div class="mt-4 d-grid gap-2 d-md-flex justify-content-between">
                     <a href="{{ path('app_produit_proprietaire', {idRestau: restaurant.id}) }}" class="btn btn-light border rounded-3 px-4 fs-6">
                         ← Retour à la carte
                     </a>
-
-                    <button type="submit" class="btn btn-primary px-4">
-                        Créer
-                    </button>
+                    <button type="submit" class="btn btn-primary px-4">Créer</button>
                 </div>
-
                 {{ form_end(form) }}
-
             </div>
         </div>
     </div>

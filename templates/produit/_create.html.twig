@@ -1,0 +1,62 @@
+{{ form_row(form.libProduit) }}
+{{ form_row(form.descriptionProduit) }}
+
+<div class="row">
+    <div class="col-md-4">
+        {{ form_row(form.prixProduit) }}
+    </div>
+</div>
+
+<div class="d-flex gap-3 align-items-center mb-3">
+    {{ form_row(form.visible) }}
+
+    {% if form.vegetarien is defined %}
+        {{ form_row(form.vegetarien) }}
+    {% endif %}
+
+    {% if form.alcoolise is defined %}
+        {{ form_row(form.alcoolise) }}
+    {% endif %}
+</div>
+
+{% if form.allergenes is defined %}
+    <label class="form-label">Allergènes</label>
+    <div class="mb-3 p-3 border rounded bg-light d-flex flex-wrap gap-2">
+        {% for allergene in form.allergenes %}
+            <div class="form-check form-check-inline m-0">
+                {{ form_widget(allergene) }}
+                {{ form_label(allergene) }}
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}
+
+{% if form.typePlat is defined %}
+    {{ form_row(form.typePlat) }}
+{% endif %}
+
+{% if form.idPlat is defined %}
+    <h6 class="fst-italic">Choisissez vos plats à mettre dans votre menu</h6>
+
+    <div class="row g-2">
+        {% for label, group in form.idPlat.vars.choices %}
+            {% if label == 'plat Principal' %}
+                <span>Les Plats</span>
+            {% else %}
+                <span>Les {{ label }}s</span>
+            {% endif %}
+            {% for choice in group.choices %}
+                <div class="col-lg-3">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-body p-2">
+                            <label class="d-flex align-items-center gap-2 cursor-pointer">
+                                {{ form_widget(form.idPlat[choice.value]) }}
+                                {{ form_label(form.idPlat[choice.value])  }}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endfor %}
+    </div>
+{% endif %}

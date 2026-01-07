@@ -42,7 +42,8 @@
                 {% for entree in entrees %}
                     <li>
                         {% if entree.isVisible %}
-                            <a href="{{ path('app_produit_details', {id: entree.id}) }}" class="text-decoration-none text-body">
+                            <a href="{{ path('app_produit_details', {id: entree.id}) }}"
+                               class="text-decoration-none text-body" data-bs-toggle="tooltip" data-bs-placement="top" title="Cliquez pour voir les détails">
                                 <span class="prodName">{{ entree.libProduit }}</span>
                                 <span class="prodPrice"> - {{ entree.prixProduit|number_format(2, ',', ' ') }} €</span>
                                 {% if entree.vegetarien == 1 %}
@@ -50,7 +51,8 @@
                                 {% endif %}
                             </a>
                         {% elseif prop and not entree.isVisible%}
-                            <a href="{{ path('app_produit_details', {id: entree.id}) }}" class="text-decoration-none text-body">
+                            <a href="{{ path('app_produit_details', {id: entree.id}) }}"
+                               class="text-decoration-none text-body" data-bs-toggle="tooltip" data-bs-placement="top" title="Cliquez pour voir les détails">
                                 <span class="prodName">{{ entree.libProduit }}</span>
                                 <span class="prodPrice"> - {{ entree.prixProduit|number_format(2, ',', ' ') }} €</span>
                                 <span class="badge bg-danger">Hors carte</span>
@@ -68,7 +70,8 @@
                 {% for plat in plats %}
                     <li class="plat">
                         {% if plat.isVisible %}
-                            <a href="{{ path('app_produit_details', {id: plat.id}) }}" class="text-decoration-none text-body">
+                            <a href="{{ path('app_produit_details', {id: plat.id}) }}"
+                               class="text-decoration-none text-body" data-bs-toggle="tooltip" data-bs-placement="top" title="Cliquez pour voir les détails">
                                 <span class="prodName">{{ plat.libProduit }}</span>
                                 <span class="prodPrice"> - {{ plat.prixProduit|number_format(2, ',', ' ') }} €</span>
                                 {% if plat.vegetarien == 1 %}
@@ -76,7 +79,8 @@
                                 {% endif %}
                             </a>
                         {% elseif prop and not plat.isVisible %}
-                            <a href="{{ path('app_produit_details', {id: plat.id}) }}" class="text-decoration-none text-body">
+                            <a href="{{ path('app_produit_details', {id: plat.id}) }}"
+                               class="text-decoration-none text-body" data-bs-toggle="tooltip" data-bs-placement="top" title="Cliquez pour voir les détails">
                                 <span class="prodName">{{ plat.libProduit }}</span>
                                 <span class="prodPrice"> - {{ plat.prixProduit|number_format(2, ',', ' ') }} €</span>
                                 <span class="badge bg-danger">Hors carte</span>
@@ -94,12 +98,14 @@
                 {% for dessert in desserts %}
                     <li class="">
                         {% if dessert.isVisible %}
-                            <a href="{{ path('app_produit_details', {id: dessert.id}) }}" class="text-decoration-none text-body">
+                            <a href="{{ path('app_produit_details', {id: dessert.id}) }}"
+                               class="text-decoration-none text-body" data-bs-toggle="tooltip" data-bs-placement="top" title="Cliquez pour voir les détails">
                                 <span class="prodName">{{ dessert.libProduit }}</span>
                                 <span class="prodPrice"> - {{ dessert.prixProduit|number_format(2, ',', ' ') }} €</span>
                             </a>
                         {% elseif prop and not dessert.isVisible %}
-                            <a href="{{ path('app_produit_details', {id: dessert.id}) }}" class="text-decoration-none text-body">
+                            <a href="{{ path('app_produit_details', {id: dessert.id}) }}"
+                               class="text-decoration-none text-body" data-bs-toggle="tooltip" data-bs-placement="top" title="Cliquez pour voir les détails">
                                 <span class="prodName">{{ dessert.libProduit }}</span>
                                 <span class="prodPrice"> - {{ dessert.prixProduit|number_format(2, ',', ' ') }} €</span>
                                 <span class="badge bg-danger">Hors carte</span>
@@ -117,12 +123,14 @@
                 {% for boisson in boissons %}
                     <li class="">
                         {% if boisson.isVisible %}
-                            <a href="{{ path('app_produit_details', {id: boisson.id}) }}" class="text-decoration-none text-body">
+                            <a href="{{ path('app_produit_details', {id: boisson.id}) }}"
+                               class="text-decoration-none text-body" data-bs-toggle="tooltip" data-bs-placement="top" title="Cliquez pour voir les détails">
                                 <span class="prodName">{{ boisson.libProduit }}</span>
                                 <span class="prodPrice"> - {{ boisson.prixProduit|number_format(2, ',', ' ') }} €</span>
                             </a>
                         {% elseif prop and not boisson.isVisible %}
-                            <a href="{{ path('app_produit_details', {id: boisson.id}) }}" class="text-decoration-none text-body">
+                            <a href="{{ path('app_produit_details', {id: boisson.id}) }}"
+                               class="text-decoration-none text-body" data-bs-toggle="tooltip" data-bs-placement="top" title="Cliquez pour voir les détails">
                                 <span class="prodName">{{ boisson.libProduit }}</span>
                                 <span class="prodPrice"> - {{ boisson.prixProduit|number_format(2, ',', ' ') }} €</span>
                                 <span class="badge bg-danger">Hors carte</span>
@@ -142,7 +150,8 @@
                     {% for menu in menus %}
                         {% if menu.visible %}
                             <div class="col-md-6 mb-4">
-                                <a href="{{ path('app_produit_details', {id: menu.id}) }}" class="text-decoration-none text-body">
+                                <a href="{{ path('app_produit_details', {id: menu.id}) }}"
+                                   class="text-decoration-none text-body" data-bs-toggle="tooltip" data-bs-placement="top" title="Cliquez pour voir les détails">
                                     <h5 class="menuName"><span>{{ menu.libProduit }}</span> <span class="text-nowrap">- {{ menu.prixProduit|number_format(2, ',', ' ') }} €</span></h5>
                                 </a>
                                 <ul class="list-unstyled">
@@ -173,7 +182,8 @@
                             </div>
                         {% elseif prop and not menu.visible %}
                             <div class="col-md-6 mb-4">
-                                <a href="{{ path('app_produit_details', {id: menu.id}) }}" class="text-decoration-none text-body">
+                                <a href="{{ path('app_produit_details', {id: menu.id}) }}"
+                                   class="text-decoration-none text-body" data-bs-toggle="tooltip" data-bs-placement="top" title="Cliquez pour voir les détails">
                                     <h5 class="menuName">{{ menu.libProduit }} - {{ menu.prixProduit|number_format(2, ',', ' ') }} € <span class="badge bg-danger p-1">Hors carte</span></h5>
                                 </a>
                                 <ul class="list-unstyled">
@@ -209,6 +219,7 @@
             </div>
             <div class="mt-4">
                 <span class="badge bg-success">🌱 Végétarien</span>
+                <span class="small text-muted fst-italic">- Cliquez sur un produit pour voir ses détails -</span>
             </div>
         </div>
     </div>

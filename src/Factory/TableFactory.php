@@ -35,6 +35,7 @@ final class TableFactory extends PersistentProxyObjectFactory
     {
         return [
             'nbPlace' => self::faker()->randomElement([2, 2, 4, 4, 6, 8]),
+            'disponible' => true,
         ];
     }
 

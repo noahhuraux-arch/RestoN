@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Plat;
+use App\Entity\Restaurant;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -14,6 +15,19 @@ class PlatRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Plat::class);
+    }
+
+    public function findAllTypes(Restaurant $restaurant)
+    {
+        return $this->createQueryBuilder('p')
+            ->addSelect('t')
+            ->join('p.typePlat', 't')
+            ->where('p.idRestau = :restaurant')
+            ->setParameter('restaurant', $restaurant)
+            ->orderBy('p.prixProduit', 'ASC')
+            ->addOrderBy('p.libProduit', 'ASC')
+            ->getQuery()
+            ->getResult();
     }
 
     //    /**
