@@ -54,6 +54,10 @@
                 {% set current_route = app.request.attributes.get('_route') %}
                 {% set restauId = app.request.get('id') ? app.request.get('id') : app.request.get('idRestau') %}
 
+                {% if current_route == 'app_produit_details' and produit is defined %}
+                    {% set restauId = produit.idRestau.id %}
+                {% endif %}
+
                 {% if current_route == 'app_home' %}
                     <li class="nav-item">
                         <a class="nav-link active" href="{{ path('app_home') }}">Accueil</a>
