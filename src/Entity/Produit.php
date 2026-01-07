@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ProduitRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ProduitRepository::class)]
@@ -31,6 +33,17 @@ abstract class Produit
 
     #[ORM\Column(length: 1024, nullable: true)]
     private ?string $descriptionProduit = null;
+
+    /**
+     * @var Collection<int, Allergene>
+     */
+    #[ORM\ManyToMany(targetEntity: Allergene::class, inversedBy: 'produits')]
+    private Collection $allergenes;
+
+    public function __construct()
+    {
+        $this->allergenes = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -81,6 +94,30 @@ abstract class Produit
     public function setDescriptionProduit(?string $descriptionProduit): static
     {
         $this->descriptionProduit = $descriptionProduit;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Allergene>
+     */
+    public function getAllergenes(): Collection
+    {
+        return $this->allergenes;
+    }
+
+    public function addAllergene(Allergene $allergene): static
+    {
+        if (!$this->allergenes->contains($allergene)) {
+            $this->allergenes->add($allergene);
+        }
+
+        return $this;
+    }
+
+    public function removeAllergene(Allergene $allergene): static
+    {
+        $this->allergenes->removeElement($allergene);
 
         return $this;
     }
