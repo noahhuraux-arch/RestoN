@@ -1,0 +1,58 @@
+[
+    {
+        "name": "Gluten",
+        "icone": "🌾"
+    },
+    {
+        "name": "Crustacés",
+        "icone": "🦐"
+    },
+    {
+        "name": "Œufs",
+        "icone": "🥚"
+    },
+    {
+        "name": "Poissons",
+        "icone": "🐟"
+    },
+    {
+        "name": "Arachides",
+        "icone": "🥜"
+    },
+    {
+        "name": "Soja",
+        "icone": "🌱"
+    },
+    {
+        "name": "Lait",
+        "icone": "🥛"
+    },
+    {
+        "name": "Fruits à coque",
+        "icone": "🌰"
+    },
+    {
+        "name": "Céleri",
+        "icone": "🥬"
+    },
+    {
+        "name": "Moutarde",
+        "icone": "🌭"
+    },
+    {
+        "name": "Graines de sésame",
+        "icone": "🥯"
+    },
+    {
+        "name": "Anhydride sulfureux et sulfites",
+        "icone": "🍷"
+    },
+    {
+        "name": "Lupin",
+        "icone": "🌸"
+    },
+    {
+        "name": "Mollusques",
+        "icone": "🐚"
+    }
+]
