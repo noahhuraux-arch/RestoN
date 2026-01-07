@@ -12,10 +12,6 @@
                 <div class="card shadow-sm border-0">
                     <div class="card-body p-4">
 
-                        <div class="alert alert-info small mb-4">
-                            Le mot de passe par défaut sera : <strong>Bienvenue2026!</strong>
-                        </div>
-
                         {{ form_start(form) }}
 
                         <div class="row">
@@ -53,12 +49,6 @@
                         {{ form_end(form) }}
 
                     </div>
-                </div>
-
-                <div class="text-center mt-3">
-                    <a href="{{ path('app_serveur_show', {'id': restaurant.id}) }}" class="text-decoration-none text-muted small">
-                        Retour à la liste
-                    </a>
                 </div>
             </div>
         </div>
