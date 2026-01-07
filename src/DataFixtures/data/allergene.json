@@ -1,58 +1,44 @@
 [
     {
-        "name": "Gluten",
-        "icone": "🌾"
+        "name": "Gluten"
     },
     {
-        "name": "Crustacés",
-        "icone": "🦐"
+        "name": "Crustacés"
     },
     {
-        "name": "Œufs",
-        "icone": "🥚"
+        "name": "Œufs"
     },
     {
-        "name": "Poissons",
-        "icone": "🐟"
+        "name": "Poissons"
     },
     {
-        "name": "Arachides",
-        "icone": "🥜"
+        "name": "Arachides"
     },
     {
-        "name": "Soja",
-        "icone": "🌱"
+        "name": "Soja"
     },
     {
-        "name": "Lait",
-        "icone": "🥛"
+        "name": "Lait"
     },
     {
-        "name": "Fruits à coque",
-        "icone": "🌰"
+        "name": "Fruits à coque"
     },
     {
-        "name": "Céleri",
-        "icone": "🥬"
+        "name": "Céleri"
     },
     {
-        "name": "Moutarde",
-        "icone": "🌭"
+        "name": "Moutarde"
     },
     {
-        "name": "Graines de sésame",
-        "icone": "🥯"
+        "name": "Graines de sésame"
     },
     {
-        "name": "Anhydride sulfureux et sulfites",
-        "icone": "🍷"
+        "name": "Anhydride sulfureux et sulfites"
     },
     {
-        "name": "Lupin",
-        "icone": "🌸"
+        "name": "Lupin"
     },
     {
-        "name": "Mollusques",
-        "icone": "🐚"
+        "name": "Mollusques"
     }
 ]
