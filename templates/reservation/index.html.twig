@@ -6,6 +6,7 @@
     <div class="container mt-4">
         <h1>Réservations pour {{ restaurant.libRestau }}</h1>
         <a href="{{ path('app_restaurant_home', {id: restaurant.id}) }}" class="btn btn-secondary mb-3">Retour à l'accueil</a>
+        <a href="{{ path('app_reservation_create', {id: restaurant.id}) }}" class="btn btn-secondary mb-3">Creer Reservation</a>
 
         <table class="table table-striped">
             <thead>
