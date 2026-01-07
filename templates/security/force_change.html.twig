@@ -1,0 +1,48 @@
+{# templates/security/force_change.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Sécurisez votre compte{% endblock %}
+
+{% block body %}
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6 col-lg-5">
+
+                <h1 class="h3 mb-4 fw-normal text-center">Première connexion</h1>
+
+                <div class="card shadow-sm border-0">
+                    <div class="card-body p-4">
+
+                        <div class="alert alert-warning small mb-4">
+                            <i class="bi bi-shield-lock"></i>
+                            Pour votre sécurité, vous devez modifier votre mot de passe provisoire avant d'accéder à l'application.
+                        </div>
+
+                        {{ form_start(form) }}
+
+                        {{ form_errors(form) }}
+
+                        <div class="mb-3">
+                            {{ form_row(form.plainPassword) }}
+                        </div>
+
+                        {{ form_rest(form) }}
+
+                        <button type="submit" class="btn btn-success w-100 btn-lg mt-4">
+                            Enregistrer et continuer
+                        </button>
+
+                        {{ form_end(form) }}
+
+                    </div>
+                </div>
+
+                <div class="text-center mt-3">
+                    <a href="{{ path('app_logout') }}" class="text-decoration-none text-muted small">
+                        Se déconnecter
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
