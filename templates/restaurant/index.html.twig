@@ -2,11 +2,21 @@
 
 {% block title %}Accueil - {{ restaurant.libRestau }}{% endblock %}
 
-{% block favicon %}<link rel="icon" href="{{ asset('images/logos/logo' ~ restaurant.id ~ '.png') }}">{% endblock %}
+{% block favicon %}
+    {% if restaurant.logo %}
+        <link rel="icon" href="{{ asset('images/logos/' ~ restaurant.logo) }}">
+    {% endif %}
+{% endblock %}
 
 {% block navbar_brand %}
     <a class="navbar-brand" href="{{ path('app_restaurant_home', {id: restaurant.id}) }}">
-        <img src="{{ asset('images/logos/logo' ~ restaurant.id ~ '.png') }}" alt="{{ restaurant.libRestau }} Logo" width="50" height="50" class="d-inline-block align-middle me-2">
+        {% if restaurant.logo %}
+            <img src="{{ asset('images/logos/' ~ restaurant.logo) }}"
+                 alt="{{ restaurant.libRestau }} Logo"
+                 width="50" height="50"
+                 class="d-inline-block align-middle me-2 rounded-circle"
+                 style="object-fit: cover;">
+        {% endif %}
         {{ restaurant.libRestau }}
     </a>
 {% endblock %}
@@ -15,7 +25,7 @@
     <div class="container">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-        <div class="home-section" style="background-image: url('{{ asset('images/thumbnails/thumbnail' ~ restaurant.id ~ '.png') }}');">
+        <div class="home-section" style="{% if restaurant.banniere %}background-image: url('{{ asset('images/thumbnails/' ~ restaurant.banniere) }}');{% endif %} background-color: #343a40;">
             <div class="home-overlay"></div>
             <div class="home-content">
                 <h1 class="display-3 fw-bold">{{ restaurant.libRestau }}</h1>
