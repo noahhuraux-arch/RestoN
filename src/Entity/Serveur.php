@@ -22,6 +22,9 @@ class Serveur extends Personne
     #[ORM\OneToMany(targetEntity: Commande::class, mappedBy: 'serveur')]
     private Collection $commandes;
 
+    #[ORM\Column]
+    private ?bool $mustChangePassword = null;
+
     public function __construct()
     {
         $this->commandes = new ArrayCollection();
@@ -77,6 +80,18 @@ class Serveur extends Personne
                 $commande->setServeur(null);
             }
         }
+
+        return $this;
+    }
+
+    public function isMustChangePassword(): ?bool
+    {
+        return $this->mustChangePassword;
+    }
+
+    public function setMustChangePassword(bool $mustChangePassword): static
+    {
+        $this->mustChangePassword = $mustChangePassword;
 
         return $this;
     }
