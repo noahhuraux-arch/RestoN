@@ -6,6 +6,7 @@ use App\Entity\Restaurant;
 use App\Entity\Serveur;
 use App\Form\ServeurType;
 use App\Repository\ServeurRepository;
+use App\Service\EmailService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -33,7 +34,7 @@ final class ServeurController extends AbstractController
     }
 
     #[Route('/{id}/serveur/create', name: 'app_serveur_create', requirements: ['id' => Requirement::DIGITS])]
-    public function create(Restaurant $restaurant, Request $request, EntityManagerInterface $em, UserPasswordHasherInterface $hasher): Response
+    public function create(Restaurant $restaurant, Request $request, EntityManagerInterface $em, UserPasswordHasherInterface $hasher, EmailService $emailService): Response
     {
         if ($restaurant->getProprietaire() !== $this->getUser()) {
             throw $this->createAccessDeniedException('Accès interdit');
@@ -49,11 +50,17 @@ final class ServeurController extends AbstractController
             $serveur->setMustChangePassword(true);
             $tempPass = bin2hex(random_bytes(4));
 
-            $tempPass = 'Bienvenue2026!';
             $serveur->setPassword($hasher->hashPassword($serveur, $tempPass));
 
             $em->persist($serveur);
             $em->flush();
+
+            $emailService->sendWelcomeServeur(
+                $serveur->getEmail(),
+                $serveur->getPrenom(),
+                $tempPass,
+                $restaurant
+            );
 
             return $this->redirectToRoute('app_serveur_show', ['id' => $restaurant->getId()]);
         }
