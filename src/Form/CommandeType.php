@@ -32,16 +32,23 @@ class CommandeType extends AbstractType
                     return 'Table n°' . ($r->getTable() ? $r->getTable()->getId() : '?');
                 },
                 'placeholder' => 'Vente directe',
+                'attr' => [
+                    'class' => 'form-select js-reservation-select',
+                    'data-dates' => json_encode(array_combine(
+                        array_map(fn($r) => $r->getId(), $restaurant->getReservations()->toArray()),
+                        array_map(fn($r) => $r->getDate() ? $r->getDate()->format('d/m/Y H:i') : '', $restaurant->getReservations()->toArray())
+                    ))
+                ],
                 'mapped' => false,
                 'required' => false,
-                'attr' => ['class' => 'form-select']
             ])
             ->add('produits', EntityType::class, [
                 'class' => Produit::class,
                 'query_builder' => function (EntityRepository $er) use ($restaurant) {
                     return $er->createQueryBuilder('p')
                         ->where('p.idRestau = :res')
-                        ->setParameter('res', $restaurant);
+                        ->setParameter('res', $restaurant)
+                        ->orderBy('p.libProduit', 'ASC');
                 },
                 'multiple' => true,
                 'expanded' => true,

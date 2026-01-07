@@ -31,9 +31,7 @@
                             <td>#{{ commande.id }}</td>
                             <td>{{ commande.dateCommande|date('d/m/Y H:i') }}</td>
                             <td>
-                                <span class="badge bg-info text-dark">
-                                    {{ commande.serveur ? commande.serveur.nom : 'N/A' }}
-                                </span>
+                                {{ commande.serveur ? commande.serveur.nom : 'N/A' }}
                             </td>
                             <td>
                                 {% if commande.tables %}
@@ -44,7 +42,7 @@
                             </td>
                             <td>
                                 <ul class="list-unstyled mb-0 small">
-                                    {% for produit in commande.produits %}
+                                    {% for produit in commande %}
                                         <li>• {{ produit.libProduit }} ({{ produit.prixProduit|number_format(2, ',', ' ') }} €)</li>
                                     {% endfor %}
                                 </ul>

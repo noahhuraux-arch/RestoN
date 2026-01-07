@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class CommandeController extends AbstractController
 {
-    #[Route('/restaurant/{id}/commandes', name: 'app_commande_index')]
+    #[Route('/{id}/commandes', name: 'app_commande_index')]
     public function index(Restaurant $restaurant, EntityManagerInterface $em): Response
     {
         $commandes = $em->getRepository(Commande::class)->findAll();
