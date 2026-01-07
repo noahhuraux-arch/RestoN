@@ -22,11 +22,11 @@ class ClientType extends AbstractType
                 'attr' => ['placeholder' => 'votre Nom'],
             ])
             ->add('telephone', TelType::class, [
-                'attr' => ['placeholder' => 'votre Telephone'],
+                'attr' => ['placeholder' => 'votre Telephone', 'maxlength' => 10],
             ])
             ->add('email', EmailType::class, [
                 'attr' => ['placeholder' => 'votre email'],
-            ])
+                ])
         ;
     }
 
