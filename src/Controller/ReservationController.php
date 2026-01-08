@@ -99,6 +99,10 @@ class ReservationController extends AbstractController
     #[Route('{id}/reservation/{idReservation}', name: 'app_reservation_show')]
     public function showReservation(Restaurant $restaurant, #[MapEntity(mapping: ['idReservation' => 'id'])] Reservation $reservation): Response
     {
+        if ($restaurant->getProprietaire() !== $this->getUser() && !$restaurant->getServeurs()->contains($this->getUser())) {
+            throw $this->createAccessDeniedException('Accès interdit');
+        }
+
         return $this->render('reservation/show.html.twig', [
             'restaurant' => $restaurant,
             'reservations' => $reservation,
@@ -109,6 +113,10 @@ class ReservationController extends AbstractController
     public function deleteReservation(Request $request, #[MapEntity(mapping: ['idReservation' => 'id'])] Reservation $reservation, EntityManagerInterface $entityManager): Response
     {
         $restaurant = $reservation->getRestaurant();
+        if ($restaurant->getProprietaire() !== $this->getUser() && !$restaurant->getServeurs()->contains($this->getUser())) {
+            throw $this->createAccessDeniedException('Accès interdit');
+        }
+
         $form = $this->createFormBuilder()
             ->add('delete', SubmitType::class)
             ->add('cancel', SubmitType::class)
