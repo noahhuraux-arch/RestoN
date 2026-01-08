@@ -107,6 +107,17 @@
     </div>
 </nav>
 
+<div class="container">
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="alert alert-{{ label == 'error' ? 'danger' : label }} alert-dismissible fade show shadow-sm" role="alert">
+                {{ message|raw }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+    {% endfor %}
+</div>
+
 {% block body %}{% endblock %}
 
 <footer class="bg-dark text-white pt-5 pb-4 mt-auto">
