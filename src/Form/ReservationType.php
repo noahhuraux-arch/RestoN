@@ -3,7 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Reservation;
-use App\Form\EventListener\AddHeureFieldListener;
+use App\EventListener\AddHeureFieldListener;
 use App\Repository\TableRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;

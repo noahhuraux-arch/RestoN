@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Form\EventListener;
+namespace App\EventListener;
 
 use App\Repository\TableRepository;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
