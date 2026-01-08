@@ -25,7 +25,7 @@ class Table
     #[ORM\OneToMany(targetEntity: Reservation::class, mappedBy: 'table')]
     private Collection $reservations;
 
-    #[ORM\ManyToOne(targetEntity: Restaurant::class, inversedBy: 'table')]
+    #[ORM\ManyToOne(targetEntity: Restaurant::class, inversedBy: 'tables')]
     private ?Restaurant $restaurant = null;
 
     #[ORM\OneToMany(targetEntity: Commande::class, mappedBy: 'table')]
