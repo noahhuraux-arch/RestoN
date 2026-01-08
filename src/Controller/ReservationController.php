@@ -54,7 +54,24 @@ class ReservationController extends AbstractController
             $entityManager->persist($reservation);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_home');
+            $logo = $restaurant->getLogo() ? '/images/logos/' . $restaurant->getLogo() : '/images/favicon.png';
+            $style = $restaurant->getLogo() ? 'object-fit: cover;' : '';
+            $class = $restaurant->getLogo() ? 'rounded-circle' : '';
+
+            $message = sprintf(
+                '<div class="d-flex align-items-center">
+                    <img src="%s" alt="Logo" width="50" height="50" class="me-3 %s" style="%s">
+                    <div>
+                        <h5 class="alert-heading fw-bold mb-1">%s</h5>
+                        <span>Votre réservation est confirmée ! <strong>Veuillez consulter vos emails</strong> pour le récapitulatif.</span>
+                    </div>
+                </div>',
+                $logo, $class, $style, $restaurant->getLibRestau()
+            );
+
+            $this->addFlash('success', $message);
+
+            return $this->redirectToRoute('app_restaurant_home', ['id' => $restaurant->getId()]);
         }
 
         return $this->render('reservation/create.html.twig', [
