@@ -30,28 +30,53 @@ class CommandeController extends AbstractController
         $form = $this->createForm(CommandeType::class, $commande, ['restaurant' => $restaurant]);
         $form->handleRequest($request);
 
+        $produitsGroupes = [
+            'Boissons' => [],
+            'Menus' => [],
+            'Entrées' => [],
+            'Plats' => [],
+            'Desserts' => [],
+            'Autres' => [],
+        ];
+
+        $choices = $form->get('produits')->getConfig()->getAttribute('choice_list')->getChoices();
+
+        foreach ($choices as $index => $produit) {
+            $categorie = 'Autres';
+
+            if ($produit instanceof Boisson) {
+                $categorie = 'Boissons';
+            } elseif ($produit instanceof Menu) {
+                $categorie = 'Menus';
+            } elseif ($produit instanceof Plat && $produit->getTypePlat()) {
+                $categorie = $produit->getTypePlat()->getLib();
+            }
+
+            $produitsGroupes[$categorie][$index] = $produit;
+        }
+
         if ($form->isSubmitted() && $form->isValid()) {
             $total = 0;
-            foreach ($commande->getProduits() as $produit) {
-                $total += $produit->getPrixProduit();
+            foreach ($commande->getProduits() as $p) {
+                $total += $p->getPrixProduit();
             }
             $commande->setPrixCommande($total);
-
-            $resData = $form->get('reservation')->getData();
-            if ($resData && $resData->getTable()) {
-                $commande->setTables($resData->getTable());
+            if (method_exists($commande, 'setDateCommande')) {
+                $commande->setDateCommande(new \DateTime());
             }
 
             $em->persist($commande);
             $em->flush();
 
-            $this->addFlash('success', 'Commande validée !');
-            return $this->redirectToRoute('app_serveur_show', ['id' => $restaurant->getId()]);
+            return $this->redirectToRoute('app_commande_index', ['id' => $restaurant->getId()]);
         }
 
         return $this->render('commande/create.html.twig', [
             'form' => $form->createView(),
             'restaurant' => $restaurant,
+            'produitsGroupes' => array_filter($produitsGroupes),
         ]);
     }
+
+
 }
