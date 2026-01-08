@@ -54,7 +54,7 @@
                 {% set restauId = app.request.get('id') ? app.request.get('id') : app.request.get('idRestau') %}
 
                 {% if current_route == 'app_produit_details' and produit is defined %}
-                    {% set restauId = produit.idRestau.id %}
+                    {% set restauId = produit.restaurant.id %}
                 {% endif %}
 
                 {% if current_route == 'app_home' %}
