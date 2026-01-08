@@ -28,7 +28,7 @@ final class ProduitController extends AbstractController
     #[Route('/{idRestau}/carte', name: 'app_produit', requirements: ['idRestau' => Requirement::DIGITS])]
     public function listMenu(BoissonRepository $boissonRep, PlatRepository $platRep, RestaurantRepository $restauRepo, MenuRepository $menuRepo, Restaurant $idRestau): Response
     {
-        $boisson = $boissonRep->findBy(['idRestau' => $idRestau], ['alcoolise' => 'ASC', 'prixProduit' => 'ASC', 'libProduit' => 'ASC']);
+        $boisson = $boissonRep->findBy(['restaurant' => $idRestau], ['alcoolise' => 'ASC', 'prixProduit' => 'ASC', 'libProduit' => 'ASC']);
         $produit = $platRep->findAllTypes($idRestau);
         $menus = $menuRepo->findAllPlats($idRestau);
 
@@ -64,9 +64,7 @@ final class ProduitController extends AbstractController
             throw $this->createAccessDeniedException('Accès interdit');
         }
 
-        $restaurant = $restauRepo->find($idRestau);
-
-        $boisson = $boissonRep->findBy(['idRestau' => $idRestau], ['alcoolise' => 'ASC', 'prixProduit' => 'ASC', 'libProduit' => 'ASC']);
+        $boisson = $boissonRep->findBy(['restaurant' => $idRestau], ['alcoolise' => 'ASC', 'prixProduit' => 'ASC', 'libProduit' => 'ASC']);
         $produit = $platRep->findAllTypes($idRestau);
         $menus = $menuRep->findAllPlats($idRestau);
 
@@ -91,7 +89,7 @@ final class ProduitController extends AbstractController
                 'plats' => $plat,
                 'desserts' => $dessert,
                 'menus' => $menus,
-                'restaurant' => $restaurant]);
+                'restaurant' => $idRestau]);
     }
 
     #[Route('/produit/{id}/', name: 'app_produit_details', requirements: ['id' => Requirement::DIGITS])]
@@ -123,7 +121,7 @@ final class ProduitController extends AbstractController
                 'entrees' => $entrees,
                 'plats' => $plat,
                 'desserts' => $dessert,
-                'restaurant' => $produit->getIdRestau(),
+                'restaurant' => $produit->getRestaurant(),
             ]);
         }
     }
@@ -137,13 +135,14 @@ final class ProduitController extends AbstractController
         }
 
         $restaurant = $restoRepo->find($idRestau);
+
         $boisson = new Boisson();
         $form = $this->createForm(BoissonType::class, $boisson);
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $restaurant->addBoisson($boisson);
+            $restaurant->addProduit($boisson);
 
             $entityManager->persist($boisson);
             $entityManager->flush();
@@ -165,8 +164,6 @@ final class ProduitController extends AbstractController
             throw $this->createAccessDeniedException('Accès interdit');
         }
 
-        $restaurant = $entityManager->getRepository(Restaurant::class)->find($idRestau);
-
         $form = $this->createForm(BoissonType::class, $idBoisson);
 
         $form->handleRequest($request);
@@ -180,7 +177,7 @@ final class ProduitController extends AbstractController
         return $this->render('produit/boisson/update.html.twig', [
             'boisson' => $idBoisson,
             'form' => $form,
-            'restaurant' => $restaurant,
+            'restaurant' => $idRestau,
         ]);
     }
 
@@ -199,7 +196,7 @@ final class ProduitController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $restaurant->addPlat($plat);
+            $restaurant->addProduit($plat);
 
             $entityManager->persist($plat);
             $entityManager->flush();
@@ -221,22 +218,21 @@ final class ProduitController extends AbstractController
             throw $this->createAccessDeniedException('Accès interdit');
         }
 
-        $restaurant = $entityManager->getRepository(Restaurant::class)->find($idRestau);
         $menu = new Menu();
-        $form = $this->createForm(MenuType::class, $menu, ['restaurant' => $restaurant]);
+        $form = $this->createForm(MenuType::class, $menu, ['restaurant' => $idRestau]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $restaurant->addMenu($menu);
+            $idRestau->addProduit($menu);
             $entityManager->persist($menu);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_produit_proprietaire', ['idRestau' => $idRestau]);
+            return $this->redirectToRoute('app_produit_proprietaire', ['idRestau' => $idRestau->getId()]);
         }
 
         return $this->render('produit/menu/create.html.twig', [
             'form' => $form,
-            'restaurant' => $restaurant,
+            'restaurant' => $idRestau,
         ]);
     }
 
@@ -248,7 +244,6 @@ final class ProduitController extends AbstractController
             throw $this->createAccessDeniedException('Accès interdit');
         }
 
-        $restaurant = $entityManager->getRepository(Restaurant::class)->find($idRestau);
         $form = $this->createForm(PlatType::class, $idPlat);
 
         $form->handleRequest($request);
@@ -262,7 +257,7 @@ final class ProduitController extends AbstractController
         return $this->render('produit/plat/update.html.twig', [
             'plat' => $idPlat,
             'form' => $form,
-            'restaurant' => $restaurant,
+            'restaurant' => $idRestau,
         ]);
     }
 
@@ -274,8 +269,7 @@ final class ProduitController extends AbstractController
             throw $this->createAccessDeniedException('Accès interdit');
         }
 
-        $restaurant = $entityManager->getRepository(Restaurant::class)->find($idRestau);
-        $form = $this->createForm(MenuType::class, $idMenu, ['restaurant' => $restaurant]);
+        $form = $this->createForm(MenuType::class, $idMenu, ['restaurant' => $idRestau]);
 
         $form->handleRequest($request);
 
@@ -288,7 +282,7 @@ final class ProduitController extends AbstractController
         return $this->render('produit/menu/update.html.twig', [
             'menu' => $idMenu,
             'form' => $form,
-            'restaurant' => $restaurant,
+            'restaurant' => $idRestau,
         ]);
     }
 
@@ -296,11 +290,11 @@ final class ProduitController extends AbstractController
     #[IsGranted('ROLE_PROPRIETAIRE')]
     public function delete(Request $request, Produit $produit, EntityManagerInterface $entityManager): Response
     {
-        if ($produit->getIdRestau()->getProprietaire() !== $this->getUser()) {
+        if ($produit->getRestaurant()->getProprietaire() !== $this->getUser()) {
             throw $this->createAccessDeniedException('Accès interdit');
         }
 
-        $idRestau = $produit->getIdRestau()->getId();
+        $idRestau = $produit->getRestaurant()->getId();
 
         $form = $this->createFormBuilder()
             ->add('delete', SubmitType::class)
