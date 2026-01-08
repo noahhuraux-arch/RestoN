@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\DataFixtures;
 
 use App\Factory\ClientFactory;
@@ -10,7 +9,6 @@ use App\Factory\TableFactory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
-use Zenstruck\Foundry\Factory;
 
 class ReservationFixtures extends Fixture implements DependentFixtureInterface
 {
@@ -23,15 +21,16 @@ class ReservationFixtures extends Fixture implements DependentFixtureInterface
         $restaurants = RestaurantFactory::all();
 
         foreach ($restaurants as $restaurant) {
-            $tables = TableFactory::createMany($restaurant->getNbTable(), [
-                'restaurant' => $restaurant,
-            ]);
-
-            foreach ($tables as $table) {
-                ReservationFactory::createMany(2, [
-                    'table' => $table,
+            $nbTables = $restaurant->getNbTable();
+            for ($i = 1; $i <= $nbTables; ++$i) {
+                $table = TableFactory::createOne([
                     'restaurant' => $restaurant,
-                    'client' => $clients[array_rand($clients)],
+                    'numero' => $i,
+                ]);
+                ReservationFactory::createMany(2, [
+                    'Table' => $table,
+                    'Restaurant' => $restaurant,
+                    'Client' => $clients[array_rand($clients)],
                 ]);
             }
         }
