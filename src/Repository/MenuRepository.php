@@ -23,7 +23,7 @@ class MenuRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('menu')
             ->addSelect('plat')
             ->join('menu.idPlat', 'plat')
-            ->where('menu.idRestau = :restaurant')
+            ->where('menu.restaurant = :restaurant')
             ->setParameter('restaurant', $restaurant)
             ->orderBy('menu.prixProduit', 'ASC')
             ->addOrderBy('menu.libProduit', 'ASC')
