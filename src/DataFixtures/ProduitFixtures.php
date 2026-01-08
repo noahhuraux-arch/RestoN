@@ -40,7 +40,7 @@ class ProduitFixtures extends Fixture implements DependentFixtureInterface
                     'descriptionProduit' => $boisson['descriptionProduit'],
                     'visible' => true,
                     'alcoolise' => $boisson['alcoolise'],
-                    'idRestau' => $restaurant,
+                    'restaurant' => $restaurant,
                     'allergenes' => $lstAllergene,
                 ]);
             }
@@ -60,7 +60,7 @@ class ProduitFixtures extends Fixture implements DependentFixtureInterface
                     'descriptionProduit' => $plat['descriptionProduit'],
                     'visible' => true,
                     'vegetarien' => $plat['vegetarien'],
-                    'idRestau' => $restaurant,
+                    'restaurant' => $restaurant,
                     'typePlat' => $typePlat,
                     'allergenes' => $lstAllergene,
                 ]);
@@ -79,7 +79,7 @@ class ProduitFixtures extends Fixture implements DependentFixtureInterface
                     'prixProduit' => $menu['prix'],
                     'descriptionProduit' => $menu['descriptionProduit'],
                     'visible' => true,
-                    'idRestau' => $restaurant,
+                    'restaurant' => $restaurant,
                     'idPlat' => $platsMenu,
                 ]);
             }
