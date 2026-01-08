@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <style>
+        .card {
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+        .info-row {
+            margin-bottom: 10px;
+            border-bottom: 1px dashed #ddd;
+            padding-bottom: 10px;
+        }
+        .footer {
+            font-size: 0.8em;
+            color: #999;
+            text-align: center;
+        }
+    </style>
+</head>
+<body style="font-family: sans-serif; line-height: 1.6; color: #333; margin: 0; padding: 20px;">
+<div style="max-width: 600px; margin: auto;">
+
+    <div style="text-align: center; margin-bottom: 30px;">
+        {% if hasLogo %}
+            <img src="cid:logo-resto" alt="Logo {{ restaurant.librestau }}" width="100" style="border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+        {% else %}
+            <h1 style="color: #198754; margin: 0;">{{ restaurant.librestau }}</h1>
+        {% endif %}
+    </div>
+
+    <h2 style="color: #198754; text-align: center;">Réservation Confirmée !</h2>
+
+    <p>Bonjour {{ client.prenom|default('cher client') }},</p>
+
+    <p>Nous avons le plaisir de confirmer ta réservation.</p>
+
+    <div class="card">
+        <p style="margin-top: 0; padding-bottom: 10px; font-size: 1.1em; text-align: center; color: #555;">
+            <strong>Détails de votre venue</strong>
+        </p>
+
+        <div class="info-row">
+            📅 Date : <strong>{{ reservation.date|date('d/m/Y') }}</strong>
+        </div>
+        <div class="info-row">
+            🕒 Heure : <strong>{{ reservation.heure|date('H:i') }}</strong>
+        </div>
+        <div class="info-row">
+            👥 Couverts : <strong>{{ reservation.nbPers }} personne(s)</strong>
+        </div>
+    </div>
+
+    <p style="font-size: 0.9em; color: #666; margin-top: 25px; text-align: center;">
+        Nous avons hâte de vous recevoir !<br>
+        En cas d'empêchement, merci de nous contacter au :<br>
+        <strong style="font-size: 1.1em; color: #333;">📞 {{ restaurant.telRestau }}</strong>
+    </p>
+
+    <hr style="border: 0; border-top: 1px solid #eee; margin: 30px 0;">
+
+    <div class="footer">
+        <p>Cet email a été envoyé par <strong>{{ restaurant.librestau }}</strong> via la plateforme Resto'N ©.</p>
+    </div>
+</div>
+</body>
+</html>
