@@ -22,7 +22,7 @@ class PlatRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('p')
             ->addSelect('t')
             ->join('p.typePlat', 't')
-            ->where('p.idRestau = :restaurant')
+            ->where('p.restaurant = :restaurant')
             ->setParameter('restaurant', $restaurant)
             ->orderBy('p.prixProduit', 'ASC')
             ->addOrderBy('p.libProduit', 'ASC')

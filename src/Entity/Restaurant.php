@@ -56,68 +56,37 @@ class Restaurant
     #[Assert\Email(message: "L'email '{{ value }}' n'est pas valide.")]
     private ?string $email_restau = null;
 
-    /**
-     * @var Collection<int, Horaire>
-     */
-    #[ORM\OneToMany(targetEntity: Horaire::class, mappedBy: 'restaurant')]
-    private Collection $horaires;
-
-    #[ORM\OneToMany(targetEntity: Table::class, mappedBy: 'restaurant')]
-    private Collection $table;
-
-    #[ORM\OneToMany(targetEntity: Reservation::class, mappedBy: 'restaurant')]
-    private Collection $reservations;
-
-    public function getReservations(): Collection
-    {
-        return $this->reservations;
-    }
-
-    public function setReservations(Collection $reservations): void
-    {
-        $this->reservations = $reservations;
-    }
-
-    /**
-     * @var Collection<int, Boisson>
-     */
-    #[ORM\OneToMany(targetEntity: Boisson::class, mappedBy: 'idRestau')]
-    private Collection $boissons;
-
-    /**
-     * @var Collection<int, Plat>
-     */
-    #[ORM\OneToMany(targetEntity: Plat::class, mappedBy: 'idRestau')]
-    private Collection $plats;
-
-    /**
-     * @var Collection<int, Serveur>
-     */
-    #[ORM\OneToMany(targetEntity: Serveur::class, mappedBy: 'restaurant')]
-    private Collection $serveurs;
-
-    /**
-     * @var Collection<int, Menu>
-     */
-    #[ORM\OneToMany(targetEntity: Menu::class, mappedBy: 'idRestau')]
-    private Collection $menus;
-
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $logo = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $banniere = null;
 
+    #[ORM\OneToMany(targetEntity: Horaire::class, mappedBy: 'restaurant', cascade: ['remove'], orphanRemoval: true)]
+    private Collection $horaires;
+
+    #[ORM\OneToMany(targetEntity: Table::class, mappedBy: 'restaurant', cascade: ['remove'], orphanRemoval: true)]
+    private Collection $tables;
+
+    #[ORM\OneToMany(targetEntity: Reservation::class, mappedBy: 'restaurant', cascade: ['remove'])]
+    private Collection $reservations;
+
+    #[ORM\OneToMany(targetEntity: Serveur::class, mappedBy: 'restaurant', cascade: ['remove'])]
+    private Collection $serveurs;
+
+    #[ORM\OneToMany(targetEntity: Produit::class, mappedBy: 'restaurant', cascade: ['remove'])]
+    private Collection $produits;
+
     public function __construct()
     {
         $this->horaires = new ArrayCollection();
-        $this->boissons = new ArrayCollection();
-        $this->plats = new ArrayCollection();
+        $this->tables = new ArrayCollection();
+        $this->reservations = new ArrayCollection();
         $this->serveurs = new ArrayCollection();
-        $this->menus = new ArrayCollection();
+        $this->produits = new ArrayCollection();
     }
 
-    public function getid(): ?int
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -230,156 +199,6 @@ class Restaurant
         return $this;
     }
 
-    /**
-     * @return Collection<int, Horaire>
-     */
-    public function getHoraires(): Collection
-    {
-        return $this->horaires;
-    }
-
-    public function addHoraire(Horaire $horaire): static
-    {
-        if (!$this->horaires->contains($horaire)) {
-            $this->horaires->add($horaire);
-            $horaire->setRestaurant($this);
-        }
-
-        return $this;
-    }
-
-    public function removeHoraire(Horaire $horaire): static
-    {
-        if ($this->horaires->removeElement($horaire)) {
-            // set the owning side to null (unless already changed)
-            if ($horaire->getRestaurant() === $this) {
-                $horaire->setRestaurant(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Boisson>
-     */
-    public function getBoissons(): Collection
-    {
-        return $this->boissons;
-    }
-
-    public function addBoisson(Boisson $boisson): static
-    {
-        if (!$this->boissons->contains($boisson)) {
-            $this->boissons->add($boisson);
-            $boisson->setIdRestau($this);
-        }
-
-        return $this;
-    }
-
-    public function removeBoisson(Boisson $boisson): static
-    {
-        if ($this->boissons->removeElement($boisson)) {
-            // set the owning side to null (unless already changed)
-            if ($boisson->getIdRestau() === $this) {
-                $boisson->setIdRestau(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Plat>
-     */
-    public function getPlats(): Collection
-    {
-        return $this->plats;
-    }
-
-    public function addPlat(Plat $plat): static
-    {
-        if (!$this->plats->contains($plat)) {
-            $this->plats->add($plat);
-            $plat->setIdRestau($this);
-        }
-
-        return $this;
-    }
-
-    public function removePlat(Plat $plat): static
-    {
-        if ($this->plats->removeElement($plat)) {
-            // set the owning side to null (unless already changed)
-            if ($plat->getIdRestau() === $this) {
-                $plat->setIdRestau(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Serveur>
-     */
-    public function getServeurs(): Collection
-    {
-        return $this->serveurs;
-    }
-
-    public function addServeur(Serveur $serveur): static
-    {
-        if (!$this->serveurs->contains($serveur)) {
-            $this->serveurs->add($serveur);
-            $serveur->setRestaurant($this);
-        }
-
-        return $this;
-    }
-
-    public function removeServeur(Serveur $serveur): static
-    {
-        if ($this->serveurs->removeElement($serveur)) {
-            // set the owning side to null (unless already changed)
-            if ($serveur->getRestaurant() === $this) {
-                $serveur->setRestaurant(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Menu>
-     */
-    public function getMenus(): Collection
-    {
-        return $this->menus;
-    }
-
-    public function addMenu(Menu $menu): static
-    {
-        if (!$this->menus->contains($menu)) {
-            $this->menus->add($menu);
-            $menu->setIdRestau($this);
-        }
-
-        return $this;
-    }
-
-    public function removeMenu(Menu $menu): static
-    {
-        if ($this->menus->removeElement($menu)) {
-            // set the owning side to null (unless already changed)
-            if ($menu->getIdRestau() === $this) {
-                $menu->setIdRestau(null);
-            }
-        }
-
-        return $this;
-    }
-
     public function getLogo(): ?string
     {
         return $this->logo;
@@ -402,5 +221,78 @@ class Restaurant
         $this->banniere = $banniere;
 
         return $this;
+    }
+
+    /**
+     * @return Collection<int, Table>
+     */
+    public function getTables(): Collection
+    {
+        return $this->tables;
+    }
+
+    public function addTable(Table $table): static
+    {
+        if (!$this->tables->contains($table)) {
+            $this->tables->add($table);
+            $table->setRestaurant($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTable(Table $table): static
+    {
+        if ($this->tables->removeElement($table)) {
+            if ($table->getRestaurant() === $this) {
+                $table->setRestaurant(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Produit>
+     */
+    public function getProduits(): Collection
+    {
+        return $this->produits;
+    }
+
+    public function addProduit(Produit $produit): static
+    {
+        if (!$this->produits->contains($produit)) {
+            $this->produits->add($produit);
+            $produit->setRestaurant($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProduit(Produit $produit): static
+    {
+        if ($this->produits->removeElement($produit)) {
+            if ($produit->getRestaurant() === $this) {
+                $produit->setRestaurant(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getReservations(): Collection
+    {
+        return $this->reservations;
+    }
+
+    public function getServeurs(): Collection
+    {
+        return $this->serveurs;
+    }
+
+    public function getHoraires(): Collection
+    {
+        return $this->horaires;
     }
 }

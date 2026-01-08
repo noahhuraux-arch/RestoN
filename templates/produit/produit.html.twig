@@ -2,12 +2,12 @@
 
 {% block title %}{{ produit.libProduit }}{% endblock %}
 
-{% block favicon %}<link rel="icon" href="{{ asset('images/logos/logo' ~ produit.idRestau.id ~ '.png') }}">{% endblock %}
+{% block favicon %}<link rel="icon" href="{{ asset('images/logos/logo' ~ produit.restaurant.id ~ '.png') }}">{% endblock %}
 
 {% block navbar_brand %}
-    <a class="navbar-brand" href="{{ path('app_restaurant_home', {id: produit.idRestau.id}) }}">
-        <img src="{{ asset('images/logos/logo' ~ produit.idRestau.id ~ '.png') }}" alt="{{ produit.idRestau.libRestau }}" width="50" height="50" class="d-inline-block align-middle me-2">
-        {{ produit.idRestau.libRestau }}
+    <a class="navbar-brand" href="{{ path('app_restaurant_home', {id: produit.restaurant.id}) }}">
+        <img src="{{ asset('images/logos/logo' ~ produit.restaurant.id ~ '.png') }}" alt="{{ produit.restaurant.libRestau }}" width="50" height="50" class="d-inline-block align-middle me-2">
+        {{ produit.restaurant.libRestau }}
     </a>
 {% endblock %}
 
@@ -90,7 +90,7 @@
                 {% endif %}
 
                 <div class="d-flex justify-content-start align-items-center">
-                    {% if is_granted('ROLE_PROPRIETAIRE') and app.user == produit.idRestau.proprietaire%}
+                    {% if is_granted('ROLE_PROPRIETAIRE') and app.user == produit.restaurant.proprietaire%}
                         {% if produit.visible %}
                             <span class="badge bg-success px-3 py-2 me-3">Visible sur la carte</span>
                         {% else %}
@@ -132,33 +132,33 @@
 
                 <p class="text-muted fs-5">
                     Restaurant :
-                    <strong>{{ produit.idRestau.libRestau ?? 'Non renseigné' }}</strong>
+                    <strong>{{ produit.restaurant.libRestau ?? 'Non renseigné' }}</strong>
                 </p>
 
                 <div class="mt-4 d-flex justify-content-between align-items-center">
-                    {% if is_granted('ROLE_PROPRIETAIRE') and app.user == produit.idRestau.proprietaire%}
-                        <a href="{{ path('app_produit_proprietaire', {idRestau: produit.idRestau.id}) }}" class="btn btn-light border rounded-3 px-4 fs-6">
+                    {% if is_granted('ROLE_PROPRIETAIRE') and app.user == produit.restaurant.proprietaire%}
+                        <a href="{{ path('app_produit_proprietaire', {idRestau: produit.restaurant.id}) }}" class="btn btn-light border rounded-3 px-4 fs-6">
                             ← Retour à la carte
                         </a>
                     {% else %}
-                        <a href="{{ path('app_produit', {idRestau: produit.idRestau.id}) }}" class="btn btn-light border rounded-3 px-4 fs-6">
+                        <a href="{{ path('app_produit', {idRestau: produit.restaurant.id}) }}" class="btn btn-light border rounded-3 px-4 fs-6">
                             ← Retour à la carte
                         </a>
                     {% endif %}
 
-                    {% if is_granted('ROLE_PROPRIETAIRE') and app.user == produit.idRestau.proprietaire%}
+                    {% if is_granted('ROLE_PROPRIETAIRE') and app.user == produit.restaurant.proprietaire%}
 
                         <div class="d-flex gap-2">
                             {% if produit.alcoolise is defined %}
-                                <a href="{{ path('app_produit_boisson_update', {idRestau: produit.idRestau.id, idBoisson: produit.id}) }}" class="btn btn-outline-primary rounded-3 px-4 fs-6 fw-bold">
+                                <a href="{{ path('app_produit_boisson_update', {idRestau: produit.restaurant.id, idBoisson: produit.id}) }}" class="btn btn-outline-primary rounded-3 px-4 fs-6 fw-bold">
                                     Modifier
                                 </a>
                             {% elseif produit.typePlat is defined %}
-                                <a href="{{ path('app_produit_plat_update', {idRestau: produit.idRestau.id, idPlat: produit.id}) }}" class="btn btn-outline-primary rounded-3 px-4 fs-6 fw-bold">
+                                <a href="{{ path('app_produit_plat_update', {idRestau: produit.restaurant.id, idPlat: produit.id}) }}" class="btn btn-outline-primary rounded-3 px-4 fs-6 fw-bold">
                                     Modifier
                                 </a>
                             {% elseif plats %}
-                                <a href="{{ path('app_produit_menu_update', {idRestau: produit.idRestau.id, idMenu: produit.id}) }}" class="btn btn-outline-primary rounded-3 px-4 fs-6 fw-bold">
+                                <a href="{{ path('app_produit_menu_update', {idRestau: produit.restaurant.id, idMenu: produit.id}) }}" class="btn btn-outline-primary rounded-3 px-4 fs-6 fw-bold">
                                     Modifier
                                 </a>
                             {% endif %}

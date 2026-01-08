@@ -34,7 +34,7 @@ final class MenuFactory extends PersistentProxyObjectFactory
     protected function defaults(): array|callable
     {
         return [
-            'idRestau' => RestaurantFactory::new(),
+            'restaurant' => RestaurantFactory::new(),
             'libProduit' => self::faker()->text(64),
             'prixProduit' => self::faker()->randomFloat(),
             'visible' => self::faker()->boolean(),
