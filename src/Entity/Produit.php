@@ -34,6 +34,10 @@ abstract class Produit
     #[ORM\Column(length: 1024, nullable: true)]
     private ?string $descriptionProduit = null;
 
+    #[ORM\ManyToOne(targetEntity: Restaurant::class, inversedBy: 'produits')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Restaurant $restaurant = null;
+
     /**
      * @var Collection<int, Allergene>
      */
@@ -94,6 +98,18 @@ abstract class Produit
     public function setDescriptionProduit(?string $descriptionProduit): static
     {
         $this->descriptionProduit = $descriptionProduit;
+
+        return $this;
+    }
+
+    public function getRestaurant(): ?Restaurant
+    {
+        return $this->restaurant;
+    }
+
+    public function setRestaurant(?Restaurant $restaurant): static
+    {
+        $this->restaurant = $restaurant;
 
         return $this;
     }
