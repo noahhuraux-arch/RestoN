@@ -34,7 +34,7 @@ class MenuType extends AbstractType
                 'group_by' => function (Plat $plat) {return $plat->getTypePlat()->getLib(); },
                 'query_builder' => $restaurant ? function (EntityRepository $entityRepository) use ($restaurant) {
                     return $entityRepository->createQueryBuilder('p')
-                        ->where('p.idRestau = :restaurant')
+                        ->where('p.restaurant = :restaurant')
                         ->setParameter('restaurant', $restaurant)
                         ->orderBy('p.typePlat', 'ASC');
                 } : null,
