@@ -1,6 +1,12 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Notre Carte{% endblock %}
+{% block title %}Notre Carte - {{ restaurant.libRestau }}{% endblock %}
+
+{% block favicon %}
+    {% if restaurant.logo %}
+        <link rel="icon" href="{{ asset('images/logos/' ~ restaurant.logo) }}">
+    {% endif %}
+{% endblock %}
 
 {% block body %}
     {{ include('produit/_carte.html.twig', { prop: false }) }}

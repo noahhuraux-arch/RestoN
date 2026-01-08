@@ -1,12 +1,20 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ produit.libProduit }}{% endblock %}
+{% block title %}{{ produit.libProduit }} - {{ produit.restaurant.libRestau }}{% endblock %}
 
-{% block favicon %}<link rel="icon" href="{{ asset('images/logos/logo' ~ produit.restaurant.id ~ '.png') }}">{% endblock %}
+{% block favicon %}
+    {% if produit.restaurant.logo %}
+        <link rel="icon" href="{{ asset('images/logos/' ~ produit.restaurant.logo) }}">
+    {% endif %}
+{% endblock %}
 
 {% block navbar_brand %}
     <a class="navbar-brand" href="{{ path('app_restaurant_home', {id: produit.restaurant.id}) }}">
-        <img src="{{ asset('images/logos/logo' ~ produit.restaurant.id ~ '.png') }}" alt="{{ produit.restaurant.libRestau }}" width="50" height="50" class="d-inline-block align-middle me-2">
+        {% if produit.restaurant.logo %}
+            <img src="{{ asset('images/logos/' ~ produit.restaurant.logo) }}" alt="{{ produit.restaurant.libRestau }}" width="50" height="50" class="d-inline-block align-middle me-2 rounded-circle" style="object-fit: cover;">
+        {% else %}
+            <img src="{{ asset('images/favicon.png') }}" alt="Logo" width="50" height="50" class="d-inline-block align-middle me-2" style="filter: invert(1);">
+        {% endif %}
         {{ produit.restaurant.libRestau }}
     </a>
 {% endblock %}
