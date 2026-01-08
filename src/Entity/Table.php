@@ -31,6 +31,9 @@ class Table
     #[ORM\OneToMany(targetEntity: Commande::class, mappedBy: 'table')]
     private Collection $commande;
 
+    #[ORM\Column]
+    private ?int $numero = null;
+
     public function __construct()
     {
         $this->commande = new ArrayCollection();
@@ -101,6 +104,18 @@ class Table
                 $commande->setTables(null);
             }
         }
+        return $this;
+    }
+
+    public function getNumero(): ?int
+    {
+        return $this->numero;
+    }
+
+    public function setNumero(int $numero): static
+    {
+        $this->numero = $numero;
+
         return $this;
     }
 }

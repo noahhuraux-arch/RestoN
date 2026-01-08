@@ -23,7 +23,7 @@ class Reservation
     #[ORM\Column]
     private ?int $nbPers = null;
 
-    #[ORM\ManyToOne(targetEntity: Client::class, inversedBy: 'reservations')]
+    #[ORM\ManyToOne(targetEntity: Client::class, inversedBy: 'reservations', cascade: ['persist'])]
     private ?Client $client = null;
 
     public function getClient(): ?Client
