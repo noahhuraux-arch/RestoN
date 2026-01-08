@@ -1,20 +1,48 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello TableController!{% endblock %}
+{% block title %}Gestion des tables - {{ restaurant.libRestau }}{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+    <div class="container mt-2">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h1 class="fw-bold h2 mb-0">Plan des Tables :</h1>
+            </div>
+        </div>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+        <div class="row g-4 pb-4">
+            {% for table in tables %}
+                <div class="col-6 col-md-4 col-lg-3 col-xl-2">
+                    {% set dispo = table.isDisponible %}
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code>/working/jano0008/sae3-01/src/Controller/TableController.php</code></li>
-        <li>Your template at <code>/working/jano0008/sae3-01/templates/table/index.html.twig</code></li>
-    </ul>
-</div>
+                    <div class="card h-100 shadow-sm border-0 overflow-hidden">
+                        {% if dispo %}
+                        <div class="py-2 text-center bg-success text-white">
+                            <small class="fw-bold text-uppercase">
+                                Libre
+                            </small>
+                        </div>
+                        {% else %}
+                            <div class="py-2 text-center 'bg-danger text-white'">
+                                <small class="fw-bold text-uppercase">
+                                    Réserver
+                                </small>
+                            </div>
+                        {% endif %}
+
+                        <div class="card-body text-center py-2">
+                            <div class="fs-3 fw-bold mb-1">
+                                <span>N°{{ table.numero }}</span>
+                            </div>
+                            <div class="text-muted small">
+                                <span>{{ table.nbPlace}} places</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+            {% endfor %}
+        </div>
+    </div>
+
 {% endblock %}
