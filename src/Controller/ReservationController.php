@@ -101,7 +101,7 @@ class ReservationController extends AbstractController
         ]);
     }
 
-    #[IsGranted('ROLE_SERVEUR')]
+    #[IsGranted(new Expression('is_granted("ROLE_SERVEUR") or is_granted("ROLE_PROPRIETAIRE")'))]
     #[Route('{id}/reservation/{idReservation}', name: 'app_reservation_show')]
     public function showReservation(Restaurant $restaurant, #[MapEntity(mapping: ['idReservation' => 'id'])] Reservation $reservation): Response
     {
@@ -116,7 +116,7 @@ class ReservationController extends AbstractController
     }
 
     #[Route('{id}/reservation/{idReservation}/delete', name: 'app_reservation_delete')]
-    #[IsGranted('ROLE_SERVEUR')]
+    #[IsGranted(new Expression('is_granted("ROLE_SERVEUR") or is_granted("ROLE_PROPRIETAIRE")'))]
     public function deleteReservation(Request $request, #[MapEntity(mapping: ['idReservation' => 'id'])] Reservation $reservation, EntityManagerInterface $entityManager): Response
     {
         $restaurant = $reservation->getRestaurant();
