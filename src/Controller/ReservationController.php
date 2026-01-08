@@ -7,6 +7,7 @@ use App\Entity\Restaurant;
 use App\Form\ReservationType;
 use App\Repository\ClientRepository;
 use App\Repository\TableRepository;
+use App\Service\EmailService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -21,7 +22,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 class ReservationController extends AbstractController
 {
     #[Route('{id}/reserver', name: 'app_reservation_create', requirements: ['id' => Requirement::DIGITS], methods: ['GET', 'POST'])]
-    public function createReservation(Request $request, Restaurant $restaurant, TableRepository $tableRepository, ClientRepository $clientRepository, EntityManagerInterface $entityManager): Response
+    public function createReservation(Request $request, Restaurant $restaurant, TableRepository $tableRepository, ClientRepository $clientRepository, EntityManagerInterface $entityManager, EmailService $emailService): Response
     {
         $reservation = new Reservation();
         $form = $this->createForm(ReservationType::class, $reservation, ['restaurant' => $restaurant]);
@@ -45,16 +46,20 @@ class ReservationController extends AbstractController
                 $reservation->getHeure(),
                 $reservation->getNbPers()
             );
+
             if ($Client) {
                 $Client->setRoles(['ROLE_CLIENT']);
                 $reservation->setClient($Client);
-
             }
+
             $reservation->setTable($tableDisponible);
+
             $entityManager->persist($reservation);
             $entityManager->flush();
 
-            $logo = $restaurant->getLogo() ? '/images/logos/' . $restaurant->getLogo() : '/images/favicon.png';
+            $emailService->sendReservationConfirmation($reservation);
+
+            $logo = $restaurant->getLogo() ? '/images/logos/'.$restaurant->getLogo() : '/images/favicon.png';
             $style = $restaurant->getLogo() ? 'object-fit: cover;' : '';
             $class = $restaurant->getLogo() ? 'rounded-circle' : '';
 
@@ -79,6 +84,7 @@ class ReservationController extends AbstractController
             'restaurant' => $restaurant,
         ]);
     }
+
     #[IsGranted(new Expression('is_granted("ROLE_SERVEUR") or is_granted("ROLE_PROPRIETAIRE")'))]
     #[Route('{id}/reservation', name: 'app_reservation')]
     public function indexReservation(Restaurant $restaurant): Response
@@ -108,6 +114,7 @@ class ReservationController extends AbstractController
             'reservations' => $reservation,
         ]);
     }
+
     #[Route('{id}/reservation/{idReservation}/delete', name: 'app_reservation_delete')]
     #[IsGranted('ROLE_SERVEUR')]
     public function deleteReservation(Request $request, #[MapEntity(mapping: ['idReservation' => 'id'])] Reservation $reservation, EntityManagerInterface $entityManager): Response
@@ -133,7 +140,7 @@ class ReservationController extends AbstractController
             }
 
             if ($form->get('cancel')->isClicked()) {
-                return $this->redirectToRoute('app_reservation_show', ['id' => $restaurant->getId(),'idReservation' => $reservation->getId()]);
+                return $this->redirectToRoute('app_reservation_show', ['id' => $restaurant->getId(), 'idReservation' => $reservation->getId()]);
             }
         }
 
@@ -141,7 +148,5 @@ class ReservationController extends AbstractController
             'reservation' => $reservation,
             'form' => $form->createView(),
         ]);
-
     }
-
 }
