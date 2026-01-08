@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Supprimer la - {{ reservation.id }}{% endblock %}
+
+{% block body %}
+    <div class="container py-5">
+        <div class="alert alert-danger text-center">
+            <h1 class="h3"> Attention !</h1>
+            <p class="lead">
+                Êtes-vous sûr de vouloir supprimer définitivement la réservation de
+                <strong>"{{ reservation.client.prenom }} {{ reservation.client.nom }}"</strong> ?
+            </p>
+            <p class="mb-0">
+                Prévue le <strong>{{ reservation.date|date('d/m/Y') }}</strong>
+                à <strong>{{ reservation.heure|date('H:i') }}</strong>.
+            </p>
+            <p>Cette action est irréversible.</p>
+        </div>
+
+        <div class="d-flex justify-content-center mt-5">
+            {{ form_start(form, {attr: {class: 'd-flex gap-3 align-items-center'}}) }}
+
+            {{ form_widget(form.delete, {
+                label: 'Supprimer',
+                attr: {class: 'btn btn-danger'},
+            }) }}
+
+            {{ form_widget(form.cancel, {
+                label: 'Annuler',
+                attr: {class: 'btn btn-secondary'},
+            }) }}
+
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}

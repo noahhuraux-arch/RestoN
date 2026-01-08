@@ -23,8 +23,8 @@ class ReservationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('date', DateType::class)
-            ->add('nbPers', IntegerType::class)
+            ->add('date', DateType::class, ['attr' => ['min' => date('Y-m-d')]])
+            ->add('nbPers', IntegerType::class, ['attr' => ['min' => 1]])
             ->add('client', ClientType::class)
         ;
         $builder->addEventSubscriber(new AddHeureFieldListener($this->tableRepository));

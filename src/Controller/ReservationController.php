@@ -8,11 +8,14 @@ use App\Form\ReservationType;
 use App\Repository\ClientRepository;
 use App\Repository\TableRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Requirement\Requirement;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class ReservationController extends AbstractController
 {
@@ -34,7 +37,7 @@ class ReservationController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $reservation->setRestaurant($restaurant);
             $NouveauClient = $reservation->getClient();
-            $Client = $clientRepository->findExistingByClient($NouveauClient->getNom(), $NouveauClient->getPrenom(), $NouveauClient->getEmail(), $NouveauClient->getTelephone());
+            $Client = $clientRepository->findExistingByClient($NouveauClient->getEmail());
             $tableDisponible = $tableRepository->findAvailableTables(
                 $restaurant,
                 $reservation->getDate(),
@@ -42,7 +45,9 @@ class ReservationController extends AbstractController
                 $reservation->getNbPers()
             );
             if ($Client) {
+                $Client->setRoles(['ROLE_CLIENT']);
                 $reservation->setClient($Client);
+
             }
             $reservation->setTable($tableDisponible);
             $entityManager->persist($reservation);
@@ -56,4 +61,57 @@ class ReservationController extends AbstractController
             'restaurant' => $restaurant,
         ]);
     }
+    #[IsGranted('ROLE_SERVEUR')]
+    #[Route('{id}/reservation', name: 'app_reservation')]
+    public function indexReservation(Restaurant $restaurant): Response
+    {
+        $reservations = $restaurant->getReservations();
+
+        return $this->render('reservation/index.html.twig', [
+            'restaurant' => $restaurant,
+            'reservations' => $reservations,
+        ]);
+    }
+
+    #[IsGranted('ROLE_SERVEUR')]
+    #[Route('{id}/reservation/{idReservation}', name: 'app_reservation_show')]
+    public function showReservation(Restaurant $restaurant, #[MapEntity(mapping: ['idReservation' => 'id'])] Reservation $reservation): Response
+    {
+        return $this->render('reservation/show.html.twig', [
+            'restaurant' => $restaurant,
+            'reservations' => $reservation,
+        ]);
+    }
+    #[Route('{id}/reservation/{idReservation}/delete', name: 'app_reservation_delete')]
+    #[IsGranted('ROLE_SERVEUR')]
+    public function deleteReservation(Request $request, #[MapEntity(mapping: ['idReservation' => 'id'])] Reservation $reservation, EntityManagerInterface $entityManager): Response
+    {
+        $restaurant = $reservation->getRestaurant();
+        $form = $this->createFormBuilder()
+            ->add('delete', SubmitType::class)
+            ->add('cancel', SubmitType::class)
+            ->getForm();
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            if ($form->get('delete')->isClicked()) {
+                $entityManager->remove($reservation);
+                $entityManager->flush();
+
+                return $this->redirectToRoute('app_reservation', ['id' => $restaurant->getId()]);
+            }
+
+            if ($form->get('cancel')->isClicked()) {
+                return $this->redirectToRoute('app_reservation_show', ['id' => $restaurant->getId(),'idReservation' => $reservation->getId()]);
+            }
+        }
+
+        return $this->render('reservation/delete.html.twig', [
+            'reservation' => $reservation,
+            'form' => $form->createView(),
+        ]);
+
+    }
+
 }

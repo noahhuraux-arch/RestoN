@@ -34,49 +34,57 @@
 {% endblock %}
 
 {% block body %}
-    <div class="container my-5">
-        <div class="row justify-content-center">
-            <div class="col-lg-8">
-                <div class="card shadow border-0">
-                    <div class="card-body p-5">
-                        <h1 class="text-center mb-4 fw-bold">Réserver votre table</h1>
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-warning text-black text-center py-3">
+                    <h1 class="h4 mb-0">Réserver votre table</h1>
+                </div>
+                <div class="card-body p-4">
 
-                        {{ form_start(form, {attr: {id: 'reservation_form'}}) }}
+                    {{ form_start(form, {attr: {id: 'reservation_form', class: 'needs-validation'}}) }}
 
-                        <div class="row g-3">
-                            <div class="col-md-6">
-                                {{ form_row(form.client.nom, {label: 'Nom'}) }}
-                            </div>
-                            <div class="col-md-6">
-                                {{ form_row(form.client.prenom, {label: 'Prénom'}) }}
-                            </div>
-                            <div class="col-md-6">
-                                {{ form_row(form.client.email, {label: 'E-mail'}) }}
-                            </div>
-                            <div class="col-md-6">
-                                {{ form_row(form.client.telephone, {label: 'Téléphone'}) }}
-                            </div>
-                            <div class="col-md-6">
-                                {{ form_row(form.date, {label: 'Date'}) }}
-                            </div>
-                            <div class="col-md-6">
-                                {{ form_row(form.nbPers, {label: 'Nombre de personnes'}) }}
-                            </div>
-                            <div class="col-12">
-                                {{ form_row(form.heure, {label: 'Heure'}) }}
-                            </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            {{ form_row(form.client.prenom, {label: 'Prénom'}) }}
                         </div>
-
-                        {{ form_rest(form) }}
-
-                        <div class="d-grid mt-4">
-                            <button type="submit" class="btn btn-warning btn-lg text-white">Valider</button>
+                        <div class="col-md-6 mb-3">
+                            {{ form_row(form.client.nom, {label: 'Nom'}) }}
                         </div>
-
-                        {{ form_end(form) }}
                     </div>
+
+                    <div class="mb-3">
+                        {{ form_row(form.client.email, {label: 'E-mail', attr: {placeholder: 'exemple@mail.com'}}) }}
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form_row(form.client.telephone, {label: 'Téléphone'}) }}
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            {{ form_row(form.date, {label: 'Date'}) }}
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            {{ form_row(form.nbPers, {label: 'Personnes'}) }}
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            {{ form_row(form.heure, {label: 'Heure'}) }}
+                        </div>
+                    </div>
+
+                    {{ form_rest(form) }}
+
+                    <div class="d-grid gap-2 mt-4">
+                        <button type="submit" class="btn btn-warning btn-lg">
+                            Confirmer la réservation
+                        </button>
+                        <a href="{{ path('app_restaurant_home', {id: restaurant.id}) }}"  class="btn btn-link text-muted">Annuler</a>
+                    </div>
+                    {{ form_end(form) }}
                 </div>
             </div>
         </div>
     </div>
+</div>
 {% endblock %}

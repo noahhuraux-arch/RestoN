@@ -1,0 +1,77 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détails Réservation n°{{ reservations.id }}{% endblock %}
+
+{% block body %}
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6">
+                <div class="card shadow border-0">
+                    <div class="card-header bg-warning text-black py-3">
+                        <h1 class="h5 mb-0 text-center bi bi-info-circle me-2">
+                          Détail de la réservation
+                        </h1>
+                    </div>
+                    <div class="card-body p-0">
+                        <ul class="list-group list-group-flush border-0">
+                                <li class="list-group-item py-3 border-0">
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <small class="text-muted d-block text-uppercase" style="font-size: 0.75rem;">Client</small>
+                                            <span class="h6 mb-0 fw-bold">{{ reservations.client.prenom }} {{ reservations.client.nom }}</span>
+                                        </div>
+                                        <div class="col-6">
+                                            <small class="text-muted d-block text-uppercase" style="font-size: 0.75rem;">Numero de Reservation</small>
+                                            <span class="h6 mb-0 fw-bold">{{ reservations.id }}</span>
+                                        </div>
+                                     </div>
+                                </li>
+                            <li class="list-group-item py-3 border-0">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <small class="text-muted d-block text-uppercase " style="font-size: 0.75rem;">Téléphone</small>
+                                        <span class="fw-bold">{{ reservations.client.telephone }}</span>
+                                    </div>
+                                    <div class="col-6 text-break">
+                                        <small class="text-muted d-block text-uppercase" style="font-size: 0.75rem;">Email</small>
+                                        <span class="fw-bold">{{ reservations.client.email }}</span>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="list-group-item py-3  border-0">
+                                <div class="row text-center">
+                                    <div class="col-4 border-0">
+                                        <small class="text-muted d-block text-uppercase" style="font-size: 0.65rem;">Date</small>
+                                        <span class="fw-bold">{{ reservations.date|date('d/m/Y') }}</span>
+                                    </div>
+                                    <div class="col-4 border-0">
+                                        <small class="text-muted d-block text-uppercase" style="font-size: 0.65rem;">Heure</small>
+                                        <span class="fw-bold">{{ reservations.heure|date('H:i') }}</span>
+                                    </div>
+                                    <div class="col-4">
+                                        <small class="text-muted d-block text-uppercase" style="font-size: 0.65rem;">Couverts</small>
+                                        <span class="fw-bold">{{ reservations.nbPers }} pers.</span>
+                                    </div>
+                                </div>
+                            </li>
+
+                            <li class="list-group-item py-3 border-0">
+                                <small class="text-muted d-block text-uppercase" style="font-size: 0.75rem;">Table assignée</small>
+                                <span class="fw-bold">N°{{ reservations.table.id }}</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="card-footer bg-white py-3 d-flex justify-content-between border-0">
+                        <a href="{{ path('app_reservation', {id: restaurant.id}) }}" class="btn btn-outline-secondary">
+                            <span class="bi bi-arrow-left me-1"> Retour</span>
+                        </a>
+                        <a href="{{ path('app_reservation_delete', {id: restaurant.id, idReservation: reservations.id}) }}" class="btn btn-danger">
+                            <span class="bi bi-trash me-1"> Supprimer</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
