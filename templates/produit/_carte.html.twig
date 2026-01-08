@@ -44,11 +44,16 @@
                         {% if entree.isVisible %}
                             <a href="{{ path('app_produit_details', {id: entree.id}) }}"
                                class="text-decoration-none text-body" data-bs-toggle="tooltip" data-bs-placement="top" title="Cliquez pour voir les détails">
-                                <span class="prodName">{{ entree.libProduit }}</span>
-                                <span class="prodPrice"> - {{ entree.prixProduit|number_format(2, ',', ' ') }} €</span>
-                                {% if entree.vegetarien == 1 %}
-                                    <span>🌱</span>
-                                {% endif %}
+                                <span class="prodName">
+                                    {{ entree.libProduit }}
+                                    {% if entree.vegetarien == 1 %}<span class="d-md-none">🌱</span>{% endif %}
+                                </span>
+                                <span class="text-nowrap">
+                                    <span class="prodPrice"> - {{ entree.prixProduit|number_format(2, ',', ' ') }} €</span>
+                                    {% if entree.vegetarien == 1 %}
+                                        <span class="d-none d-md-inline">🌱</span>
+                                    {% endif %}
+                                </span>
                             </a>
                         {% elseif prop and not entree.isVisible%}
                             <a href="{{ path('app_produit_details', {id: entree.id}) }}"
@@ -72,11 +77,16 @@
                         {% if plat.isVisible %}
                             <a href="{{ path('app_produit_details', {id: plat.id}) }}"
                                class="text-decoration-none text-body" data-bs-toggle="tooltip" data-bs-placement="top" title="Cliquez pour voir les détails">
-                                <span class="prodName">{{ plat.libProduit }}</span>
-                                <span class="prodPrice"> - {{ plat.prixProduit|number_format(2, ',', ' ') }} €</span>
-                                {% if plat.vegetarien == 1 %}
-                                    <span>🌱</span>
-                                {% endif %}
+                                <span class="prodName">
+                                    {{ plat.libProduit }}
+                                    {% if plat.vegetarien == 1 %}<span class="d-md-none">🌱</span>{% endif %}
+                                </span>
+                                <span class="text-nowrap">
+                                    <span class="prodPrice"> - {{ plat.prixProduit|number_format(2, ',', ' ') }} €</span>
+                                    {% if plat.vegetarien == 1 %}
+                                        <span class="d-none d-md-inline">🌱</span>
+                                    {% endif %}
+                                </span>
                             </a>
                         {% elseif prop and not plat.isVisible %}
                             <a href="{{ path('app_produit_details', {id: plat.id}) }}"
