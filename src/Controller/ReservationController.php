@@ -10,6 +10,7 @@ use App\Repository\TableRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -61,10 +62,14 @@ class ReservationController extends AbstractController
             'restaurant' => $restaurant,
         ]);
     }
-    #[IsGranted('ROLE_SERVEUR')]
+    #[IsGranted(new Expression('is_granted("ROLE_SERVEUR") or is_granted("ROLE_PROPRIETAIRE")'))]
     #[Route('{id}/reservation', name: 'app_reservation')]
     public function indexReservation(Restaurant $restaurant): Response
     {
+        if ($restaurant->getProprietaire() !== $this->getUser() && !$restaurant->getServeurs()->contains($this->getUser())) {
+            throw $this->createAccessDeniedException('Accès interdit');
+        }
+
         $reservations = $restaurant->getReservations();
 
         return $this->render('reservation/index.html.twig', [
