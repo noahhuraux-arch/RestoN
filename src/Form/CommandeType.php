@@ -19,12 +19,6 @@ class CommandeType extends AbstractType
         $restaurant = $options['restaurant'];
 
         $builder
-            ->add('serveur', EntityType::class, [
-                'class' => Serveur::class,
-                'choices' => $restaurant->getServeurs(),
-                'choice_label' => 'nom',
-                'attr' => ['class' => 'form-select'],
-            ])
             ->add('produits', EntityType::class, [
                 'class' => Produit::class,
                 'query_builder' => function (EntityRepository $er) use ($restaurant) {
