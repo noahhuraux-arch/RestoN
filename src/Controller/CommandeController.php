@@ -2,8 +2,12 @@
 
 namespace App\Controller;
 
+use App\Entity\Boisson;
 use App\Entity\Commande;
+use App\Entity\Menu;
+use App\Entity\Plat;
 use App\Entity\Restaurant;
+use App\Entity\Table;
 use App\Form\CommandeType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -23,19 +27,23 @@ class CommandeController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/commande/create', name: 'app_commande_create')]
-    public function create(Restaurant $restaurant, Request $request, EntityManagerInterface $em): Response
+    #[Route('/{id}/{table}/commande/create', name: 'app_commande_create')]
+    public function create(Restaurant $restaurant, Request $request, Table $table, EntityManagerInterface $em): Response
     {
+        if ($table->getRestaurant() !== $restaurant) {
+            throw $this->createAccessDeniedException('Accès interdit');
+        }
         $commande = new Commande();
+        $commande->setTables($table);
         $form = $this->createForm(CommandeType::class, $commande, ['restaurant' => $restaurant]);
         $form->handleRequest($request);
 
         $produitsGroupes = [
             'Boissons' => [],
-            'Menus' => [],
             'Entrées' => [],
             'Plats' => [],
             'Desserts' => [],
+            'Menus' => [],
             'Autres' => [],
         ];
 
@@ -74,6 +82,7 @@ class CommandeController extends AbstractController
         return $this->render('commande/create.html.twig', [
             'form' => $form->createView(),
             'restaurant' => $restaurant,
+            'table' => $table,
             'produitsGroupes' => array_filter($produitsGroupes),
         ]);
     }
