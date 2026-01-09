@@ -19,36 +19,14 @@ class CommandeType extends AbstractType
         $restaurant = $options['restaurant'];
 
         $builder
-            ->add('serveur', EntityType::class, [
-                'class' => Serveur::class,
-                'choices' => $restaurant->getServeurs(),
-                'choice_label' => 'nom',
-                'attr' => ['class' => 'form-select'],
-            ])
-            ->add('reservation', EntityType::class, [
-                'class' => Reservation::class,
-                'choices' => $restaurant->getReservations(),
-                'choice_label' => function (Reservation $r) {
-                    return 'Table n°'.($r->getTable() ? $r->getTable()->getId() : '?');
-                },
-                'placeholder' => 'Vente directe',
-                'attr' => [
-                    'class' => 'form-select js-reservation-select',
-                    'data-dates' => json_encode(array_combine(
-                        array_map(fn ($r) => $r->getId(), $restaurant->getReservations()->toArray()),
-                        array_map(fn ($r) => $r->getDate() ? $r->getDate()->format('d/m/Y H:i') : '', $restaurant->getReservations()->toArray())
-                    )),
-                ],
-                'mapped' => false,
-                'required' => false,
-            ])
             ->add('produits', EntityType::class, [
                 'class' => Produit::class,
                 'query_builder' => function (EntityRepository $er) use ($restaurant) {
                     return $er->createQueryBuilder('p')
                         ->where('p.restaurant = :res')
                         ->setParameter('res', $restaurant)
-                        ->orderBy('p.libProduit', 'ASC');
+                        ->orderBy('p.prixProduit', 'ASC')
+                        ->addOrderBy('p.libProduit', 'ASC');
                 },
                 'multiple' => true,
                 'expanded' => true,

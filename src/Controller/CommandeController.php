@@ -2,8 +2,12 @@
 
 namespace App\Controller;
 
+use App\Entity\Boisson;
 use App\Entity\Commande;
+use App\Entity\Menu;
+use App\Entity\Plat;
 use App\Entity\Restaurant;
+use App\Entity\Table;
 use App\Form\CommandeType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -17,43 +21,64 @@ class CommandeController extends AbstractController
     public function index(Restaurant $restaurant, EntityManagerInterface $em): Response
     {
         $commandes = $em->getRepository(Commande::class)->findAll();
+
         return $this->render('commande/index.html.twig', [
             'restaurant' => $restaurant,
             'commandes' => $commandes,
         ]);
     }
 
-    #[Route('/{id}/commande/create', name: 'app_commande_create')]
-    public function create(Restaurant $restaurant, Request $request, EntityManagerInterface $em): Response
+    #[Route('/{id}/{table}/commande/create', name: 'app_commande_create')]
+    public function create(Restaurant $restaurant, Request $request, Table $table, EntityManagerInterface $em): Response
     {
+        if ($this->getUser()->getRestaurant() !== $restaurant) {
+            throw $this->createAccessDeniedException('Accès interdit');
+        }
+
+        if ($table->getRestaurant() !== $restaurant) {
+            throw $this->createAccessDeniedException('Accès interdit');
+        }
+
+        $user = $this->getUser();
         $commande = new Commande();
+        $commande->setTables($table);
+        $commande->setServeur($user);
         $form = $this->createForm(CommandeType::class, $commande, ['restaurant' => $restaurant]);
         $form->handleRequest($request);
 
         $produitsGroupes = [
-            'Boissons' => [],
-            'Menus' => [],
             'Entrées' => [],
             'Plats' => [],
             'Desserts' => [],
-            'Autres' => [],
+            'Boissons' => [],
+            'Menus' => [],
         ];
 
         $choices = $form->get('produits')->getConfig()->getAttribute('choice_list')->getChoices();
 
         foreach ($choices as $index => $produit) {
-            $categorie = 'Autres';
-
+            $categorie = null;
             if ($produit instanceof Boisson) {
                 $categorie = 'Boissons';
             } elseif ($produit instanceof Menu) {
                 $categorie = 'Menus';
-            } elseif ($produit instanceof Plat && $produit->getTypePlat()) {
-                $categorie = $produit->getTypePlat()->getLib();
+            } elseif ($produit instanceof Plat) {
+                $typePlat = $produit->getTypePlat()->getLib();
+                if ('Entrée' === $typePlat) {
+                    $categorie = 'Entrées';
+                } elseif ('Plat' === $typePlat) {
+                    $categorie = 'Plats';
+                } elseif ('Dessert' === $typePlat) {
+                    $categorie = 'Desserts';
+                }
             }
 
-            $produitsGroupes[$categorie][$index] = $produit;
+            if ($categorie && isset($produitsGroupes[$categorie])) {
+                $produitsGroupes[$categorie][$index] = $produit;
+            }
         }
+
+        $produitsGroupes = array_filter($produitsGroupes);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $total = 0;
@@ -74,9 +99,9 @@ class CommandeController extends AbstractController
         return $this->render('commande/create.html.twig', [
             'form' => $form->createView(),
             'restaurant' => $restaurant,
+            'table' => $table,
+            'serveur' => $user,
             'produitsGroupes' => array_filter($produitsGroupes),
         ]);
     }
-
-
 }

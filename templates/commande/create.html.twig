@@ -11,7 +11,7 @@
                     </div>
                     <div class="card-body p-4">
                         {% for categorie, produits in produitsGroupes %}
-                            <h6 class="text-uppercase border-bottom pb-2">{{ categorie }}</h6>
+                            <h6 class="text-uppercase border-bottom pb-2 pt-2">{{ categorie }}</h6>
                             <div class="row">
                                 {% for index, p in produits %}
                                     {% set child = form.produits[index] %}
@@ -48,8 +48,8 @@
                         <h5 class="mb-0 fw-bold">TOTAL : <span id="total-display">0,00</span> €</h5>
                     </div>
                     <div class="card-body p-4">
-                        <div class="mb-3">{{ form_row(form.serveur) }}</div>
-                        <div class="mb-4">{{ form_row(form.reservation) }}</div>
+                        <div class="mb-3">Serveur : {{ serveur.nom }}</div>
+                        <div class="mb-4">Table N°{{ table.numero }}</div>
                         <button type="submit" class="btn btn-success btn-lg w-100 py-3 fw-bold">VALIDER LA COMMANDE</button>
                     </div>
                 </div>
