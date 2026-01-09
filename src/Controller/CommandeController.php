@@ -6,6 +6,7 @@ use App\Entity\Boisson;
 use App\Entity\Commande;
 use App\Entity\Menu;
 use App\Entity\Plat;
+use App\Entity\Proprietaire;
 use App\Entity\Restaurant;
 use App\Entity\Table;
 use App\Form\CommandeType;
@@ -30,11 +31,18 @@ class CommandeController extends AbstractController
     #[Route('/{id}/{table}/commande/create', name: 'app_commande_create')]
     public function create(Restaurant $restaurant, Request $request, Table $table, EntityManagerInterface $em): Response
     {
+        if ($this->getUser()->getRestaurant() !== $restaurant) {
+            throw $this->createAccessDeniedException("Accès interdit");
+        }
+
         if ($table->getRestaurant() !== $restaurant) {
             throw $this->createAccessDeniedException('Accès interdit');
         }
+
+        $user = $this->getUser();
         $commande = new Commande();
         $commande->setTables($table);
+        $commande->setServeur($user);
         $form = $this->createForm(CommandeType::class, $commande, ['restaurant' => $restaurant]);
         $form->handleRequest($request);
 
@@ -83,6 +91,7 @@ class CommandeController extends AbstractController
             'form' => $form->createView(),
             'restaurant' => $restaurant,
             'table' => $table,
+            'serveur' => $user,
             'produitsGroupes' => array_filter($produitsGroupes),
         ]);
     }
