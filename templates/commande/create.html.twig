@@ -11,7 +11,7 @@
                     </div>
                     <div class="card-body p-4">
                         {% for categorie, produits in produitsGroupes %}
-                            <h6 class="text-uppercase border-bottom pb-2">{{ categorie }}</h6>
+                            <h6 class="text-uppercase border-bottom pb-2 pt-2">{{ categorie }}</h6>
                             <div class="row">
                                 {% for index, p in produits %}
                                     {% set child = form.produits[index] %}
