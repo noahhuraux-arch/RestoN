@@ -25,7 +25,8 @@ class CommandeType extends AbstractType
                     return $er->createQueryBuilder('p')
                         ->where('p.restaurant = :res')
                         ->setParameter('res', $restaurant)
-                        ->orderBy('p.libProduit', 'ASC');
+                        ->orderBy('p.prixProduit', 'ASC')
+                        ->addOrderBy('p.libProduit', 'ASC');
                 },
                 'multiple' => true,
                 'expanded' => true,
