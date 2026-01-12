@@ -54,11 +54,34 @@ class AddHeureFieldListener implements EventSubscriberInterface
         $date = $dateStr ? new \DateTime($dateStr) : null;
         $nbPers = $reservation['nbPers'];
         if ($restaurant && $date && $nbPers) {
-            $creneaux = ['12:00', '13:00', '14:00', '19:00', '20:00', '21:00', '22:00'];
-            foreach ($creneaux as $horaire) {
-                $heure = new \DateTime($horaire);
-                if ($this->tableRepository->findAvailableTables($restaurant, $date, $heure, (int) $nbPers)) {
-                    $choices[$horaire] = $horaire;
+            $joursFr = [
+                'Monday' => 'Lundi', 'Tuesday' => 'Mardi', 'Wednesday' => 'Mercredi',
+                'Thursday' => 'Jeudi', 'Friday' => 'Vendredi', 'Saturday' => 'Samedi', 'Sunday' => 'Dimanche',
+            ];
+            $nomJour = $joursFr[$date->format('l')];
+            $horaireDuJour = null;
+            foreach ($restaurant->getHoraires() as $horaire) {
+                if ($horaire->getJour() === $nomJour) {
+                    $horaireDuJour = $horaire;
+                    break;
+                }
+            }
+            if ($horaireDuJour && !$horaireDuJour->isFerme()) {
+                $creneaux = [[$horaireDuJour->getOuvertureMidi(), $horaireDuJour->getFermetureMidi()],
+                    [$horaireDuJour->getOuvertureSoir(), $horaireDuJour->getFermetureSoir()],
+                ];
+                $interval = new \DateInterval('PT30M');
+                foreach ($creneaux as $heure) {
+                    if ($heure[0] && $heure[1]) {
+                        $Demiheure = new \DatePeriod($heure[0], $interval, $heure[1]);
+
+                        foreach ($Demiheure as $journeeHoraire) {
+                            if ($this->tableRepository->findAvailableTables($restaurant, $date, $journeeHoraire, (int) $nbPers)) {
+                                $formatHeure = $journeeHoraire->format('H:i');
+                                $choices[$formatHeure] = $formatHeure;
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -66,7 +89,7 @@ class AddHeureFieldListener implements EventSubscriberInterface
         $builder = $factory->createNamedBuilder('heure', ChoiceType::class, null, ['choices' => $choices, 'auto_initialize' => false]);
         $builder->addModelTransformer(new CallbackTransformer(
             function ($Date) {
-                return ($Date instanceof \DateTimeInterface) ? $Date->format('H:i') : '';
+                return ($Date instanceof \DateTimeInterface) ? $Date->format('H:i') : 'Plus de place pour ce jour';
             },
             function ($stringHeure) {
                 return new \DateTime($stringHeure);
