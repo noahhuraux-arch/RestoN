@@ -152,4 +152,35 @@ class ReservationController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+
+    #[Route('/reservation/{reservation}/installer', name: 'app_reservation_installer')]
+    public function installer(Reservation $reservation, EntityManagerInterface $em): Response
+    {
+        $restaurant = $reservation->getRestaurant();
+        $reservation->setStatus('Occupee');
+        $table = $reservation->getTable();
+        if ($table) {
+            $table->setDisponible(false);
+        }
+        $em->flush();
+
+        return $this->redirectToRoute('app_reservation_show', [
+            'id' => $reservation->getRestaurant()->getId(),
+            'idReservation' => $reservation->getId(),
+        ]);
+    }
+
+    #[Route('/reservation/{reservation}/liberer', name: 'app_reservation_liberer')]
+    public function liberer(Reservation $reservation, EntityManagerInterface $em): Response
+    {
+        $restaurant = $reservation->getRestaurant();
+        $reservation->setStatus('Terminee');
+        $table = $reservation->getTable();
+        if ($table) {
+            $table->setDisponible(true);
+        }
+        $em->flush();
+
+        return $this->redirectToRoute('app_reservation', ['id' => $reservation->getRestaurant()->getId()]);
+    }
 }
