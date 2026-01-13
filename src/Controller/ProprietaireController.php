@@ -22,10 +22,6 @@ final class ProprietaireController extends AbstractController
     {
         $proprietaire = $this->getUser();
 
-        if (!$proprietaire) {
-            return $this->redirectToRoute('app_login');
-        }
-
         return $this->render('proprietaire/liste.html.twig', [
             'proprietaire' => $proprietaire,
             'restaurants' => $proprietaire->getRestaurants(),

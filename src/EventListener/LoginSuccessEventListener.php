@@ -2,6 +2,9 @@
 
 namespace App\EventListener;
 
+use App\Entity\Personne;
+use App\Entity\Proprietaire;
+use App\Entity\Serveur;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -33,5 +36,32 @@ final class LoginSuccessEventListener
             return;
         }
 
+        $user = $event->getUser();
+
+        if (!$user instanceof Personne) {
+            return;
+        }
+
+        if ($user instanceof Proprietaire) {
+            $url = $this->urlGenerator->generate('app_proprietaire');
+            $event->setResponse(new RedirectResponse($url));
+
+            return;
+        }
+
+        if ($user instanceof Serveur) {
+            $restaurant = $user->getRestaurant();
+
+            if ($restaurant) {
+                $url = $this->urlGenerator->generate('app_commande_index', [
+                    'id' => $restaurant->getId(),
+                ]);
+                $event->setResponse(new RedirectResponse($url));
+
+                return;
+            }
+        }
+
+        $event->setResponse(new RedirectResponse($this->urlGenerator->generate('app_home')));
     }
 }
