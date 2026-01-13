@@ -119,4 +119,46 @@ class Table
 
         return $this;
     }
+
+    public function bientotReserver(): string
+    {
+        if (!$this->isDisponible()) {
+            return 'Occupé';
+        }
+
+        $maintenant = new \DateTime();
+        $dansDeuxHeures = (new \DateTime())->modify('+3 hours');
+
+        foreach ($this->getReservations() as $reservation) {
+            $statut = $reservation->getStatus();
+            if ('Occupee' === $statut) {
+                return 'Occupé';
+            }
+            if ('Reservee' === $statut) {
+                $dateReservation = clone $reservation->getDate();
+                $heure = $reservation->getHeure();
+                $dateReservation->setTime(
+                    (int) $heure->format('H'),
+                    (int) $heure->format('i'),
+                    0
+                );
+                if ($dateReservation >= $maintenant && $dateReservation <= $dansDeuxHeures) {
+                    return 'Reservee';
+                }
+            }
+        }
+
+        return 'Libre';
+    }
+
+    public function getFirstReservation(): ?Reservation
+    {
+        foreach ($this->reservations as $reservation) {
+            if ('Occupee' === $reservation->getStatus() or 'Reservee' === $reservation->getStatus()) {
+                return $reservation;
+            }
+        }
+
+        return null;
+    }
 }
