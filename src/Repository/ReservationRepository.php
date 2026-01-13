@@ -49,6 +49,8 @@ class ReservationRepository extends ServiceEntityRepository
             ->addSelect('restau')
             ->leftJoin('restau.proprietaire', 'p')
             ->addSelect('p')
+            ->leftJoin('restau.serveurs', 's')
+            ->addSelect('s')
             ->andWhere('r.id = :id')
             ->setParameter('id', $id)
             ->getQuery()
