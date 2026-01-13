@@ -20,7 +20,7 @@ final class TableController extends AbstractController
             throw $this->createAccessDeniedException('Accès interdit');
         }
 
-        $tables = $tableRepo->findBy(['restaurant' => $restaurant], ['numero' => 'ASC']);
+        $tables = $tableRepo->findRestaurantWithReservations($restaurant);
 
         return $this->render('table/index.html.twig', [
             'restaurant' => $restaurant,

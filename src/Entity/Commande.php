@@ -36,6 +36,9 @@ class Commande
     #[ORM\JoinTable(name: 'commande_produit')]
     private Collection $produits;
 
+    #[ORM\ManyToOne(inversedBy: 'commandes')]
+    private ?Restaurant $restaurant = null;
+
     public function __construct()
     {
         $this->produits = new ArrayCollection();
@@ -110,6 +113,18 @@ class Commande
     public function removeProduit(Produit $produit): static
     {
         $this->produits->removeElement($produit);
+        return $this;
+    }
+
+    public function getRestaurant(): ?Restaurant
+    {
+        return $this->restaurant;
+    }
+
+    public function setRestaurant(?Restaurant $restaurant): static
+    {
+        $this->restaurant = $restaurant;
+
         return $this;
     }
 }
