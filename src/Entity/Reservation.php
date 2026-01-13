@@ -52,6 +52,9 @@ class Reservation
     #[ORM\ManyToOne(targetEntity: Restaurant::class, inversedBy: 'reservations')]
     private ?Restaurant $restaurant = null;
 
+    #[ORM\Column(length: 20)]
+    private ?string $status = 'Reservee';
+
     public function getRestaurant(): ?Restaurant
     {
         return $this->restaurant;
@@ -99,6 +102,18 @@ class Reservation
     public function setNbPers(int $nbPers): static
     {
         $this->nbPers = $nbPers;
+
+        return $this;
+    }
+
+    public function getStatus(): ?string
+    {
+        return $this->status;
+    }
+
+    public function setStatus(string $status): static
+    {
+        $this->status = $status;
 
         return $this;
     }
