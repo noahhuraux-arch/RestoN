@@ -11,15 +11,26 @@ use App\Entity\Table;
 use App\Form\CommandeType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+#[IsGranted(new Expression('is_granted("ROLE_SERVEUR") or is_granted("ROLE_PROPRIETAIRE")'))]
 class CommandeController extends AbstractController
 {
     #[Route('/{id}/commandes', name: 'app_commande_index')]
     public function index(Restaurant $restaurant, EntityManagerInterface $em): Response
     {
+        $user = $this->getUser();
+        $isProprio = ($restaurant->getProprietaire() === $user);
+        $isServeurDuResto = $restaurant->getServeurs()->contains($user);
+
+        if (!$isProprio && !$isServeurDuResto) {
+            throw $this->createAccessDeniedException('Accès interdit');
+        }
+
         $commandes = $em->getRepository(Commande::class)->findAll();
 
         return $this->render('commande/index.html.twig', [
@@ -31,7 +42,11 @@ class CommandeController extends AbstractController
     #[Route('/{id}/{table}/commande/create', name: 'app_commande_create')]
     public function create(Restaurant $restaurant, Request $request, Table $table, EntityManagerInterface $em): Response
     {
-        if ($this->getUser()->getRestaurant() !== $restaurant) {
+        $user = $this->getUser();
+        $isProprio = ($restaurant->getProprietaire() === $user);
+        $isServeurDuResto = $restaurant->getServeurs()->contains($user);
+
+        if (!$isProprio && !$isServeurDuResto) {
             throw $this->createAccessDeniedException('Accès interdit');
         }
 
