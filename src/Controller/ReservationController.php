@@ -6,6 +6,7 @@ use App\Entity\Reservation;
 use App\Entity\Restaurant;
 use App\Form\ReservationType;
 use App\Repository\ClientRepository;
+use App\Repository\ReservationRepository;
 use App\Repository\TableRepository;
 use App\Service\EmailService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -103,8 +104,9 @@ class ReservationController extends AbstractController
 
     #[IsGranted(new Expression('is_granted("ROLE_SERVEUR") or is_granted("ROLE_PROPRIETAIRE")'))]
     #[Route('{id}/reservation/{idReservation}', name: 'app_reservation_show')]
-    public function showReservation(Restaurant $restaurant, #[MapEntity(mapping: ['idReservation' => 'id'])] Reservation $reservation): Response
+    public function showReservation(Restaurant $restaurant, #[MapEntity(mapping: ['idReservation' => 'id'])] Reservation $reservation, ReservationRepository $reservationRepository): Response
     {
+        $reservation = $reservationRepository->findFullDetailsReservation($reservation->getId());
         if ($restaurant->getProprietaire() !== $this->getUser() && !$restaurant->getServeurs()->contains($this->getUser())) {
             throw $this->createAccessDeniedException('Accès interdit');
         }
