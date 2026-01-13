@@ -85,14 +85,20 @@ class AddHeureFieldListener implements EventSubscriberInterface
                 }
             }
         }
+        $placeholder = null;
+        if (empty($choices) && !empty($dateStr)) {
+            $placeholder = 'Veuillez saisir le nombre de personnes';
+        }
+        if (empty($choices) && !empty($dateStr) && (int) $nbPers) {
+            $placeholder = 'Plus de place disponible pour cette date';
+        }
         $factory = $form->getConfig()->getFormFactory();
-        $builder = $factory->createNamedBuilder('heure', ChoiceType::class, null, ['choices' => $choices, 'auto_initialize' => false]);
+        $builder = $factory->createNamedBuilder('heure', ChoiceType::class, null, ['choices' => $choices, 'auto_initialize' => false, 'placeholder' => $placeholder]);
         $builder->addModelTransformer(new CallbackTransformer(
             function ($Date) {
                 if ($Date instanceof \DateTime) {
                     return $Date->format('H:i');
-                }
-                else {
+                } else {
                     return '';
                 }
             },
