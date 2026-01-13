@@ -66,6 +66,16 @@
                         <a href="{{ path('app_reservation', {id: restaurant.id}) }}" class="btn btn-outline-secondary">
                             <span class="bi bi-arrow-left me-1"> Retour</span>
                         </a>
+                        {% if reservations.status == 'Reservee' %}
+                            <a href="{{ path('app_reservation_installer', {reservation: reservations.id}) }}" class="btn btn-warning fw-bold">
+                                Installer
+                            </a>
+                        {% endif %}
+                        {% if reservations.status == 'Occupee' %}
+                            <a href="{{ path('app_reservation_liberer', {reservation: reservations.id}) }}" class="btn btn-danger fw-bold">
+                                Libérer la table
+                            </a>
+                        {% endif %}
                         <a href="{{ path('app_reservation_delete', {id: restaurant.id, idReservation: reservations.id}) }}" class="btn btn-danger">
                             <span class="bi bi-trash me-1"> Supprimer</span>
                         </a>
