@@ -89,7 +89,12 @@ class AddHeureFieldListener implements EventSubscriberInterface
         $builder = $factory->createNamedBuilder('heure', ChoiceType::class, null, ['choices' => $choices, 'auto_initialize' => false]);
         $builder->addModelTransformer(new CallbackTransformer(
             function ($Date) {
-                return ($Date instanceof \DateTimeInterface) ? $Date->format('H:i') : 'Plus de place pour ce jour';
+                if ($Date instanceof \DateTime) {
+                    return $Date->format('H:i');
+                }
+                else {
+                    return '';
+                }
             },
             function ($stringHeure) {
                 return new \DateTime($stringHeure);
