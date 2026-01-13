@@ -19,7 +19,7 @@ class ReservationFixtures extends Fixture implements DependentFixtureInterface
         $clients = ClientFactory::createMany(20);
 
         $restaurants = RestaurantFactory::all();
-
+        $reservation = 1;
         foreach ($restaurants as $restaurant) {
             $nbTables = $restaurant->getNbTable();
             for ($i = 1; $i <= $nbTables; ++$i) {
@@ -27,11 +27,15 @@ class ReservationFixtures extends Fixture implements DependentFixtureInterface
                     'restaurant' => $restaurant,
                     'numero' => $i,
                 ]);
-                ReservationFactory::createMany(2, [
-                    'Table' => $table,
-                    'Restaurant' => $restaurant,
-                    'Client' => $clients[array_rand($clients)],
-                ]);
+                for ($j = 0; $j < 2; ++$j) {
+                    ReservationFactory::createOne([
+                        'table' => $table,
+                        'restaurant' => $restaurant,
+                        'client' => $clients[array_rand($clients)],
+                        'numero' => $reservation,
+                    ]);
+                    ++$reservation;
+                }
             }
         }
     }
