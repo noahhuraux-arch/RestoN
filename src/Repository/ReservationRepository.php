@@ -37,4 +37,26 @@ class ReservationRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function findFullDetailsReservation(int $id): Reservation
+    {
+        return $this->createQueryBuilder('r')
+            ->leftJoin('r.client', 'c')
+            ->addSelect('c')
+            ->leftJoin('r.table', 't')
+            ->addSelect('t')
+            ->leftJoin('r.restaurant', 'restau')
+            ->addSelect('restau')
+            ->leftJoin('restau.proprietaire', 'p')
+            ->addSelect('p')
+            ->leftJoin('restau.serveurs', 's')
+            ->addSelect('s')
+            ->andWhere('r.id = :id')
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getOneOrNullResult();
+
+
+
+    }
 }

@@ -62,15 +62,15 @@
                         {{ form_row(form.client.telephone, {label: 'Téléphone'}) }}
                     </div>
                     <div class="row">
-                        <div class="col-md-4 mb-3">
+                        <div class="col-md-6 mb-3">
                             {{ form_row(form.date, {label: 'Date'}) }}
                         </div>
-                        <div class="col-md-4 mb-3">
+                        <div class="col-md-6 mb-3">
                             {{ form_row(form.nbPers, {label: 'Personnes'}) }}
                         </div>
-                        <div class="col-md-4 mb-3">
-                            {{ form_row(form.heure, {label: 'Heure'}) }}
-                        </div>
+                    </div>
+                    <div class="mb-3">
+                        {{ form_row(form.heure, {label: 'Heure'}) }}
                     </div>
 
                     {{ form_rest(form) }}
