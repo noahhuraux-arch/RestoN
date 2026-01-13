@@ -119,8 +119,9 @@ class ReservationController extends AbstractController
 
     #[Route('{id}/reservation/{idReservation}/delete', name: 'app_reservation_delete')]
     #[IsGranted(new Expression('is_granted("ROLE_SERVEUR") or is_granted("ROLE_PROPRIETAIRE")'))]
-    public function deleteReservation(Request $request, #[MapEntity(mapping: ['idReservation' => 'id'])] Reservation $reservation, EntityManagerInterface $entityManager): Response
+    public function deleteReservation(Request $request, #[MapEntity(mapping: ['idReservation' => 'id'])] Reservation $reservation, EntityManagerInterface $entityManager, ReservationRepository $reservationRepository): Response
     {
+        $reservation = $reservationRepository->findFullDetailsReservation($reservation->getId());
         $restaurant = $reservation->getRestaurant();
         if ($restaurant->getProprietaire() !== $this->getUser() && !$restaurant->getServeurs()->contains($this->getUser())) {
             throw $this->createAccessDeniedException('Accès interdit');
