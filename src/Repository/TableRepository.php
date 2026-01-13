@@ -17,6 +17,19 @@ class TableRepository extends ServiceEntityRepository
         parent::__construct($registry, Table::class);
     }
 
+    public function findRestaurantWithReservations(Restaurant $restaurant): array
+    {
+        return $this->createQueryBuilder('t')
+            ->addSelect('r')
+            ->leftJoin('t.reservations', 'r')
+            ->where('t.restaurant = :restaurant')
+            ->setParameter('restaurant', $restaurant)
+            ->orderBy('t.numero', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
+
     //    /**
     //     * @return Table[] Returns an array of Table objects
     //     */
