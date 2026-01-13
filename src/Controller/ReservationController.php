@@ -169,4 +169,18 @@ class ReservationController extends AbstractController
             'idReservation' => $reservation->getId(),
         ]);
     }
+
+    #[Route('/reservation/{reservation}/liberer', name: 'app_reservation_liberer')]
+    public function liberer(Reservation $reservation, EntityManagerInterface $em): Response
+    {
+        $restaurant = $reservation->getRestaurant();
+        $reservation->setStatus('Terminee');
+        $table = $reservation->getTable();
+        if ($table) {
+            $table->setDisponible(true);
+        }
+        $em->flush();
+
+        return $this->redirectToRoute('app_reservation', ['id' => $reservation->getRestaurant()->getId()]);
+    }
 }
