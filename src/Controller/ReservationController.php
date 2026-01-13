@@ -152,4 +152,21 @@ class ReservationController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+
+    #[Route('/reservation/{reservation}/installer', name: 'app_reservation_installer')]
+    public function installer(Reservation $reservation, EntityManagerInterface $em): Response
+    {
+        $restaurant = $reservation->getRestaurant();
+        $reservation->setStatus('Occupee');
+        $table = $reservation->getTable();
+        if ($table) {
+            $table->setDisponible(false);
+        }
+        $em->flush();
+
+        return $this->redirectToRoute('app_reservation_show', [
+            'id' => $reservation->getRestaurant()->getId(),
+            'idReservation' => $reservation->getId(),
+        ]);
+    }
 }
