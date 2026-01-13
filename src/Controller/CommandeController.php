@@ -31,7 +31,7 @@ class CommandeController extends AbstractController
             throw $this->createAccessDeniedException('Accès interdit');
         }
 
-        $commandes = $em->getRepository(Commande::class)->findAll();
+        $commandes = $restaurant->getCommandes();
 
         return $this->render('commande/index.html.twig', [
             'restaurant' => $restaurant,
