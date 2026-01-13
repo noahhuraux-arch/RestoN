@@ -23,6 +23,7 @@ class Table
     private ?bool $disponible = null;
 
     #[ORM\OneToMany(targetEntity: Reservation::class, mappedBy: 'table')]
+    #[ORM\OrderBy(['date' => 'ASC', 'heure' => 'ASC'])]
     private Collection $reservations;
 
     #[ORM\ManyToOne(targetEntity: Restaurant::class, inversedBy: 'tables')]
