@@ -19,6 +19,7 @@ final class ClientFactory extends PersistentProxyObjectFactory
             'nom' => self::faker()->lastName(),
             'prenom' => self::faker()->firstName(),
             'telephone' => $faker->numerify('0#########'),
+            'email' => self::faker()->email(),
             'roles' => ['ROLE_CLIENT'],
         ];
     }
