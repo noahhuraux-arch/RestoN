@@ -55,6 +55,9 @@ class Reservation
     #[ORM\Column(length: 20)]
     private ?string $status = 'Reservee';
 
+    #[ORM\Column]
+    private ?int $numero = null;
+
     public function getRestaurant(): ?Restaurant
     {
         return $this->restaurant;
@@ -114,6 +117,18 @@ class Reservation
     public function setStatus(string $status): static
     {
         $this->status = $status;
+
+        return $this;
+    }
+
+    public function getNumero(): ?int
+    {
+        return $this->numero;
+    }
+
+    public function setNumero(int $numero): static
+    {
+        $this->numero = $numero;
 
         return $this;
     }
