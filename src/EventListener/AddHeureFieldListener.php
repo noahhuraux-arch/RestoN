@@ -51,40 +51,14 @@ class AddHeureFieldListener implements EventSubscriberInterface
         }
         $choices = [];
         $dateStr = $reservation['date'];
-        $date = $dateStr ? new \DateTime($dateStr) : null;
-        $nbPers = $reservation['nbPers'];
-        if ($restaurant && $date && $nbPers) {
-            $joursFr = [
-                'Monday' => 'Lundi', 'Tuesday' => 'Mardi', 'Wednesday' => 'Mercredi',
-                'Thursday' => 'Jeudi', 'Friday' => 'Vendredi', 'Saturday' => 'Samedi', 'Sunday' => 'Dimanche',
-            ];
-            $nomJour = $joursFr[$date->format('l')];
-            $horaireDuJour = null;
-            foreach ($restaurant->getHoraires() as $horaire) {
-                if ($horaire->getJour() === $nomJour) {
-                    $horaireDuJour = $horaire;
-                    break;
-                }
-            }
-            if ($horaireDuJour && !$horaireDuJour->isFerme()) {
-                $creneaux = [[$horaireDuJour->getOuvertureMidi(), $horaireDuJour->getFermetureMidi()],
-                    [$horaireDuJour->getOuvertureSoir(), $horaireDuJour->getFermetureSoir()],
-                ];
-                $interval = new \DateInterval('PT30M');
-                foreach ($creneaux as $heure) {
-                    if ($heure[0] && $heure[1]) {
-                        $Demiheure = new \DatePeriod($heure[0], $interval, $heure[1]);
-
-                        foreach ($Demiheure as $journeeHoraire) {
-                            if ($this->tableRepository->findAvailableTables($restaurant, $date, $journeeHoraire, (int) $nbPers)) {
-                                $formatHeure = $journeeHoraire->format('H:i');
-                                $choices[$formatHeure] = $formatHeure;
-                            }
-                        }
-                    }
-                }
-            }
+        if ($dateStr) {
+            $date = new \DateTime($dateStr);
+        } else {
+            $date = null;
         }
+
+        $nbPers = $reservation['nbPers'];
+        $choices = $this->getAvailableTimeSlots($restaurant, $date, $nbPers);
         $placeholder = null;
         if (empty($choices) && !empty($dateStr)) {
             $placeholder = 'Veuillez saisir le nombre de personnes';
@@ -107,5 +81,43 @@ class AddHeureFieldListener implements EventSubscriberInterface
             }
         ));
         $form->add($builder->getForm());
+    }
+
+    /**
+     * @throws \DateMalformedPeriodStringException
+     */
+    private function getAvailableTimeSlots($restaurant, ?\DateTime $date, int $nbPers)
+    {
+        $liste_Horaires = [];
+        $joursFr = [
+            'Monday' => 'Lundi', 'Tuesday' => 'Mardi', 'Wednesday' => 'Mercredi',
+            'Thursday' => 'Jeudi', 'Friday' => 'Vendredi', 'Saturday' => 'Samedi', 'Sunday' => 'Dimanche',
+        ];
+        $nomJour = $joursFr[$date->format('l')];
+        $horaireDuJour = null;
+        foreach ($restaurant->getHoraires() as $horaire) {
+            if ($horaire->getJour() === $nomJour) {
+                $horaireDuJour = $horaire;
+                break;
+            }
+        }
+        if ($horaireDuJour && !$horaireDuJour->isFerme()) {
+            $creneaux = [[$horaireDuJour->getOuvertureMidi(), $horaireDuJour->getFermetureMidi()],
+                [$horaireDuJour->getOuvertureSoir(), $horaireDuJour->getFermetureSoir()],
+            ];
+            $interval = new \DateInterval('PT30M');
+            foreach ($creneaux as $heure) {
+                if ($heure[0] && $heure[1]) {
+                    $Demiheure = new \DatePeriod($heure[0], $interval, $heure[1]);
+                    foreach ($Demiheure as $journeeHoraire) {
+                        if ($this->tableRepository->findAvailableTables($restaurant, $date, $journeeHoraire, $nbPers)) {
+                            $formatHeure = $journeeHoraire->format('H:i');
+                            $liste_Horaires[$formatHeure] = $formatHeure;
+                        }
+                    }
+                }
+            }
+        }
+        return $liste_Horaires;
     }
 }
