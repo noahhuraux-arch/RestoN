@@ -88,13 +88,13 @@ class ReservationController extends AbstractController
 
     #[IsGranted(new Expression('is_granted("ROLE_SERVEUR") or is_granted("ROLE_PROPRIETAIRE")'))]
     #[Route('{id}/reservation', name: 'app_reservation')]
-    public function indexReservation(Restaurant $restaurant): Response
+    public function indexReservation(Restaurant $restaurant, ReservationRepository $reservationRepository): Response
     {
         if ($restaurant->getProprietaire() !== $this->getUser() && !$restaurant->getServeurs()->contains($this->getUser())) {
             throw $this->createAccessDeniedException('Accès interdit');
         }
 
-        $reservations = $restaurant->getReservations();
+        $reservations = $reservationRepository->findByRestaurantWithDetails($restaurant);
 
         return $this->render('reservation/index.html.twig', [
             'restaurant' => $restaurant,
