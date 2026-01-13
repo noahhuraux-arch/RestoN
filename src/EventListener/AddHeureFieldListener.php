@@ -66,21 +66,7 @@ class AddHeureFieldListener implements EventSubscriberInterface
         if (empty($choices) && !empty($dateStr) && (int) $nbPers) {
             $placeholder = 'Plus de place disponible pour cette date';
         }
-        $factory = $form->getConfig()->getFormFactory();
-        $builder = $factory->createNamedBuilder('heure', ChoiceType::class, null, ['choices' => $choices, 'auto_initialize' => false, 'placeholder' => $placeholder]);
-        $builder->addModelTransformer(new CallbackTransformer(
-            function ($Date) {
-                if ($Date instanceof \DateTime) {
-                    return $Date->format('H:i');
-                } else {
-                    return '';
-                }
-            },
-            function ($stringHeure) {
-                return new \DateTime($stringHeure);
-            }
-        ));
-        $form->add($builder->getForm());
+        $this->rebuildHourField($form, $choices, $placeholder);
     }
 
     /**
@@ -118,6 +104,31 @@ class AddHeureFieldListener implements EventSubscriberInterface
                 }
             }
         }
+
         return $liste_Horaires;
+    }
+
+    private function rebuildHourField($form, array $choices, ?string $placeholder): void
+    {
+        $factory = $form->getConfig()->getFormFactory();
+
+        $builder = $factory->createNamedBuilder('heure', ChoiceType::class, null, [
+            'choices' => $choices,
+            'auto_initialize' => false,
+            'placeholder' => $placeholder,
+        ]);
+        $builder->addModelTransformer(new CallbackTransformer(
+            function ($Date) {
+                if ($Date instanceof \DateTime) {
+                    return $Date->format('H:i');
+                } else {
+                    return '';
+                }
+            },
+            function ($stringHeure) {
+                return new \DateTime($stringHeure);
+            }
+        ));
+        $form->add($builder->getForm());
     }
 }
