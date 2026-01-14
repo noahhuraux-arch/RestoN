@@ -34,8 +34,9 @@ final class CommandeFactory extends PersistentProxyObjectFactory
     protected function defaults(): array|callable
     {
         return [
-            'dateCommande' => self::faker()->dateTime(),
-            'prixCommande' => self::faker()->randomFloat(),
+            'dateCommande' => self::faker()->dateTimeBetween('-1 day', 'now'),
+            'prixCommande' => 0,
+            'isPaye' => true,
         ];
     }
 
