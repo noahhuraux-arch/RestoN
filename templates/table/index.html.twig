@@ -12,17 +12,24 @@
 
         <div class="row g-4 pb-4">
             {% for table in tables %}
-
                 <div class="col-6 col-md-4 col-lg-3 col-xl-2">
                     {% set statut = table.bientotReserver %}
                     {% set reservation = table.getFirstReservation %}
+
                     <div class="card h-100 shadow-sm border-0 overflow-hidden">
                         {% if statut == 'Occupé' %}
-                            <a href="{{ path('app_reservation_show', {id: restaurant.id, idReservation: reservation.id}) }}" class="text-decoration-none">
+                            {% if reservation %}
+                                <a href="{{ path('app_reservation_show', {id: restaurant.id, idReservation: reservation.id}) }}" class="text-decoration-none">
+                                    <div class="py-2 text-center bg-danger text-white">
+                                        <small class="fw-bold text-uppercase">Occupé</small>
+                                    </div>
+                                </a>
+                            {% else %}
                                 <div class="py-2 text-center bg-danger text-white">
                                     <small class="fw-bold text-uppercase">Occupé</small>
                                 </div>
-                            </a>
+                            {% endif %}
+
                         {% elseif statut == 'Reservee' %}
                             <a href="{{ path('app_reservation_show', {id: restaurant.id, idReservation: reservation.id}) }}" class="text-decoration-none">
                                 <div class="py-2 text-center bg-warning text-dark">
@@ -34,7 +41,6 @@
                                 <small class="fw-bold text-uppercase">Libre</small>
                             </div>
                         {% endif %}
-
 
                         <div class="card-body text-center py-2">
                             <div class="fs-3 fw-bold mb-1">
