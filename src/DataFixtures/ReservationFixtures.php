@@ -2,6 +2,8 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Restaurant;
+use App\Entity\Table;
 use App\Factory\ClientFactory;
 use App\Factory\ReservationFactory;
 use App\Factory\RestaurantFactory;
@@ -17,16 +19,11 @@ class ReservationFixtures extends Fixture implements DependentFixtureInterface
     public function load(ObjectManager $manager): void
     {
         $clients = ClientFactory::createMany(20);
-
-        $restaurants = RestaurantFactory::all();
+        $restaurants = $manager->getRepository(Restaurant::class)->findAll();
         foreach ($restaurants as $restaurant) {
             $reservation = 1;
-            $nbTables = $restaurant->getNbTable();
-            for ($i = 1; $i <= $nbTables; ++$i) {
-                $table = TableFactory::createOne([
-                    'restaurant' => $restaurant,
-                    'numero' => $i,
-                ]);
+            $tables = $manager->getRepository(Table::class)->findBy(['restaurant' => $restaurant]);
+            foreach ($tables as $table) {
                 for ($j = 0; $j < 2; ++$j) {
                     ReservationFactory::createOne([
                         'table' => $table,
@@ -45,6 +42,7 @@ class ReservationFixtures extends Fixture implements DependentFixtureInterface
         return [
             RestaurantFixtures::class,
             HorairesFixtures::class,
+            TableFixtures::class,
         ];
     }
 }
