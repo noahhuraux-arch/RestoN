@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Boisson;
 use App\Entity\Commande;
 use App\Entity\Menu;
 use App\Entity\Restaurant;
@@ -66,11 +67,29 @@ class CommandeRepository extends ServiceEntityRepository
     public function findMostPopularMenuByRestaurant(Restaurant $restaurant): ?array
     {
         $qb = $this->createQueryBuilder('c');
+
         return $qb
             ->select('p.libProduit as nom', 'COUNT(p.id) as total')
             ->join('c.produits', 'p')
             ->where('c.restaurant = :restaurant')
             ->andWhere($qb->expr()->isInstanceOf('p', Menu::class))
+            ->setParameter('restaurant', $restaurant)
+            ->groupBy('p.id')
+            ->orderBy('total', 'DESC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+    public function findMostPopularBoissonByRestaurant(Restaurant $restaurant): ?array
+    {
+        $qb = $this->createQueryBuilder('c');
+
+        return $qb
+            ->select('p.libProduit as nom', 'COUNT(p.id) as total')
+            ->join('c.produits', 'p')
+            ->where('c.restaurant = :restaurant')
+            ->andWhere($qb->expr()->isInstanceOf('p', Boisson::class))
             ->setParameter('restaurant', $restaurant)
             ->groupBy('p.id')
             ->orderBy('total', 'DESC')
