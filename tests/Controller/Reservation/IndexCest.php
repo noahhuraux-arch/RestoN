@@ -4,18 +4,33 @@ declare(strict_types=1);
 
 namespace App\Tests\Controller\Reservation;
 
+use App\Factory\ClientFactory;
+use App\Factory\ProprietaireFactory;
+use App\Factory\ReservationFactory;
+use App\Factory\RestaurantFactory;
+use App\Factory\TableFactory;
 use App\Tests\Support\ControllerTester;
 
 final class IndexCest
 {
-    public function _before(ControllerTester $I): void
+    public function reservationListContainsRightNumberOfElements(ControllerTester $I): void
     {
-        // Code here will be executed before each test function.
-    }
+        $proprio = ProprietaireFactory::createOne(['roles' => ['ROLE_PROPRIETAIRE']])->_real();
+        $resto = RestaurantFactory::createOne(['proprietaire' => $proprio]);
+        $table = TableFactory::createOne(['restaurant' => $resto, 'numero' => 1]);
 
-    // All `public` methods will be executed as tests.
-    public function tryToTest(ControllerTester $I): void
-    {
-        // Write your test content here.
+        ReservationFactory::createMany(5, [
+            'restaurant' => $resto,
+            'table' => $table,
+            'numero' => 1,
+            'client' => ClientFactory::createOne(),
+        ]);
+
+        $I->amLoggedInAs($proprio);
+        $I->amOnPage("/{$resto->getId()}/reservation");
+
+        $I->seeResponseCodeIs(200);
+        $I->seeInTitle("Réservations - " . $resto->getLibRestau());
+        $I->seeNumberOfElements('.card', 6);
     }
 }
