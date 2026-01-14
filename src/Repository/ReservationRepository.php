@@ -23,7 +23,7 @@ class ReservationRepository extends ServiceEntityRepository
      *
      * * @return Reservation[]
      */
-    public function findByRestaurantWithDetails(Restaurant $restaurant): array
+    public function findByRestaurantWithDetailsReservations(Restaurant $restaurant): array
     {
         return $this->createQueryBuilder('r')
             ->leftJoin('r.client', 'c')
