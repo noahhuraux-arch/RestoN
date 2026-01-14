@@ -7,20 +7,20 @@
             <div class="col-lg-8">
                 <div class="card shadow-sm border-0 rounded-3">
                     <div class="card-header bg-white py-3">
-                        <h5 class="mb-0 fw-bold">CARTE : {{ restaurant.libRestau }}</h5>
+                        <h5 class="mb-0 fw-bold" style="color: #1a2a3a;">CARTE : {{ restaurant.libRestau }}</h5>
                     </div>
                     <div class="card-body p-4">
                         {% for categorie, produits in produitsGroupes %}
-                            <h6 class="text-uppercase border-bottom pb-2 pt-2">{{ categorie }}</h6>
-                            <div class="row">
+                            <h6 class="text-uppercase fw-bold text-muted border-bottom pb-2 pt-3">{{ categorie }}</h6>
+                            <div class="row g-3">
                                 {% for index, p in produits %}
                                     {% set child = form.produits[index] %}
                                     <div class="col-md-6 col-xl-4">
                                         <div class="card h-100 border-2 product-card js-product-card shadow-sm"
                                              data-price="{{ p.prixProduit|number_format(2, '.', '') }}"
-                                             style="cursor: pointer;">
+                                             style="cursor: pointer; border-radius: 10px;">
                                             <div class="card-body p-3">
-                                                <div class="d-flex align-items-center">
+                                                <div class="d-flex align-items-center mb-2">
                                                     <div class="d-none">
                                                         {{ form_widget(child, {'attr': {'class': 'js-check'}}) }}
                                                     </div>
@@ -30,6 +30,15 @@
                                                     </div>
                                                     <div class="js-icon-check text-success d-none">
                                                         <i class="fas fa-check-circle h4 mb-0"></i>
+                                                    </div>
+                                                </div>
+                                                <div class="js-qty-container d-none border-top pt-2">
+                                                    <div class="input-group input-group-sm">
+                                                        <span class="input-group-text bg-light border-0 small">Qté</span>
+                                                        <input type="number" name="qtys[{{ p.id }}]"
+                                                               class="form-control border-0 bg-light text-center js-qty-input"
+                                                               value="1" min="1"
+                                                               onclick="event.stopPropagation();">
                                                     </div>
                                                 </div>
                                             </div>
@@ -43,14 +52,14 @@
             </div>
 
             <div class="col-lg-4">
-                <div class="card shadow border-0 sticky-top" style="top: 20px;">
+                <div class="card shadow border-0 sticky-top" style="top: 20px; border-radius: 12px; overflow: hidden;">
                     <div class="card-header bg-dark text-white py-3 text-center">
                         <h5 class="mb-0 fw-bold">TOTAL : <span id="total-display">0,00</span> €</h5>
                     </div>
-                    <div class="card-body p-4">
-                        <div class="mb-3">Serveur : {{ serveur.nom }}</div>
-                        <div class="mb-4">Table N°{{ table.numero }}</div>
-                        <button type="submit" class="btn btn-success btn-lg w-100 py-3 fw-bold">VALIDER LA COMMANDE</button>
+                    <div class="card-body p-4 text-center">
+                        <p class="mb-1"><strong>Serveur :</strong> {{ serveur.nom }}</p>
+                        <p class="mb-4"><strong>Table N° :</strong> {{ table.numero }}</p>
+                        <button type="submit" class="btn btn-success btn-lg w-100 py-3 fw-bold shadow-sm">VALIDER LA COMMANDE</button>
                     </div>
                 </div>
             </div>
@@ -58,39 +67,42 @@
         {% do form.produits.setRendered() %}
         {{ form_end(form) }}
     </div>
-
-    <style>
-        .product-card { transition: 0.2s; border-color: #dee2e6; }
-        .product-card.active { border-color: #198754 !important; background-color: #f8fffb; transform: scale(1.02); }
-    </style>
-
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const cards = document.querySelectorAll('.js-product-card');
             const totalDisplay = document.getElementById('total-display');
             const checks = document.querySelectorAll('.js-check');
 
-            // Reset initial
             checks.forEach(c => c.checked = false);
 
             function updateTotal() {
                 let total = 0;
                 document.querySelectorAll('.js-check:checked').forEach(check => {
                     const card = check.closest('.js-product-card');
-                    total += parseFloat(card.dataset.price);
+                    const price = parseFloat(card.dataset.price);
+                    const qty = parseInt(card.querySelector('.js-qty-input').value) || 1;
+                    total += (price * qty);
                 });
                 totalDisplay.innerText = total.toLocaleString('fr-FR', { minimumFractionDigits: 2 });
             }
 
             cards.forEach(card => {
+                const qtyInput = card.querySelector('.js-qty-input');
+                const qtyContainer = card.querySelector('.js-qty-container');
+
                 card.addEventListener('click', function() {
                     const checkbox = this.querySelector('.js-check');
                     const icon = this.querySelector('.js-icon-check');
+
                     checkbox.checked = !checkbox.checked;
                     this.classList.toggle('active', checkbox.checked);
                     icon.classList.toggle('d-none', !checkbox.checked);
+                    qtyContainer.classList.toggle('d-none', !checkbox.checked);
+
                     updateTotal();
                 });
+                qtyInput.addEventListener('change', updateTotal);
+                qtyInput.addEventListener('keyup', updateTotal);
             });
         });
     </script>
