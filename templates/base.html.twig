@@ -92,10 +92,17 @@
                             {% if is_granted('ROLE_PROPRIETAIRE') %}
                                 <li><a class="dropdown-item" href="{{ path('app_proprietaire_update') }}"><i class="fas fa-user-cog me-2"></i>Gérer mon profil</a></li>
                                 <li><a class="dropdown-item" href="{{ path('app_proprietaire') }}"><i class="fas fa-store me-2"></i>Mes restaurants</a></li>
+                                {% if restauId %}
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" href="{{ path('app_reservation', {id: restauId}) }}"><i class="fas fa-calendar-check me-2"></i>Réservations</a></li>
+                                    <li><a class="dropdown-item" href="{{ path('app_commande_index', {id: restauId}) }}"><i class="fas fa-clipboard-list me-2"></i>Commandes</a></li>
+                                    <li><a class="dropdown-item" href="{{ path('app_restaurant_tables', {id: restauId}) }}"><i class="fas fa-chair me-2"></i>Plan des tables</a></li>
+                                {% endif %}
                             {% endif %}
                             {% if is_granted('ROLE_SERVEUR') %}
                                 <li><a class="dropdown-item" href="{{ path('app_reservation', {id: app.user.restaurant.id}) }}"><i class="fas fa-calendar-check me-2"></i>Réservations</a></li>
                                 <li><a class="dropdown-item" href="{{ path('app_commande_index', {id: app.user.restaurant.id}) }}"><i class="fas fa-clipboard-list me-2"></i>Commandes</a></li>
+                                <li><a class="dropdown-item" href="{{ path('app_restaurant_tables', {id: app.user.restaurant.id}) }}"><i class="fas fa-chair me-2"></i>Plan des tables</a></li>
                             {% endif %}
                             <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item text-danger" href="{{ path('app_logout') }}">Déconnexion</a></li>
