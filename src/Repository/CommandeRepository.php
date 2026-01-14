@@ -7,7 +7,6 @@ use App\Entity\Commande;
 use App\Entity\Menu;
 use App\Entity\Plat;
 use App\Entity\Restaurant;
-use App\Entity\TypePlat;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -133,6 +132,26 @@ class CommandeRepository extends ServiceEntityRepository
             ->andWhere('tp.id = :typeId')
             ->setParameter('restaurant', $restaurant)
             ->setParameter('typeId', 3)
+            ->groupBy('p.id')
+            ->orderBy('total', 'DESC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+    public function findMostPopularEntreeByRestaurant(Restaurant $restaurant): ?array
+    {
+        $qb = $this->createQueryBuilder('c');
+
+        return $qb
+            ->select('p.libProduit as nom', 'COUNT(p.id) as total')
+            ->join('c.produits', 'p')
+            ->innerJoin(Plat::class, 'plat', 'WITH', 'plat.id = p.id')
+            ->join('plat.typePlat', 'tp')
+            ->where('c.restaurant = :restaurant')
+            ->andWhere('tp.id = :typeId')
+            ->setParameter('restaurant', $restaurant)
+            ->setParameter('typeId', 1)
             ->groupBy('p.id')
             ->orderBy('total', 'DESC')
             ->setMaxResults(1)
