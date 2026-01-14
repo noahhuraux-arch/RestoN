@@ -39,6 +39,7 @@ class Commande
     #[ORM\ManyToOne(inversedBy: 'commandes')]
     private ?Restaurant $restaurant = null;
 
+
     public function __construct()
     {
         $this->produits = new ArrayCollection();

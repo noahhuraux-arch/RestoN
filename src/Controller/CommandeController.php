@@ -27,9 +27,9 @@ class CommandeController extends AbstractController
         $isProprio = ($restaurant->getProprietaire() === $user);
         $isServeurDuResto = $restaurant->getServeurs()->contains($user);
 
-        if (!$isProprio && !$isServeurDuResto) {
+        if (!$isProprio && !$isServeurDuResto)
             throw $this->createAccessDeniedException('Accès interdit');
-        }
+        $reservations = $restaurant->getReservations();
 
         $commandes = $restaurant->getCommandes();
 
@@ -45,11 +45,9 @@ class CommandeController extends AbstractController
         $user = $this->getUser();
         $isProprio = ($restaurant->getProprietaire() === $user);
         $isServeurDuResto = $restaurant->getServeurs()->contains($user);
-
         if (!$isProprio && !$isServeurDuResto) {
             throw $this->createAccessDeniedException('Accès interdit');
-        }
-
+            }
         if ($table->getRestaurant() !== $restaurant) {
             throw $this->createAccessDeniedException('Accès interdit');
         }
@@ -86,29 +84,25 @@ class CommandeController extends AbstractController
                     $categorie = 'Plats';
                 } elseif ('Dessert' === $typePlat) {
                     $categorie = 'Desserts';
-                }
+                    }
             }
-
-            if ($categorie && isset($produitsGroupes[$categorie])) {
-                $produitsGroupes[$categorie][$index] = $produit;
-            }
+            if ($categorie) $produitsGroupes[$categorie][$index] = $produit;
         }
 
-        $produitsGroupes = array_filter($produitsGroupes);
-
         if ($form->isSubmitted() && $form->isValid()) {
+            $qtys = $request->request->all('qtys');
             $total = 0;
-            foreach ($commande->getProduits() as $p) {
-                $total += $p->getPrixProduit();
+            foreach ($commande->getProduits() as $produit) {
+                $qte = isset($qtys[$produit->getId()]) ? (int)$qtys[$produit->getId()] : 1;
+                $total += ($produit->getPrixProduit() * $qte);
+                for ($i = 1; $i < $qte; $i++) $commande->addProduit($produit);
             }
             $commande->setPrixCommande($total);
             if (method_exists($commande, 'setDateCommande')) {
                 $commande->setDateCommande(new \DateTime());
             }
-
             $em->persist($commande);
             $em->flush();
-
             return $this->redirectToRoute('app_commande_index', ['id' => $restaurant->getId()]);
         }
 
@@ -117,7 +111,6 @@ class CommandeController extends AbstractController
             'restaurant' => $restaurant,
             'table' => $table,
             'serveur' => $user,
-            'produitsGroupes' => array_filter($produitsGroupes),
-        ]);
+            'produitsGroupes' => array_filter($produitsGroupes),]);
     }
 }
