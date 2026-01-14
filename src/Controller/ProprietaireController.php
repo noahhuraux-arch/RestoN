@@ -114,6 +114,7 @@ final class ProprietaireController extends AbstractController
             'TotalChargeEmploye' => $serveurRepository->SumTotalByRestaurantServeur($restaurant),
             'BestMenu' => $commandeRepository->findMostPopularMenuByRestaurant($restaurant),
             'BestBoisson' => $commandeRepository->findMostPopularBoissonByRestaurant($restaurant),
+            'BestPlat' => $commandeRepository->findMostPopularPlatByRestaurant($restaurant),
         ];
 
         return $this->render('proprietaire/dashboard.html.twig', [
