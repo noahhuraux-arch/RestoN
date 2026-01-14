@@ -42,8 +42,6 @@ class CommandeRepository extends ServiceEntityRepository
     //        ;
     //    }
 
-
-
     public function CountTotalByRestaurantCommandes(Restaurant $restaurant): int
     {
         return $this->createQueryBuilder('r')
@@ -54,4 +52,13 @@ class CommandeRepository extends ServiceEntityRepository
             ->getSingleScalarResult();
     }
 
+    public function SumTotalByRestaurantCommandes(Restaurant $restaurant): float
+    {
+        return $this->createQueryBuilder('r')
+            ->select('Sum(r.prixCommande)')
+            ->andWhere('r.restaurant = :restaurant')
+            ->setParameter('restaurant', $restaurant)
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
 }
