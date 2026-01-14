@@ -153,12 +153,27 @@ class Table
 
     public function getFirstReservation(): ?Reservation
     {
+        $maintenant = new \DateTime();
+        $dansDeuxHeures = (new \DateTime())->modify('+3 hours');
+
         foreach ($this->reservations as $reservation) {
-            if ('Occupee' === $reservation->getStatus() or 'Reservee' === $reservation->getStatus()) {
+            $statut = $reservation->getStatus();
+            if ('Occupee' === $statut) {
                 return $reservation;
             }
+            if ('Reservee' === $statut) {
+                $dateReservation = clone $reservation->getDate();
+                $heure = $reservation->getHeure();
+                $dateReservation->setTime(
+                    (int) $heure->format('H'),
+                    (int) $heure->format('i'),
+                    0
+                );
+                if ($dateReservation >= $maintenant && $dateReservation <= $dansDeuxHeures) {
+                    return $reservation;
+                }
+            }
         }
-
         return null;
     }
 }
