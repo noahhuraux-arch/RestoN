@@ -23,7 +23,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 class ReservationController extends AbstractController
 {
     #[Route('{id}/reserver', name: 'app_reservation_create', requirements: ['id' => Requirement::DIGITS], methods: ['GET', 'POST'])]
-    public function createReservation(Request $request, Restaurant $restaurant, TableRepository $tableRepository, ClientRepository $clientRepository, EntityManagerInterface $entityManager, EmailService $emailService): Response
+    public function createReservation(Request $request, Restaurant $restaurant, ReservationRepository $restoRepo, TableRepository $tableRepository, ClientRepository $clientRepository, EntityManagerInterface $entityManager, EmailService $emailService): Response
     {
         $reservation = new Reservation();
         $form = $this->createForm(ReservationType::class, $reservation, ['restaurant' => $restaurant]);
@@ -40,6 +40,8 @@ class ReservationController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $reservation->setRestaurant($restaurant);
             $NouveauClient = $reservation->getClient();
+            $nbReservations = $restoRepo->count(['restaurant' => $restaurant]);
+            $reservation->setNumero($nbReservations + 1);
             $Client = $clientRepository->findExistingByClient($NouveauClient->getEmail());
             $tableDisponible = $tableRepository->findAvailableTables(
                 $restaurant,
