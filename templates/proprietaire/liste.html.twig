@@ -5,13 +5,13 @@
 {% block body %}
     <div class="container py-5">
 
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <div>
-                <h1 class="mb-0">Bonjour, {{ proprietaire.prenom }} !</h1>
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-4 gap-3">
+            <div class="text-center text-md-start">
+                <h1 class="mb-0 h2">Bonjour, {{ proprietaire.prenom }} !</h1>
                 <p class="lead text-muted mb-0">Quel établissement voulez-vous gérer aujourd'hui ?</p>
             </div>
 
-            <a href="{{ path('app_restaurant_create') }}" class="btn btn-primary shadow-sm">
+            <a href="{{ path('app_restaurant_create') }}" class="btn btn-primary shadow-sm col-12 col-md-auto px-0">
                 Créer un restaurant
             </a>
         </div>
@@ -22,7 +22,7 @@
             {% for restaurant in restaurants %}
                 <div class="col-md-4">
                     <div class="card h-100 shadow-sm hover-shadow border-0">
-                        <div class="card-body text-center p-5">
+                        <div class="card-body text-center p-4 p-lg-5">
                             <h3 class="card-title text-primary">{{ restaurant.libRestau }}</h3>
                             <p class="text-muted">{{ restaurant.villeRestau }}</p>
 
