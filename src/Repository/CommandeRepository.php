@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Commande;
+use App\Entity\Menu;
 use App\Entity\Restaurant;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -64,13 +65,13 @@ class CommandeRepository extends ServiceEntityRepository
 
     public function findMostPopularMenuByRestaurant(Restaurant $restaurant): ?array
     {
-        return $this->createQueryBuilder('c')
-            ->select('p.libProduit as nom, COUNT(p.id) as total')
+        $qb = $this->createQueryBuilder('c');
+        return $qb
+            ->select('p.libProduit as nom', 'COUNT(p.id) as total')
             ->join('c.produits', 'p')
             ->where('c.restaurant = :restaurant')
-            ->andWhere('p.libProduit LIKE :nomMenu')
+            ->andWhere($qb->expr()->isInstanceOf('p', Menu::class))
             ->setParameter('restaurant', $restaurant)
-            ->setParameter('nomMenu', '%menu%')
             ->groupBy('p.id')
             ->orderBy('total', 'DESC')
             ->setMaxResults(1)
