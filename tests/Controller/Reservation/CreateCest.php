@@ -4,18 +4,21 @@ declare(strict_types=1);
 
 namespace App\Tests\Controller\Reservation;
 
+use App\Factory\ProprietaireFactory;
+use App\Factory\RestaurantFactory;
 use App\Tests\Support\ControllerTester;
 
 final class CreateCest
 {
-    public function _before(ControllerTester $I): void
+    public function formShowsCreationFields(ControllerTester $I): void
     {
-        // Code here will be executed before each test function.
-    }
+        $proprietaire = ProprietaireFactory::createOne();
+        $restaurant = RestaurantFactory::createOne(['proprietaire' => $proprietaire]);
 
-    // All `public` methods will be executed as tests.
-    public function tryToTest(ControllerTester $I): void
-    {
-        // Write your test content here.
+        $I->amOnPage("/{$restaurant->getId()}/reserver");
+
+        $I->seeResponseCodeIsSuccessful();
+        $I->see('Réserver', 'h1');
+        $I->seeElement('form');
     }
 }
