@@ -16,11 +16,11 @@
                         <ul class="list-group list-group-flush border-0">
                                 <li class="list-group-item py-3 border-0">
                                     <div class="row">
-                                        <div class="col-6">
+                                        <div class="col-12 col-sm-6 mb-2 mb-sm-0">
                                             <small class="text-muted d-block text-uppercase" style="font-size: 0.75rem;">Client</small>
                                             <span class="h6 mb-0 fw-bold">{{ reservations.client.prenom }} {{ reservations.client.nom }}</span>
                                         </div>
-                                        <div class="col-6">
+                                        <div class="col-12 col-sm-6">
                                             <small class="text-muted d-block text-uppercase" style="font-size: 0.75rem;">Numero de Reservation</small>
                                             <span class="h6 mb-0 fw-bold">{{ reservations.numero }}</span>
                                         </div>
@@ -28,11 +28,11 @@
                                 </li>
                             <li class="list-group-item py-3 border-0">
                                 <div class="row">
-                                    <div class="col-6">
+                                    <div class="col-12 col-sm-6 mb-2 mb-sm-0">
                                         <small class="text-muted d-block text-uppercase " style="font-size: 0.75rem;">Téléphone</small>
                                         <span class="fw-bold">{{ reservations.client.telephone }}</span>
                                     </div>
-                                    <div class="col-6 text-break">
+                                    <div class="col-12 col-sm-6 text-break">
                                         <small class="text-muted d-block text-uppercase" style="font-size: 0.75rem;">Email</small>
                                         <span class="fw-bold">{{ reservations.client.email }}</span>
                                     </div>
@@ -62,10 +62,11 @@
                         </ul>
                     </div>
 
-                    <div class="card-footer bg-white py-3 d-flex justify-content-between border-0">
-                        <a href="{{ path('app_reservation', {id: restaurant.id}) }}" class="btn btn-outline-secondary">
+                    <div class="card-footer bg-white py-3 d-flex flex-column flex-sm-row justify-content-between gap-2 border-0">
+                        <a href="{{ path('app_reservation', {id: restaurant.id}) }}" class="btn btn-outline-secondary order-2 order-sm-1">
                             <span class="bi bi-arrow-left me-1"> Retour</span>
                         </a>
+                        <div class="d-flex flex-column flex-sm-row gap-2 order-1 order-sm-2">
                         {% if reservations.status == 'Reservee' %}
                             <a href="{{ path('app_reservation_installer', {reservation: reservations.id}) }}" class="btn btn-warning fw-bold">
                                 Installer
@@ -79,6 +80,7 @@
                         <a href="{{ path('app_reservation_delete', {id: restaurant.id, idReservation: reservations.id}) }}" class="btn btn-danger">
                             <span class="bi bi-trash me-1"> Supprimer</span>
                         </a>
+                        </div>
                     </div>
                 </div>
             </div>
