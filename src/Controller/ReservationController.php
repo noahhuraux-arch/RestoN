@@ -99,7 +99,7 @@ class ReservationController extends AbstractController
         if ($filter === 'today') {
             $reservations = $reservationRepository->findTodayByReservation($restaurant);
         } else {
-            $reservations = $reservationRepository->findByRestaurantWithDetails($restaurant);
+            $reservations = $reservationRepository->findByRestaurantWithDetailsReservations($restaurant);
         }
 
         return $this->render('reservation/index.html.twig', [
