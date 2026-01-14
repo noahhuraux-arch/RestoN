@@ -23,7 +23,7 @@ class ReservationRepository extends ServiceEntityRepository
      *
      * * @return Reservation[]
      */
-    public function findByRestaurantWithDetails(Restaurant $restaurant): array
+    public function findByRestaurantWithDetailsReservations(Restaurant $restaurant): array
     {
         return $this->createQueryBuilder('r')
             ->leftJoin('r.client', 'c')
@@ -55,8 +55,45 @@ class ReservationRepository extends ServiceEntityRepository
             ->setParameter('id', $id)
             ->getQuery()
             ->getOneOrNullResult();
+    }
 
+    public function findTodayByReservation(Restaurant $restaurant): array
+    {
+        $Today = new \DateTime();
+        $Today->setTime(0, 0, 0);
 
+        return $this->createQueryBuilder('r')
+            ->leftJoin('r.client', 'c')
+            ->addSelect('c')
+            ->leftJoin('r.table', 't')
+            ->addSelect('t')
+            ->andWhere('r.restaurant = :restaurant')
+            ->setParameter('restaurant', $restaurant)
+            ->andWhere('r.date = :today')
+            ->setParameter('today', $Today)
+            ->orderBy('r.date', 'ASC')
+            ->addOrderBy('r.heure', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
 
+    public function searchByClientName(Restaurant $restaurant, string $searchText): array
+    {
+        $qb = $this->createQueryBuilder('r')
+            ->leftJoin('r.client', 'c')
+            ->addSelect('c')
+            ->leftJoin('r.table', 't')
+            ->addSelect('t')
+            ->andWhere('r.restaurant = :restaurant')
+            ->setParameter('restaurant', $restaurant)
+            ->orderBy('r.date', 'DESC')
+            ->addOrderBy('r.heure', 'ASC');
+
+        if ('' !== $searchText) {
+            $qb->andWhere('c.nom LIKE :search OR c.prenom LIKE :search')
+                ->setParameter('search', '%'.$searchText.'%');
+        }
+
+        return $qb->getQuery()->getResult();
     }
 }

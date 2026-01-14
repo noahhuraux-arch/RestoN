@@ -19,8 +19,8 @@ class ReservationFixtures extends Fixture implements DependentFixtureInterface
         $clients = ClientFactory::createMany(20);
 
         $restaurants = RestaurantFactory::all();
-        $reservation = 1;
         foreach ($restaurants as $restaurant) {
+            $reservation = 1;
             $nbTables = $restaurant->getNbTable();
             for ($i = 1; $i <= $nbTables; ++$i) {
                 $table = TableFactory::createOne([

@@ -16,6 +16,7 @@ use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Requirement\Requirement;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
@@ -90,13 +91,19 @@ class ReservationController extends AbstractController
 
     #[IsGranted(new Expression('is_granted("ROLE_SERVEUR") or is_granted("ROLE_PROPRIETAIRE")'))]
     #[Route('{id}/reservation', name: 'app_reservation')]
-    public function indexReservation(Restaurant $restaurant, ReservationRepository $reservationRepository): Response
+    public function indexReservation(Request $request, Restaurant $restaurant, ReservationRepository $reservationRepository, #[MapQueryParameter] string $searchText = ''): Response
     {
         if ($restaurant->getProprietaire() !== $this->getUser() && !$restaurant->getServeurs()->contains($this->getUser())) {
             throw $this->createAccessDeniedException('Accès interdit');
         }
-
-        $reservations = $reservationRepository->findByRestaurantWithDetails($restaurant);
+        $filter = $request->query->get('filter');
+        if ('today' === $filter) {
+            $reservations = $reservationRepository->findTodayByReservation($restaurant);
+        } elseif ('' !== $searchText) {
+            $reservations = $reservationRepository->searchByClientName($restaurant, $searchText);
+        } else {
+            $reservations = $reservationRepository->findByRestaurantWithDetailsReservations($restaurant);
+        }
 
         return $this->render('reservation/index.html.twig', [
             'restaurant' => $restaurant,

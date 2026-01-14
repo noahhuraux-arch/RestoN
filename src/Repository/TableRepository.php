@@ -73,8 +73,8 @@ class TableRepository extends ServiceEntityRepository
             ->andWhere('t.restaurant = :restaurant')
             ->andWhere('r.id IS NULL')
             ->setParameter('restaurant', $restaurant)
-            ->setParameter('date', $date)
-            ->setParameter('heure', $heure)
+            ->setParameter('date', $date->format('Y-m-d'))
+            ->setParameter('heure', $heure->format('H:i:s'))
             ->setParameter('nbPers', $nbPersType);
         $query = $qb->getQuery();
 
