@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+
+<div class="container mt-4">
+    <h1>Tableau de bord : {{ restaurant.libRestau }}</h1>
+        <div class="col-md-4">
+                    <h5>Réservations Totales</h5>
+                    <p>{{ stats.TotalReservation }}</p>
+        </div>
+        <div class="col-md-4">
+            <h5>Commandes Totales</h5>
+            <p>{{ stats.TotalCommande }}</p>
+        </div>
+        <div class="col-md-4">
+            <h5>Chiffre d'affaire</h5>
+            <p>{{ stats.SumCommande }} €</p>
+        </div>
+        <div class="col-md-4">
+            <h5>Nombre d'employée </h5>
+            <p>{{ stats.TotalServeur }}</p>
+        </div>
+        <div class="col-md-4">
+            <h5>Salaire total de tous les employe</h5>
+            <p>{{ stats.TotalChargeEmploye }}€</p>
+        </div>
+        <div class="col-md-4">
+            <h5>Menu le plus choisit</h5>
+            <p>{{ stats.BestMenu.nom }} choisit {{ stats.BestMenu.total }} fois</p>
+        </div>
+        <div class="col-md-4">
+            <h5>Boisson la plus choisit</h5>
+            <p>{{ stats.BestBoisson.nom }} choisit {{ stats.BestBoisson.total }} fois</p>
+        </div>
+        <div class="col-md-4">
+            <h5>Plat le plus choisit</h5>
+            <p>{{ stats.BestPlat.nom }} choisit {{ stats.BestPlat.total }} fois</p>
+        </div>
+        <div class="col-md-4">
+            <h5>Dessert le plus choisit</h5>
+            <p>{{ stats.BestDessert.nom }} choisit {{ stats.BestDessert.total }} fois</p>
+        </div>
+        <div class="col-md-4">
+            <h5>Entrée la plus choisit</h5>
+            <p>{{ stats.BestEntree.nom }} choisit {{ stats.BestEntree.total }} fois</p>
+        </div>
+</div>
+{% endblock %}
+

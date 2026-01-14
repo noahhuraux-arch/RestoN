@@ -96,4 +96,14 @@ class ReservationRepository extends ServiceEntityRepository
 
         return $qb->getQuery()->getResult();
     }
+
+    public function CountTotalByRestaurantReservations(Restaurant $restaurant): int
+    {
+        return $this->createQueryBuilder('r')
+            ->select('Count(r.id)')
+            ->andWhere('r.restaurant = :restaurant')
+            ->setParameter('restaurant', $restaurant)
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
 }

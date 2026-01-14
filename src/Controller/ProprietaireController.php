@@ -5,6 +5,9 @@ namespace App\Controller;
 use App\Entity\Proprietaire;
 use App\Entity\Restaurant;
 use App\Form\ProprietaireType;
+use App\Repository\CommandeRepository;
+use App\Repository\ReservationRepository;
+use App\Repository\ServeurRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -94,5 +97,31 @@ final class ProprietaireController extends AbstractController
         }
 
         return $this->render('proprietaire/update.html.twig', ['form' => $form->createView()]);
+    }
+
+    #[IsGranted('ROLE_PROPRIETAIRE')]
+    #[Route('/proprietaire/restaurant/{id}/dashboard', name: 'app_proprietaire_dashbord')]
+    public function dashboard(Restaurant $restaurant, ReservationRepository $reservationRepository, CommandeRepository $commandeRepository, ServeurRepository $serveurRepository): Response
+    {
+        if ($restaurant->getProprietaire() !== $this->getUser()) {
+            throw $this->createAccessDeniedException();
+        }
+        $Statistique = [
+            'TotalReservation' => $reservationRepository->CountTotalByRestaurantReservations($restaurant),
+            'TotalCommande' => $commandeRepository->CountTotalByRestaurantCommandes($restaurant),
+            'SumCommande' => $commandeRepository->SumTotalByRestaurantCommandes($restaurant),
+            'TotalServeur' => $serveurRepository->CountTotalByRestaurant($restaurant),
+            'TotalChargeEmploye' => $serveurRepository->SumTotalByRestaurantServeur($restaurant),
+            'BestMenu' => $commandeRepository->findMostPopularMenuByRestaurant($restaurant),
+            'BestBoisson' => $commandeRepository->findMostPopularBoissonByRestaurant($restaurant),
+            'BestPlat' => $commandeRepository->findMostPopularPlatByRestaurant($restaurant),
+            'BestDessert' => $commandeRepository->findMostPopularDessertByRestaurant($restaurant),
+            'BestEntree' => $commandeRepository->findMostPopularEntreeByRestaurant($restaurant),
+        ];
+
+        return $this->render('proprietaire/dashboard.html.twig', [
+            'restaurant' => $restaurant,
+            'stats' => $Statistique,
+        ]);
     }
 }
