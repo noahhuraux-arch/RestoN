@@ -27,6 +27,7 @@
                     </thead>
                     <tbody>
                     {% for commande in commandes %}
+                        {% if not commande.isPaye %}
                         <tr class="border-bottom">
                             <td class="ps-4 text-muted">#{{ commande.id }}</td>
                             <td class="fw-medium">{{ commande.dateCommande|date('d/m/Y') }}</td>
@@ -56,6 +57,7 @@
                                 </button>
                             </td>
                         </tr>
+                        {% endif %}
                     {% else %}
                         <tr>
                             <td colspan="7" class="text-center py-4 text-muted">
