@@ -55,8 +55,24 @@ class ReservationRepository extends ServiceEntityRepository
             ->setParameter('id', $id)
             ->getQuery()
             ->getOneOrNullResult();
+    }
 
-
-
+    public function findTodayByReservation(Restaurant $restaurant): array
+    {
+        $Today = new \DateTime();
+        $Today->setTime(0, 0, 0);
+        return $this->createQueryBuilder('r')
+            ->leftJoin('r.client', 'c')
+            ->addSelect('c')
+            ->leftJoin('r.table', 't')
+            ->addSelect('t')
+            ->andWhere('r.restaurant = :restaurant')
+            ->setParameter('restaurant', $restaurant)
+            ->andWhere('r.date = :today')
+            ->setParameter('today', $Today)
+            ->orderBy('r.date', 'ASC')
+            ->addOrderBy('r.heure', 'ASC')
+            ->getQuery()
+            ->getResult();
     }
 }
