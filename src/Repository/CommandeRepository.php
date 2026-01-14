@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Boisson;
 use App\Entity\Commande;
 use App\Entity\Menu;
+use App\Entity\Plat;
 use App\Entity\Restaurant;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -90,6 +91,23 @@ class CommandeRepository extends ServiceEntityRepository
             ->join('c.produits', 'p')
             ->where('c.restaurant = :restaurant')
             ->andWhere($qb->expr()->isInstanceOf('p', Boisson::class))
+            ->setParameter('restaurant', $restaurant)
+            ->groupBy('p.id')
+            ->orderBy('total', 'DESC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+    public function findMostPopularPlatByRestaurant(Restaurant $restaurant): ?array
+    {
+        $qb = $this->createQueryBuilder('c');
+
+        return $qb
+            ->select('p.libProduit as nom', 'COUNT(p.id) as total')
+            ->join('c.produits', 'p')
+            ->where('c.restaurant = :restaurant')
+            ->andWhere($qb->expr()->isInstanceOf('p', Plat::class))
             ->setParameter('restaurant', $restaurant)
             ->groupBy('p.id')
             ->orderBy('total', 'DESC')
