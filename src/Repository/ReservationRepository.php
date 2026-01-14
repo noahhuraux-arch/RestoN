@@ -61,6 +61,7 @@ class ReservationRepository extends ServiceEntityRepository
     {
         $Today = new \DateTime();
         $Today->setTime(0, 0, 0);
+
         return $this->createQueryBuilder('r')
             ->leftJoin('r.client', 'c')
             ->addSelect('c')
@@ -74,5 +75,25 @@ class ReservationRepository extends ServiceEntityRepository
             ->addOrderBy('r.heure', 'ASC')
             ->getQuery()
             ->getResult();
+    }
+
+    public function searchByClientName(Restaurant $restaurant, string $searchText): array
+    {
+        $qb = $this->createQueryBuilder('r')
+            ->leftJoin('r.client', 'c')
+            ->addSelect('c')
+            ->leftJoin('r.table', 't')
+            ->addSelect('t')
+            ->andWhere('r.restaurant = :restaurant')
+            ->setParameter('restaurant', $restaurant)
+            ->orderBy('r.date', 'DESC')
+            ->addOrderBy('r.heure', 'ASC');
+
+        if ('' !== $searchText) {
+            $qb->andWhere('c.nom LIKE :search OR c.prenom LIKE :search')
+                ->setParameter('search', '%'.$searchText.'%');
+        }
+
+        return $qb->getQuery()->getResult();
     }
 }
