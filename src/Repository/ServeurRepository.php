@@ -40,4 +40,14 @@ class ServeurRepository extends ServiceEntityRepository
     //            ->getOneOrNullResult()
     //        ;
     //    }
+
+    public function CountTotalByRestaurant($restaurant): int
+    {
+        return $this->createQueryBuilder('s')
+             ->select('COUNT(s.id)')
+             ->andWhere('s.restaurant = :restaurant')
+             ->setParameter('restaurant', $restaurant)
+             ->getQuery()
+             ->getSingleScalarResult();
+    }
 }
