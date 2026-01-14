@@ -23,6 +23,10 @@
             <h5>Salaire total de tous les employe</h5>
             <p>{{ stats.TotalChargeEmploye }}€</p>
         </div>
+        <div class="col-md-4">
+            <h5>Menu le plus choisit</h5>
+            <p>{{ stats.BestMenu.nom }} choisit {{ stats.BestMenu.total }} fois</p>
+        </div>
 </div>
 {% endblock %}
 
