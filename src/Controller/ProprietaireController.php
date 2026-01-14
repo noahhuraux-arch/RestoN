@@ -116,6 +116,7 @@ final class ProprietaireController extends AbstractController
             'BestBoisson' => $commandeRepository->findMostPopularBoissonByRestaurant($restaurant),
             'BestPlat' => $commandeRepository->findMostPopularPlatByRestaurant($restaurant),
             'BestDessert' => $commandeRepository->findMostPopularDessertByRestaurant($restaurant),
+            'BestEntree' => $commandeRepository->findMostPopularEntreeByRestaurant($restaurant),
         ];
 
         return $this->render('proprietaire/dashboard.html.twig', [
