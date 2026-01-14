@@ -52,6 +52,10 @@ class CommandeController extends AbstractController
             throw $this->createAccessDeniedException('Accès interdit');
         }
 
+        if ($table->isDisponible()){
+            $table->setDisponible(false);
+        }
+
         $user = $this->getUser();
         $commande = new Commande();
         $commande->setTables($table);
