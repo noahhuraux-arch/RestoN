@@ -61,4 +61,20 @@ class CommandeRepository extends ServiceEntityRepository
             ->getQuery()
             ->getSingleScalarResult();
     }
+
+    public function findMostPopularMenuByRestaurant(Restaurant $restaurant): ?array
+    {
+        return $this->createQueryBuilder('c')
+            ->select('p.libProduit as nom, COUNT(p.id) as total')
+            ->join('c.produits', 'p')
+            ->where('c.restaurant = :restaurant')
+            ->andWhere('p.libProduit LIKE :nomMenu')
+            ->setParameter('restaurant', $restaurant)
+            ->setParameter('nomMenu', '%menu%')
+            ->groupBy('p.id')
+            ->orderBy('total', 'DESC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
 }
