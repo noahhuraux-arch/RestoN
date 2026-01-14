@@ -127,6 +127,9 @@
         }
     },
     "require-dev": {
+        "codeception/codeception": "^5.3",
+        "codeception/module-asserts": "^3.3",
+        "codeception/module-symfony": "^3.8",
         "doctrine/doctrine-fixtures-bundle": "^4.3",
         "friendsofphp/php-cs-fixer": "^3.91",
         "phpunit/phpunit": "^12.4.4",
