@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Proprietaire;
 use App\Entity\Restaurant;
 use App\Form\ProprietaireType;
+use App\Repository\ReservationRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -95,4 +96,21 @@ final class ProprietaireController extends AbstractController
 
         return $this->render('proprietaire/update.html.twig', ['form' => $form->createView()]);
     }
+
+    #[IsGranted('ROLE_PROPRIETAIRE')]
+    #[Route('/proprietaire/restaurant/{id}/dashboard', name: 'app_proprietaire_dashbord')]
+    public function dashboard(Restaurant $restaurant, ReservationRepository $reservationRepository): Response
+    {
+        if ($restaurant->getProprietaire() !== $this->getUser()) {
+            throw $this->createAccessDeniedException();
+        }
+        $Statistique=[
+            'TotalReservation' => $reservationRepository->CountTotalByRestaurantReservations($restaurant),
+        ];
+        return $this->render('proprietaire/dashboard.html.twig', [
+            'restaurant' => $restaurant,
+            'stats' => $Statistique,
+        ]);
+    }
+
 }
