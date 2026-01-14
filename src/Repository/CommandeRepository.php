@@ -7,6 +7,7 @@ use App\Entity\Commande;
 use App\Entity\Menu;
 use App\Entity\Plat;
 use App\Entity\Restaurant;
+use App\Entity\TypePlat;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -106,9 +107,12 @@ class CommandeRepository extends ServiceEntityRepository
         return $qb
             ->select('p.libProduit as nom', 'COUNT(p.id) as total')
             ->join('c.produits', 'p')
+            ->innerJoin(Plat::class, 'plat', 'WITH', 'plat.id = p.id')
+            ->join('plat.typePlat', 'tp')
             ->where('c.restaurant = :restaurant')
-            ->andWhere($qb->expr()->isInstanceOf('p', Plat::class))
+            ->andWhere('tp.id = :typeId')
             ->setParameter('restaurant', $restaurant)
+            ->setParameter('typeId', 2)
             ->groupBy('p.id')
             ->orderBy('total', 'DESC')
             ->setMaxResults(1)
