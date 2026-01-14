@@ -53,6 +53,14 @@
                 {% set current_route = app.request.attributes.get('_route') %}
                 {% set restauId = app.request.get('id') ? app.request.get('id') : app.request.get('idRestau') %}
 
+                {% if not restauId %}
+                    {% if app.request.get('restaurant') %}
+                        {% set restauId = app.request.get('restaurant').id is defined ? app.request.get('restaurant').id : app.request.get('restaurant') %}
+                    {% elseif restaurant is defined and restaurant is not null and restaurant.id is defined %}
+                        {% set restauId = restaurant.id %}
+                    {% endif %}
+                {% endif %}
+
                 {% if current_route == 'app_produit_details' and produit is defined %}
                     {% set restauId = produit.restaurant.id %}
                 {% endif %}
