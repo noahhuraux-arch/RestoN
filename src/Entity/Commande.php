@@ -39,6 +39,9 @@ class Commande
     #[ORM\ManyToOne(inversedBy: 'commandes')]
     private ?Restaurant $restaurant = null;
 
+    #[ORM\Column]
+    private ?bool $isPaye = null;
+
 
     public function __construct()
     {
@@ -125,6 +128,18 @@ class Commande
     public function setRestaurant(?Restaurant $restaurant): static
     {
         $this->restaurant = $restaurant;
+
+        return $this;
+    }
+
+    public function isPaye(): ?bool
+    {
+        return $this->isPaye;
+    }
+
+    public function setIsPaye(bool $isPaye): static
+    {
+        $this->isPaye = $isPaye;
 
         return $this;
     }
