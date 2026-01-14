@@ -33,13 +33,39 @@
                                                     </div>
                                                 </div>
                                                 <div class="js-qty-container d-none border-top pt-2">
-                                                    <div class="input-group input-group-sm">
+                                                    <div class="input-group input-group-sm mb-2">
                                                         <span class="input-group-text bg-light border-0 small">Qté</span>
                                                         <input type="number" name="qtys[{{ p.id }}]"
                                                                class="form-control border-0 bg-light text-center js-qty-input"
                                                                value="1" min="1"
                                                                onclick="event.stopPropagation();">
                                                     </div>
+
+                                                    {% if categorie == 'Menus' %}
+                                                        <div class="composition-selector p-2 bg-light rounded shadow-sm">
+                                                            <div class="mb-2">
+                                                                <label class="x-small fw-bold text-muted">ENTRÉE</label>
+                                                                <select name="comp[{{ p.id }}][e]" class="form-select form-select-sm" onclick="event.stopPropagation();">
+                                                                    <option value="">-- Choisir --</option>
+                                                                    {% for item in produitsGroupes['Entrées']|default([]) %}<option value="{{ item.id }}">{{ item.libProduit }}</option>{% endfor %}
+                                                                </select>
+                                                            </div>
+                                                            <div class="mb-2">
+                                                                <label class="x-small fw-bold text-muted">PLAT</label>
+                                                                <select name="comp[{{ p.id }}][p]" class="form-select form-select-sm" onclick="event.stopPropagation();">
+                                                                    <option value="">-- Choisir --</option>
+                                                                    {% for item in produitsGroupes['Plats']|default([]) %}<option value="{{ item.id }}">{{ item.libProduit }}</option>{% endfor %}
+                                                                </select>
+                                                            </div>
+                                                            <div>
+                                                                <label class="x-small fw-bold text-muted">DESSERT</label>
+                                                                <select name="comp[{{ p.id }}][d]" class="form-select form-select-sm" onclick="event.stopPropagation();">
+                                                                    <option value="">-- Choisir --</option>
+                                                                    {% for item in produitsGroupes['Desserts']|default([]) %}<option value="{{ item.id }}">{{ item.libProduit }}</option>{% endfor %}
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    {% endif %}
                                                 </div>
                                             </div>
                                         </div>
@@ -57,8 +83,8 @@
                         <h5 class="mb-0 fw-bold">TOTAL : <span id="total-display">0,00</span> €</h5>
                     </div>
                     <div class="card-body p-4 text-center">
-                        <p class="mb-1"><strong>Serveur :</strong> {{ serveur.nom }}</p>
-                        <p class="mb-4"><strong>Table N° :</strong> {{ table.numero }}</p>
+                        <div class="mb-3">Serveur : {{ serveur.nom }}</div>
+                        <div class="mb-4">Table N°{{ table.numero }}</div>
                         <button type="submit" class="btn btn-success btn-lg w-100 py-3 fw-bold shadow-sm">VALIDER LA COMMANDE</button>
                     </div>
                 </div>
