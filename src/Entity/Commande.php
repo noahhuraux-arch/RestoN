@@ -40,7 +40,7 @@ class Commande
     private ?Restaurant $restaurant = null;
 
     #[ORM\Column]
-    private ?bool $isPaye = null;
+    private ?bool $isPaye = false;
 
 
     public function __construct()
