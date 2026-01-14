@@ -1,48 +1,197 @@
 {% extends 'base.html.twig' %}
+
+{% block title %}Tableau de bord - {{ restaurant.libRestau }}{% endblock %}
+
 {% block body %}
+<div class="container py-4">
+    <div class="row align-items-center mb-4 g-3">
+        <div class="col-12 col-md">
+            <h1 class="h2 fw-bold mb-0">Tableau de bord</h1>
+            <p class="text-muted mb-0">{{ restaurant.libRestau }}</p>
+        </div>
+        <div class="col-12 col-md-auto">
+            <a href="{{ path('app_proprietaire_show', {id: restaurant.id}) }}" class="btn btn-outline-secondary w-100">
+                <i class="bi bi-arrow-left me-2"></i>Retour au menu
+            </a>
+        </div>
+    </div>
 
-<div class="container mt-4">
-    <h1>Tableau de bord : {{ restaurant.libRestau }}</h1>
-        <div class="col-md-4">
-                    <h5>Réservations Totales</h5>
-                    <p>{{ stats.TotalReservation }}</p>
+    <div class="row g-3 mb-4">
+        <div class="col-12 col-sm-6 col-xl-3">
+            <div class="card border-0 shadow-sm h-100 border-start border-4 border-primary">
+                <div class="card-body">
+                    <div class="d-flex align-items-center justify-content-between mb-2">
+                        <h6 class="text-muted text-uppercase mb-0 fw-bold" style="font-size: 0.8rem;">Chiffre d'Affaires</h6>
+                        <div class="bg-primary bg-opacity-10 text-primary rounded-circle p-2 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                            <i class="bi bi-currency-euro fs-5"></i>
+                        </div>
+                    </div>
+                    <h3 class="fw-bold mb-0">{{ stats.SumCommande|default(0)|number_format(2, ',', ' ') }} €</h3>
+                    <small class="text-muted">Total cumulé</small>
+                </div>
+            </div>
         </div>
-        <div class="col-md-4">
-            <h5>Commandes Totales</h5>
-            <p>{{ stats.TotalCommande }}</p>
+        <div class="col-12 col-sm-6 col-xl-3">
+            <div class="card border-0 shadow-sm h-100 border-start border-4 border-warning">
+                <div class="card-body">
+                    <div class="d-flex align-items-center justify-content-between mb-2">
+                        <h6 class="text-muted text-uppercase mb-0 fw-bold" style="font-size: 0.8rem;">Réservations</h6>
+                        <div class="bg-warning bg-opacity-10 text-warning rounded-circle p-2 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                            <i class="bi bi-calendar-check fs-5"></i>
+                        </div>
+                    </div>
+                    <h3 class="fw-bold mb-0">{{ stats.TotalReservation }}</h3>
+                    <small class="text-muted">Total réservations</small>
+                </div>
+            </div>
         </div>
-        <div class="col-md-4">
-            <h5>Chiffre d'affaire</h5>
-            <p>{{ stats.SumCommande }} €</p>
+        <div class="col-12 col-sm-6 col-xl-3">
+            <div class="card border-0 shadow-sm h-100 border-start border-4 border-success">
+                <div class="card-body">
+                    <div class="d-flex align-items-center justify-content-between mb-2">
+                        <h6 class="text-muted text-uppercase mb-0 fw-bold" style="font-size: 0.8rem;">Commandes</h6>
+                        <div class="bg-success bg-opacity-10 text-success rounded-circle p-2 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                            <i class="bi bi-receipt fs-5"></i>
+                        </div>
+                    </div>
+                    <h3 class="fw-bold mb-0">{{ stats.TotalCommande }}</h3>
+                    <small class="text-muted">Total commandes</small>
+                </div>
+            </div>
         </div>
-        <div class="col-md-4">
-            <h5>Nombre d'employée </h5>
-            <p>{{ stats.TotalServeur }}</p>
+        <div class="col-12 col-sm-6 col-xl-3">
+            <div class="card border-0 shadow-sm h-100 border-start border-4 border-info">
+                <div class="card-body">
+                    <div class="d-flex align-items-center justify-content-between mb-2">
+                        <h6 class="text-muted text-uppercase mb-0 fw-bold" style="font-size: 0.8rem;">Personnel</h6>
+                        <div class="bg-info bg-opacity-10 text-info rounded-circle p-2 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                            <i class="bi bi-people fs-5"></i>
+                        </div>
+                    </div>
+                    <h3 class="fw-bold mb-0">{{ stats.TotalServeur }}</h3>
+                    <small class="text-muted">Masse salariale: {{ stats.TotalChargeEmploye|default(0)|number_format(2, ',', ' ') }} €</small>
+                </div>
+            </div>
         </div>
-        <div class="col-md-4">
-            <h5>Salaire total de tous les employe</h5>
-            <p>{{ stats.TotalChargeEmploye }}€</p>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-12 col-lg-8">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-header bg-white py-3 border-bottom-0">
+                    <h5 class="mb-0 fw-bold">Performance des Best-Sellers</h5>
+                </div>
+                <div class="card-body pt-0">
+                    <div style="position: relative; height: 300px; width: 100%;">
+                        <canvas id="bestSellersChart"></canvas>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="col-md-4">
-            <h5>Menu le plus choisit</h5>
-            <p>{{ stats.BestMenu.nom }} choisit {{ stats.BestMenu.total }} fois</p>
+
+        <div class="col-12 col-lg-4">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-header bg-white py-3 border-bottom-0">
+                    <h5 class="mb-0 fw-bold">Produits les plus populaires</h5>
+                </div>
+                <div class="card-body p-0">
+                    <div class="list-group list-group-flush">
+                        {% set items = [
+                            {'label': 'Menu', 'data': stats.BestMenu, 'icon': 'bi-journal-text', 'color': 'text-primary', 'bg': 'bg-primary'},
+                            {'label': 'Entrée', 'data': stats.BestEntree, 'icon': 'bi-egg-fried', 'color': 'text-success', 'bg': 'bg-success'},
+                            {'label': 'Plat', 'data': stats.BestPlat, 'icon': 'bi-fire', 'color': 'text-danger', 'bg': 'bg-danger'},
+                            {'label': 'Dessert', 'data': stats.BestDessert, 'icon': 'bi-cake', 'color': 'text-warning', 'bg': 'bg-warning'},
+                            {'label': 'Boisson', 'data': stats.BestBoisson, 'icon': 'bi-cup-straw', 'color': 'text-info', 'bg': 'bg-info'}
+                        ] %}
+
+                        {% for item in items %}
+                            <div class="list-group-item py-3 border-light">
+                                <div class="d-flex align-items-center">
+                                    <div class="flex-shrink-0 me-3">
+                                        <div class="{{ item.bg }} bg-opacity-10 rounded p-2">
+                                            <i class="bi {{ item.icon }} fs-4 {{ item.color }}"></i>
+                                        </div>
+                                    </div>
+                                    <div class="flex-grow-1 overflow-hidden">
+                                        <h6 class="mb-0 fw-bold text-truncate">{{ item.label }}</h6>
+                                        <small class="text-muted text-truncate d-block">
+                                            {{ item.data ? item.data.nom : 'Aucune donnée' }}
+                                        </small>
+                                    </div>
+                                    <div class="text-end ms-2">
+                                        <span class="badge bg-light text-dark border">{{ item.data ? item.data.total : 0 }} ventes</span>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="col-md-4">
-            <h5>Boisson la plus choisit</h5>
-            <p>{{ stats.BestBoisson.nom }} choisit {{ stats.BestBoisson.total }} fois</p>
-        </div>
-        <div class="col-md-4">
-            <h5>Plat le plus choisit</h5>
-            <p>{{ stats.BestPlat.nom }} choisit {{ stats.BestPlat.total }} fois</p>
-        </div>
-        <div class="col-md-4">
-            <h5>Dessert le plus choisit</h5>
-            <p>{{ stats.BestDessert.nom }} choisit {{ stats.BestDessert.total }} fois</p>
-        </div>
-        <div class="col-md-4">
-            <h5>Entrée la plus choisit</h5>
-            <p>{{ stats.BestEntree.nom }} choisit {{ stats.BestEntree.total }} fois</p>
-        </div>
+    </div>
 </div>
-{% endblock %}
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const ctx = document.getElementById('bestSellersChart').getContext('2d');
+
+        const dataValues = [
+            {{ stats.BestMenu ? stats.BestMenu.total : 0 }},
+            {{ stats.BestEntree ? stats.BestEntree.total : 0 }},
+            {{ stats.BestPlat ? stats.BestPlat.total : 0 }},
+            {{ stats.BestDessert ? stats.BestDessert.total : 0 }},
+            {{ stats.BestBoisson ? stats.BestBoisson.total : 0 }}
+        ];
+
+        const tooltipsLabels = [
+            "{{ stats.BestMenu ? stats.BestMenu.nom|e('js') : 'N/A' }}",
+            "{{ stats.BestEntree ? stats.BestEntree.nom|e('js') : 'N/A' }}",
+            "{{ stats.BestPlat ? stats.BestPlat.nom|e('js') : 'N/A' }}",
+            "{{ stats.BestDessert ? stats.BestDessert.nom|e('js') : 'N/A' }}",
+            "{{ stats.BestBoisson ? stats.BestBoisson.nom|e('js') : 'N/A' }}"
+        ];
+
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Menu', 'Entrée', 'Plat', 'Dessert', 'Boisson'],
+                datasets: [{
+                    label: 'Nombre de ventes',
+                    data: dataValues,
+                    backgroundColor: [
+                        'rgba(13, 110, 253, 0.7)',
+                        'rgba(25, 135, 84, 0.7)',
+                        'rgba(220, 53, 69, 0.7)',
+                        'rgba(255, 193, 7, 0.7)',
+                        'rgba(13, 202, 240, 0.7)'
+                    ],
+                    borderColor: [
+                        'rgb(13, 110, 253)', 'rgb(25, 135, 84)', 'rgb(220, 53, 69)', 'rgb(255, 193, 7)', 'rgb(13, 202, 240)'
+                    ],
+                    borderWidth: 1,
+                    borderRadius: 5
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            afterLabel: function(context) {
+                                return 'Produit : ' + tooltipsLabels[context.dataIndex];
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: { beginAtZero: true, grid: { borderDash: [2, 4] } },
+                    x: { grid: { display: false } }
+                }
+            }
+        });
+    });
+</script>
+{% endblock %}
