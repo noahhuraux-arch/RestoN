@@ -74,6 +74,12 @@
                 </a>
             </div>
             <div class="col-6 col-md-4">
+                <a href="{{ path('app_restaurant_tables', {restaurant: restaurant.id}) }}" class="btn btn-white w-100 py-3 py-md-4 shadow-sm border-0 h-100 text-decoration-none d-flex flex-column align-items-center justify-content-center">
+                    <i class="bi bi-grid-3x3-gap text-secondary fs-3 d-block mb-2"></i>
+                    <span class="fw-bold text-dark">Plan des tables</span>
+                </a>
+            </div>
+            <div class="col-6 col-md-4">
                 <a href="{{ path('app_restaurant_delete', {id: restaurant.id}) }}" class="btn btn-white w-100 py-3 py-md-4 shadow-sm border-0 h-100 text-danger text-decoration-none d-flex flex-column align-items-center justify-content-center">
                     <i class="bi bi-trash fs-3 d-block mb-2"></i>
                     <span class="fw-bold">Supprimer</span>
