@@ -92,7 +92,7 @@ class CommandeController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $qtys = $request->request->all('qtys');
             $total = 0;
-            foreach ($commande->getProduits() as $p) {
+            foreach ($commande->getProduits() as $produit) {
                 $qte = isset($qtys[$produit->getId()]) ? (int)$qtys[$produit->getId()] : 1;
                 $total += ($produit->getPrixProduit() * $qte);
                 for ($i = 1; $i < $qte; $i++) $commande->addProduit($produit);

@@ -17,42 +17,39 @@
                 <table class="table table-hover align-middle mb-0">
                     <thead class="table-light">
                     <tr>
-                        <th>ID</th>
+                        <th>Numéro</th>
                         <th>Date</th>
                         <th>Serveur</th>
                         <th>Table</th>
-                        <th>Produits</th>
                         <th class="text-end">Total</th>
                         <th class="text-center">Actions</th>
                     </tr>
                     </thead>
                     <tbody>
                     {% for commande in commandes %}
-                        <tr>
-                            <td>#{{ commande.id }}</td>
-                            <td>{{ commande.dateCommande|date('d/m/Y H:i') }}</td>
+                        <tr class="border-bottom">
+                            <td class="ps-4 text-muted">#{{ commande.id }}</td>
+                            <td class="fw-medium">{{ commande.dateCommande|date('d/m/Y') }}</td>
+                            <td>{{ commande.serveur.nom }}</td>
                             <td>
-                                {{ commande.serveur ? commande.serveur.nom : 'N/A' }}
-                            </td>
-                            <td>
-                                {% if commande.tables %}
-                                    Table n°{{ commande.tables.numero }}
-                                {% else %}
-                                    <span class="text-muted small">Vente directe</span>
-                                {% endif %}
-                            </td>
-                            <td>
-                                <ul class="list-unstyled mb-0 small">
-                                    {% for produit in commande %}
-                                        <li>• {{ produit.libProduit }} ({{ produit.prixProduit|number_format(2, ',', ' ') }} €)</li>
-                                    {% endfor %}
-                                </ul>
+                                Table n°{{ commande.tables.numero }}
                             </td>
                             <td class="text-end fw-bold text-primary">
                                 {{ commande.prixCommande|number_format(2, ',', ' ') }} €
                             </td>
-                            <td class="text-center">
-                                <button class="btn btn-sm btn-outline-secondary">Détails</button>
+                            <td class="text-center pe-4">
+                                <button class="btn btn-sm px-3 js-details-btn"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#detailsModal"
+                                        style="border: 1px solid #1a2a3a; color: #1a2a3a; background: transparent;"
+                                        data-id="{{ commande.id }}"
+                                        data-serveur="{{ commande.serveur ? commande.serveur.nom : '-' }}"
+                                        data-table="{{ commande.tables ? 'Table n°' ~ commande.tables.numero }}"
+                                        data-total="{{ commande.prixCommande|number_format(2, ',', ' ') }}"
+                                        data-produits='[{% for p in commande.produits %}{"nom": "{{ p.libProduit }}", "prix": "{{ p.prixProduit|number_format(2, ',', ' ') }}"}{% if not loop.last %},{% endif %}{% endfor %}]'>
+                                    Détails
+                                    <button class="btn btn-sm btn-outline-secondary">Payer</button>
+                                </button>
                             </td>
                         </tr>
                     {% else %}
@@ -67,4 +64,76 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="detailsModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg" style="border-radius: 15px;">
+                <div class="modal-header text-white px-4 py-3" style="background-color: #1a2a3a; border-radius: 15px 15px 0 0;">
+                    <h5 class="modal-title fw-bold">Détails de la Commande #<span id="modal-id"></span></h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <div class="d-flex justify-content-between mb-4">
+                        <div>
+                            <span class="d-block text-muted small text-uppercase fw-bold">Serveur</span>
+                            <div id="modal-serveur" class="h6"></div>
+                        </div>
+                        <div class="text-end">
+                            <span class="d-block text-muted small text-uppercase fw-bold">Emplacement</span>
+                            <div id="modal-table" class="h6"></div>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <span class="d-block text-muted small text-uppercase fw-bold mb-2">Produits</span>
+                        <div class="rounded-3 p-3" style="background-color: #f8f9fa;">
+                            <ul id="modal-produits-list" class="list-group list-group-flush bg-transparent">
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-between align-items-center pt-3 border-top">
+                        <span class="h6 mb-0 text-muted">Total réglé</span>
+                        <span class="h4 mb-0 fw-bold" style="color: #1a2a3a;"><span id="modal-total"></span> €</span>
+                    </div>
+                </div>
+                <div class="modal-footer border-0">
+                    <button type="button" class="btn btn-light w-100 text-muted py-2" data-bs-dismiss="modal" style="border-radius: 8px;">Fermer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const detailButtons = document.querySelectorAll('.js-details-btn');
+
+            detailButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const id = this.dataset.id;
+                    const serveur = this.dataset.serveur;
+                    const table = this.dataset.table;
+                    const total = this.dataset.total;
+                    const produits = JSON.parse(this.dataset.produits);
+
+                    document.getElementById('modal-id').innerText = id;
+                    document.getElementById('modal-serveur').innerText = serveur;
+                    document.getElementById('modal-table').innerText = table;
+                    document.getElementById('modal-total').innerText = total;
+
+                    const listContainer = document.getElementById('modal-produits-list');
+                    listContainer.innerHTML = '';
+
+                    produits.forEach(p => {
+                        const li = document.createElement('li');
+                        li.className = 'list-group-item d-flex justify-content-between align-items-center px-0 border-0 bg-transparent py-1 small';
+                        li.innerHTML = `
+                                <span class="text-dark">${p.nom}</span>
+                                <span class="fw-medium">${p.prix} €</span>
+                            `;
+                        listContainer.appendChild(li);
+                    });
+                });
+            });
+        });
+    </script>
 {% endblock %}
