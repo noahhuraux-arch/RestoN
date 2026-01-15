@@ -23,6 +23,7 @@ class Commande
     private ?\DateTimeInterface $dateCommande = null;
 
     #[ORM\ManyToOne(inversedBy: 'commandes')]
+    #[ORM\JoinColumn(nullable: true)]
     private ?Serveur $serveur = null;
 
     #[ORM\ManyToOne]
@@ -30,7 +31,7 @@ class Commande
 
     /**
      * Relation ManyToMany vers l'entité Produit (classe mère)
-     * On utilise une Collection pour stocker la liste des articles sélectionnés
+     * On utilise une Collection pour stocker la liste des articles sélectionnés.
      */
     #[ORM\ManyToMany(targetEntity: Produit::class)]
     #[ORM\JoinTable(name: 'commande_produit')]
@@ -41,7 +42,6 @@ class Commande
 
     #[ORM\Column]
     private ?bool $isPaye = false;
-
 
     public function __construct()
     {
@@ -62,6 +62,7 @@ class Commande
     public function setPrixCommande(float $prixCommande): static
     {
         $this->prixCommande = $prixCommande;
+
         return $this;
     }
 
@@ -73,6 +74,7 @@ class Commande
     public function setDateCommande(\DateTimeInterface $dateCommande): static
     {
         $this->dateCommande = $dateCommande;
+
         return $this;
     }
 
@@ -84,6 +86,7 @@ class Commande
     public function setServeur(?Serveur $serveur): static
     {
         $this->serveur = $serveur;
+
         return $this;
     }
 
@@ -95,6 +98,7 @@ class Commande
     public function setTables(?Table $tables): static
     {
         $this->tables = $tables;
+
         return $this;
     }
 
@@ -111,12 +115,14 @@ class Commande
         if (!$this->produits->contains($produit)) {
             $this->produits->add($produit);
         }
+
         return $this;
     }
 
     public function removeProduit(Produit $produit): static
     {
         $this->produits->removeElement($produit);
+
         return $this;
     }
 
