@@ -57,11 +57,17 @@ class CommandeController extends AbstractController
             $table->setDisponible(false);
         }
 
-        $user = $this->getUser();
         $commande = new Commande();
         $commande->setTables($table);
-        $commande->setServeur($user);
         $commande->setRestaurant($restaurant);
+
+
+        if ($isServeurDuResto) {
+            $commande->setServeur($user);
+        } else {
+            $commande->setServeur(null);
+        }
+
         $form = $this->createForm(CommandeType::class, $commande, ['restaurant' => $restaurant]);
         $form->handleRequest($request);
 
