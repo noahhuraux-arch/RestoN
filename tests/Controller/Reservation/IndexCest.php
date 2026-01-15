@@ -30,7 +30,27 @@ final class IndexCest
         $I->amOnPage("/{$resto->getId()}/reservation");
 
         $I->seeResponseCodeIs(200);
-        $I->seeInTitle("Réservations - " . $resto->getLibRestau());
+        $I->seeInTitle('Réservations - '.$resto->getLibRestau());
         $I->seeNumberOfElements('.card', 6);
+    }
+
+    public function firstReservationLinkLeadsToCorrectRoute(ControllerTester $I): void
+    {
+        $proprio = ProprietaireFactory::createOne(['roles' => ['ROLE_PROPRIETAIRE']])->_real();
+        $resto = RestaurantFactory::createOne(['proprietaire' => $proprio]);
+        $table = TableFactory::createOne(['restaurant' => $resto, 'numero' => 1]);
+
+        ReservationFactory::createMany(5, [
+            'restaurant' => $resto,
+            'table' => $table,
+            'numero' => 1,
+            'client' => ClientFactory::createOne(),
+        ]);
+        $I->amLoggedInAs($proprio);
+        $I->amOnPage('/'.$resto->getId().'/reservation');
+        $I->seeResponseCodeIs(200);
+        $I->click('Voir détails');
+        $I->seeResponseCodeIsSuccessful();
+        $I->seeCurrentRouteIs('app_reservation_show');
     }
 }
