@@ -10,7 +10,7 @@ class ServeurFixtures extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
-        ServeurFactory::createMany(10);
+        ServeurFactory::createMany(30);
         $manager->flush();
     }
 }
