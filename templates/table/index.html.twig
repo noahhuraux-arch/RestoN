@@ -54,6 +54,9 @@
                             <div class="fs-3 fw-bold mb-1">
                                 <span>N°{{ table.numero }}</span>
                             </div>
+                            {% if statut == 'Reservee' %}
+                                <span>{{ reservation.client.nom }}</span>
+                            {% endif %}
                             <div class="text-muted small">
                                 <span>{{ table.nbPlace}} places</span>
                             </div>
