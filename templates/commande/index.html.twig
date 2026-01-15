@@ -9,7 +9,6 @@
             <a href="{{ path('app_restaurant_tables', {restaurant: restaurant.id}) }}" class="btn btn-primary">
                 + Nouvelle Commande
             </a>
-
         </div>
 
         <div class="card shadow-sm">
@@ -19,7 +18,7 @@
                     <tr>
                         <th>Numéro</th>
                         <th>Date</th>
-                        <th>Serveur</th>
+                        <th>Responsable</th>
                         <th>Table</th>
                         <th class="text-end">Total</th>
                         <th class="text-center">Actions</th>
@@ -28,32 +27,39 @@
                     <tbody>
                     {% for commande in commandes %}
                         {% if not commande.isPaye %}
-                        <tr class="border-bottom">
-                            <td class="ps-4 text-muted">#{{ commande.id }}</td>
-                            <td class="fw-medium">{{ commande.dateCommande|date('d/m/Y') }}</td>
-                            <td>{{ commande.serveur}}</td>
-                            <td>
-                                Table n°{{ commande.tables.numero }}
-                            </td>
-                            <td class="text-end fw-bold text-primary">
-                                {{ commande.prixCommande|number_format(2, ',', ' ') }} €
-                            </td>
-                            <td class="text-center pe-4">
-                                <button class="btn btn-sm px-3 js-details-btn"
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#detailsModal"
-                                        style="border: 1px solid #1a2a3a; color: #1a2a3a; background: transparent;"
-                                        data-id="{{ commande.id }}"
-                                        data-serveur="{{ commande.serveur ? commande.serveur.nom : '-' }}"
-                                        data-table="{{ commande.tables ? 'Table n°' ~ commande.tables.numero }}"
-                                        data-total="{{ commande.prixCommande|number_format(2, ',', ' ') }}"
-                                        data-produits='[{% for p in commande.produits %}{"nom": "{{ p.libProduit }}", "prix": "{{ p.prixProduit|number_format(2, ',', ' ') }}"}{% if not loop.last %},{% endif %}{% endfor %}]'>
-                                    Détails
-                                    <button class="btn btn-sm btn-outline-secondary">
-                                        <a href="{{ path('app_commande_payer', {id: restaurant.id, commande: commande.id}) }}">
+                            {% set responsableNom = commande.serveur ? commande.serveur.nom : restaurant.proprietaire.nom %}
+                            <tr class="border-bottom">
+                                <td class="ps-4 text-muted">#{{ commande.id }}</td>
+                                <td class="fw-medium">{{ commande.dateCommande|date('d/m/Y') }}</td>
+                                <td>
+                                    {% if commande.serveur is not null %}
+                                        {{ commande.serveur.nom }} <span class="badge bg-info text-dark" style="font-size: 0.7rem;">Serveur</span>
+                                    {% else %}
+                                        {{ responsableNom }} <span class="badge bg-info text-dark" style="font-size: 0.7rem;">Proprio</span>
+                                    {% endif %}
+                                </td>
+                                <td>Table n°{{ commande.tables.numero }}</td>
+                                <td class="text-end fw-bold text-primary">
+                                    {{ commande.prixCommande|number_format(2, ',', ' ') }} €
+                                </td>
+                                <td class="text-center pe-4">
+                                    <div class="btn-group">
+                                        <button class="btn btn-sm px-3 js-details-btn"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#detailsModal"
+                                                style="border: 1px solid #1a2a3a; color: #1a2a3a; background: transparent;"
+                                                data-id="{{ commande.id }}"
+                                                data-serveur="{{ responsableNom }}"
+                                                data-table="{{ commande.tables ? 'Table n°' ~ commande.tables.numero }}"
+                                                data-total="{{ commande.prixCommande|number_format(2, ',', ' ') }}"
+                                                data-produits='[{% for p in commande.produits %}{"nom": "{{ p.libProduit }}", "prix": "{{ p.prixProduit|number_format(2, ',', ' ') }}"}{% if not loop.last %},{% endif %}{% endfor %}]'>
+                                            Détails
+                                        </button>
+                                        <a href="{{ path('app_commande_payer', {id: restaurant.id, commande: commande.id}) }}"
+                                           class="btn btn-sm btn-outline-secondary">
                                             Payer
                                         </a>
-                                    </button>
+                                    </div>
                                 </button>
                             </td>
                         </tr>
