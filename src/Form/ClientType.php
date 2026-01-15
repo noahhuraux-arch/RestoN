@@ -26,7 +26,7 @@ class ClientType extends AbstractType
             ])
             ->add('email', EmailType::class, [
                 'attr' => ['placeholder' => 'votre email'],
-                ])
+            ])
         ;
     }
 

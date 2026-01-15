@@ -55,7 +55,7 @@
                                     {% endif %}
                                 </span>
                             </a>
-                        {% elseif prop and not entree.isVisible%}
+                        {% elseif prop and not entree.isVisible %}
                             <a href="{{ path('app_produit_details', {id: entree.id}) }}"
                                class="text-decoration-none text-body" data-bs-toggle="tooltip" data-bs-placement="top" title="Cliquez pour voir les détails">
                                 <span class="prodName">{{ entree.libProduit }}</span>

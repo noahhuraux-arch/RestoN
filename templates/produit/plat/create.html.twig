@@ -12,7 +12,7 @@
 
                 <h1 class="mb-4">Créer un {{ title_type }}</h1>
 
-                {% include 'produit/_create.html.twig' %}
+                {{ include('produit/_create.html.twig') }}
 
                 <div class="mt-4 d-grid gap-2 d-md-flex justify-content-between">
                     <a href="{{ path('app_produit_proprietaire', {idRestau: restaurant.id}) }}" class="btn btn-light border rounded-3 px-4 fs-6">
