@@ -53,4 +53,34 @@ final class IndexCest
         $I->seeResponseCodeIsSuccessful();
         $I->seeCurrentRouteIs('app_reservation_show');
     }
+
+    public function clickOnFirstReservationInList(ControllerTester $I): void
+    {
+        $proprio = ProprietaireFactory::createOne(['roles' => ['ROLE_PROPRIETAIRE']])->_real();
+        $resto = RestaurantFactory::createOne(['proprietaire' => $proprio]);
+        $table = TableFactory::createOne(['restaurant' => $resto, 'numero' => 1]);
+        $clientJoe = ClientFactory::createOne([
+            'prenom' => 'Joe',
+            'nom' => 'Aaaaaaaaaaaaaaa',
+        ]);
+
+        ReservationFactory::createOne([
+            'restaurant' => $resto,
+            'table' => $table,
+            'client' => $clientJoe,
+            'numero' => 1,
+        ]);
+        ReservationFactory::createMany(5, [
+            'restaurant' => $resto,
+            'table' => $table,
+            'client' => ClientFactory::new(),
+            'numero' => 2,
+        ]);
+
+        $I->amLoggedInAs($proprio);
+        $I->amOnPage('/'.$resto->getId().'/reservation');
+        $I->click('Voir détails', '.card');
+        $I->seeResponseCodeIsSuccessful();
+        $I->seeCurrentRouteIs('app_reservation_show');
+    }
 }
