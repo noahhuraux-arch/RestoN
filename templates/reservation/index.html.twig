@@ -5,7 +5,7 @@
 {% block body %}
     <div class="container py-5">
         <div class="d-flex flex-column flex-xl-row justify-content-between align-items-center mb-4 gap-3">
-            <h1 class="h3 fw-bold mb-0 text-center text-xl-start">Réservations : {{ restaurant.libRestau }}</h1>
+            <h1 class="h3 fw-bold mb-0 text-center text-xl-start">Réservations</h1>
             <div class="d-flex flex-column flex-md-row align-items-center gap-2 w-100 w-xl-auto">
                 <form class="d-flex m-0 w-100 w-md-auto" role="search" action="{{ path('app_reservation', {id: restaurant.id}) }}">
                     <input class="form-control me-2" type="search" name="searchText" placeholder="Recherche" aria-label="search" value="{{ searchText|default('') }}"/>
