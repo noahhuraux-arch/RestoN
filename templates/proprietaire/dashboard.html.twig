@@ -105,11 +105,11 @@
                 <div class="card-body p-0">
                     <div class="list-group list-group-flush">
                         {% set items = [
-                            {'label': 'Menu', 'data': stats.BestMenu, 'icon': 'bi-journal-text', 'color': 'text-primary', 'bg': 'bg-primary'},
-                            {'label': 'Entrée', 'data': stats.BestEntree, 'icon': 'bi-egg-fried', 'color': 'text-success', 'bg': 'bg-success'},
-                            {'label': 'Plat', 'data': stats.BestPlat, 'icon': 'bi-fire', 'color': 'text-danger', 'bg': 'bg-danger'},
-                            {'label': 'Dessert', 'data': stats.BestDessert, 'icon': 'bi-cake', 'color': 'text-warning', 'bg': 'bg-warning'},
-                            {'label': 'Boisson', 'data': stats.BestBoisson, 'icon': 'bi-cup-straw', 'color': 'text-info', 'bg': 'bg-info'}
+                            {'label': 'Menu', 'data': stats.BestMenu, 'icon': 'bi bi-journal-text', 'color': 'text-primary', 'bg': 'bg-primary'},
+                            {'label': 'Entrée', 'data': stats.BestEntree, 'icon': 'bi bi-egg-fried', 'color': 'text-success', 'bg': 'bg-success'},
+                            {'label': 'Plat', 'data': stats.BestPlat, 'icon': 'fas fa-utensils', 'color': 'text-danger', 'bg': 'bg-danger'},
+                            {'label': 'Dessert', 'data': stats.BestDessert, 'icon': 'bi bi-cake', 'color': 'text-warning', 'bg': 'bg-warning'},
+                            {'label': 'Boisson', 'data': stats.BestBoisson, 'icon': 'bi bi-cup-straw', 'color': 'text-info', 'bg': 'bg-info'}
                         ] %}
 
                         {% for item in items %}
@@ -117,7 +117,7 @@
                                 <div class="d-flex align-items-center">
                                     <div class="flex-shrink-0 me-3">
                                         <div class="{{ item.bg }} bg-opacity-10 rounded p-2">
-                                            <i class="bi {{ item.icon }} fs-4 {{ item.color }}"></i>
+                                            <i class="{{ item.icon }} fs-4 {{ item.color }}"></i>
                                         </div>
                                     </div>
                                     <div class="flex-grow-1 overflow-hidden">
@@ -195,7 +195,13 @@
                     }
                 },
                 scales: {
-                    y: { beginAtZero: true, grid: { borderDash: [2, 4] } },
+                    y: { 
+                        beginAtZero: true, 
+                        grid: { borderDash: [2, 4] },
+                        ticks: {
+                            stepSize: 1
+                        }
+                    },
                     x: { grid: { display: false } }
                 }
             }
