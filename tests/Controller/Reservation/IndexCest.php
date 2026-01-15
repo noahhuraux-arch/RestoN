@@ -83,4 +83,17 @@ final class IndexCest
         $I->seeResponseCodeIsSuccessful();
         $I->seeCurrentRouteIs('app_reservation_show');
     }
+
+    public function searchFormCanBeFilledAndSent(ControllerTester $I): void
+    {
+        $proprio = ProprietaireFactory::createOne(['roles' => ['ROLE_PROPRIETAIRE']])->_real();
+        $resto = RestaurantFactory::createOne(['proprietaire' => $proprio]);
+        $I->amLoggedInAs($proprio);
+        $I->amOnPage('/'.$resto->getId().'/reservation');
+        $I->seeResponseCodeIsSuccessful();
+        $I->fillField('searchText', 'Joe');
+        $I->click('Recherche');
+        $I->seeCurrentRouteIs('app_reservation', ['id' => $resto->getId()]);
+        $I->seeInCurrentUrl('searchText=Joe');
+    }
 }
