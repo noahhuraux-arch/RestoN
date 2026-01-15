@@ -18,7 +18,7 @@
                     <tr>
                         <th>Numéro</th>
                         <th>Date</th>
-                        <th>Responsable</th>
+                        <th>Serveur</th>
                         <th>Table</th>
                         <th class="text-end">Total</th>
                         <th class="text-center">Actions</th>
@@ -27,15 +27,15 @@
                     <tbody>
                     {% for commande in commandes %}
                         {% if not commande.isPaye %}
-                            {% set responsableNom = commande.serveur ? commande.serveur.nom : restaurant.proprietaire.nom %}
+                            {% set serveur = commande.serveur ? commande.serveur.nom : restaurant.proprietaire.nom %}
                             <tr class="border-bottom">
                                 <td class="ps-4 text-muted">#{{ commande.id }}</td>
                                 <td class="fw-medium">{{ commande.dateCommande|date('d/m/Y') }}</td>
                                 <td>
                                     {% if commande.serveur is not null %}
-                                        {{ commande.serveur.nom }} <span class="badge bg-info text-dark" style="font-size: 0.7rem;">Serveur</span>
+                                        {{ serveur }}
                                     {% else %}
-                                        {{ responsableNom }} <span class="badge bg-info text-dark" style="font-size: 0.7rem;">Proprio</span>
+                                        {{ serveur}} <span class="badge bg-warning text-dark" style="font-size: 0.8rem;">Proprio</span>
                                     {% endif %}
                                 </td>
                                 <td>Table n°{{ commande.tables.numero }}</td>
@@ -49,7 +49,7 @@
                                                 data-bs-target="#detailsModal"
                                                 style="border: 1px solid #1a2a3a; color: #1a2a3a; background: transparent;"
                                                 data-id="{{ commande.id }}"
-                                                data-serveur="{{ responsableNom }}"
+                                                data-serveur="{{ serveur }}"
                                                 data-table="{{ commande.tables ? 'Table n°' ~ commande.tables.numero }}"
                                                 data-total="{{ commande.prixCommande|number_format(2, ',', ' ') }}"
                                                 data-produits='[{% for p in commande.produits %}{"nom": "{{ p.libProduit }}", "prix": "{{ p.prixProduit|number_format(2, ',', ' ') }}"}{% if not loop.last %},{% endif %}{% endfor %}]'>
