@@ -2,6 +2,14 @@
 
 {% block title %}Réservations - {{ restaurant.libRestau }}{% endblock %}
 
+{% block favicon %}
+    {% if restaurant.logo %}
+        <link rel="icon" href="{{ asset('images/logos/' ~ restaurant.logo) }}">
+    {% else %}
+        <link rel="icon" href="{{ asset('images/favicon.png') }}">
+    {% endif %}
+{% endblock %}
+
 {% block body %}
     <div class="container py-5">
         <div class="d-flex flex-column flex-xl-row justify-content-between align-items-center mb-4 gap-3">
