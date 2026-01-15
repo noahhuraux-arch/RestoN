@@ -57,10 +57,10 @@ class CommandeController extends AbstractController
             $table->setDisponible(false);
         }
 
+        $user = $this->getUser();
         $commande = new Commande();
         $commande->setTables($table);
         $commande->setRestaurant($restaurant);
-
 
         if ($isServeurDuResto) {
             $commande->setServeur($user);
@@ -144,6 +144,7 @@ class CommandeController extends AbstractController
             }
         }
         $em->flush();
+
         return $this->redirectToRoute('app_commande_index', ['id' => $restaurant->getId()]);
     }
 }
