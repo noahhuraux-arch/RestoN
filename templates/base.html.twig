@@ -105,6 +105,8 @@
                                     <li><a class="dropdown-item" href="{{ path('app_proprietaire_dashbord', {id: restauId}) }}"><i class="fas fa-chart-line me-2"></i>Tableau de bord</a></li>
                                     <li><a class="dropdown-item" href="{{ path('app_reservation', {id: restauId}) }}"><i class="fas fa-calendar-check me-2"></i>Réservations</a></li>
                                     <li><a class="dropdown-item" href="{{ path('app_commande_index', {id: restauId}) }}"><i class="fas fa-clipboard-list me-2"></i>Commandes</a></li>
+                                    <li><a class="dropdown-item" href="{{ path('app_produit_proprietaire', {idRestau: restauId}) }}"><i class="fas fa-book-open me-2"></i>Gérer la carte</a></li>
+                                    <li><a class="dropdown-item" href="{{ path('app_serveur_show', {id: restauId}) }}"><i class="fas fa-users me-2"></i>Gérer l'équipe</a></li>
                                     <li><a class="dropdown-item" href="{{ path('app_restaurant_tables', {restaurant: restauId}) }}"><i class="fas fa-chair me-2"></i>Plan des tables</a></li>
                                 {% endif %}
                             {% endif %}

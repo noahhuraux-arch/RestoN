@@ -1,6 +1,14 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Supprimer un membre de l'équipe - {{ serveur.prenom }}{% endblock %}
+{% block title %}Supprimer un membre de l'équipe - {{ serveur.prenom }} - {{ restaurant.libRestau }}{% endblock %}
+
+{% block favicon %}
+    {% if restaurant.logo %}
+        <link rel="icon" href="{{ asset('images/logos/' ~ restaurant.logo) }}">
+    {% else %}
+        <link rel="icon" href="{{ asset('images/favicon.png') }}">
+    {% endif %}
+{% endblock %}
 
 {% block body %}
     <div class="container py-5">

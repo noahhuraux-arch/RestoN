@@ -2,6 +2,14 @@
 
 {% block title %}Gestion - {{ restaurant.libRestau }}{% endblock %}
 
+{% block favicon %}
+    {% if restaurant.logo %}
+        <link rel="icon" href="{{ asset('images/logos/' ~ restaurant.logo) }}">
+    {% else %}
+        <link rel="icon" href="{{ asset('images/favicon.png') }}">
+    {% endif %}
+{% endblock %}
+
 {% block body %}
     <div class="container py-5">
         <div class="card border-0 shadow-sm overflow-hidden mb-4">
@@ -14,7 +22,7 @@
             </div>
 
             <div class="card-body position-relative pt-0">
-                <div class="d-flex flex-column flex-md-row align-items-center align-items-md-end" style="margin-top: -60px;">
+                <div class="d-flex flex-column flex-md-row align-items-center align-items-md-end" style="margin-top: -40px;">
 
                     {% if restaurant.logo %}
                         <div class="position-relative">
@@ -32,16 +40,16 @@
                             {{ restaurant.libRestau }}
                         </h1>
                         <p class="text-muted mb-2">
-                            <i class="bi bi-geo-alt-fill me-1"></i>{{ restaurant.villeRestau }}
+                            <i class="fas fa-map-marker-alt me-1"></i>{{ restaurant.villeRestau }}
                         </p>
                     </div>
 
                     <div class="mt-3 mt-md-0 d-flex flex-column flex-sm-row gap-2 pb-2 col-12 col-md-auto px-0">
                         <a href="{{ path('app_restaurant_home', {id: restaurant.id}) }}" class="btn btn-outline-dark shadow-sm">
-                            <i class="bi bi-eye me-1"></i> Voir le restaurant
+                            <i class="fas fa-eye me-1"></i> Voir le restaurant
                         </a>
                         <a href="{{ path('app_restaurant_update', {id: restaurant.id}) }}" class="btn btn-primary shadow-sm">
-                            <i class="bi bi-camera me-1"></i> Modifier photos / infos
+                            <i class="fas fa-camera me-1"></i> Modifier photos / infos
                         </a>
                     </div>
                 </div>
@@ -51,38 +59,38 @@
         <div class="row g-3 mb-4">
             <div class="col-6 col-md-4">
                 <a href="{{ path('app_proprietaire_dashbord', {id: restaurant.id}) }}" class="btn btn-white w-100 py-3 py-md-4 shadow-sm border-0 h-100 text-decoration-none d-flex flex-column align-items-center justify-content-center">
-                    <i class="bi bi-speedometer2 text-warning fs-3 d-block mb-2"></i>
+                    <i class="fas fa-chart-line text-warning fs-3 d-block mb-2"></i>
                     <span class="fw-bold text-dark">Tableau de bord</span>
                 </a>
             </div>
             <div class="col-6 col-md-4">
                 <a href="{{ path('app_reservation', {id: restaurant.id}) }}" class="btn btn-white w-100 py-3 py-md-4 shadow-sm border-0 h-100 text-decoration-none d-flex flex-column align-items-center justify-content-center">
-                    <i class="bi bi-calendar-check text-primary fs-3 d-block mb-2"></i>
+                    <i class="fas fa-calendar-check text-primary fs-3 d-block mb-2"></i>
                     <span class="fw-bold text-dark">Réservations</span>
                 </a>
             </div>
             <div class="col-6 col-md-4">
                 <a href="{{ path('app_produit_proprietaire', {idRestau: restaurant.id}) }}" class="btn btn-white w-100 py-3 py-md-4 shadow-sm border-0 h-100 text-decoration-none d-flex flex-column align-items-center justify-content-center">
-                    <i class="bi bi-egg-fried text-success fs-3 d-block mb-2"></i>
+                    <i class="fas fa-book-open text-success fs-3 d-block mb-2"></i>
                     <span class="fw-bold text-dark">La Carte</span>
                 </a>
             </div>
             <div class="col-6 col-md-4">
                 <a href="{{ path('app_serveur_show', {id: restaurant.id}) }}" class="btn btn-white w-100 py-3 py-md-4 shadow-sm border-0 h-100 text-decoration-none d-flex flex-column align-items-center justify-content-center">
-                    <i class="bi bi-people text-info fs-3 d-block mb-2"></i>
+                    <i class="fas fa-users text-info fs-3 d-block mb-2"></i>
                     <span class="fw-bold text-dark">L'Équipe</span>
                 </a>
             </div>
             <div class="col-6 col-md-4">
                 <a href="{{ path('app_restaurant_tables', {restaurant: restaurant.id}) }}" class="btn btn-white w-100 py-3 py-md-4 shadow-sm border-0 h-100 text-decoration-none d-flex flex-column align-items-center justify-content-center">
-                    <i class="bi bi-grid-3x3-gap text-secondary fs-3 d-block mb-2"></i>
+                    <i class="fas fa-chair text-secondary fs-3 d-block mb-2"></i>
                     <span class="fw-bold text-dark">Plan des tables</span>
                 </a>
             </div>
             <div class="col-6 col-md-4">
-                <a href="{{ path('app_restaurant_delete', {id: restaurant.id}) }}" class="btn btn-white w-100 py-3 py-md-4 shadow-sm border-0 h-100 text-danger text-decoration-none d-flex flex-column align-items-center justify-content-center">
-                    <i class="bi bi-trash fs-3 d-block mb-2"></i>
-                    <span class="fw-bold">Supprimer</span>
+                <a href="{{ path('app_commande_index', {id: restaurant.id}) }}" class="btn btn-white w-100 py-3 py-md-4 shadow-sm border-0 h-100 text-decoration-none d-flex flex-column align-items-center justify-content-center">
+                    <i class="fas fa-clipboard-list text-primary fs-3 d-block mb-2"></i>
+                    <span class="fw-bold text-dark">Commandes</span>
                 </a>
             </div>
         </div>
@@ -97,24 +105,24 @@
                             <div class="col-md-6">
                                 <label class="small text-muted text-uppercase fw-bold">Adresse</label>
                                 <p class="fs-5 text-dark">
-                                    <i class="bi bi-house-door me-2 text-primary"></i>{{ restaurant.adrRestau }}<br>
+                                    <i class="fas fa-home me-2 text-primary"></i>{{ restaurant.adrRestau }}<br>
                                     <span class="ms-4 small text-muted">{{ restaurant.cpRestau }} {{ restaurant.villeRestau }}</span>
                                 </p>
                             </div>
                             <div class="col-md-6">
                                 <label class="small text-muted text-uppercase fw-bold">Contact</label>
-                                <p class="fs-5 mb-1 text-dark"><i class="bi bi-telephone me-2 text-primary"></i>{{ restaurant.telRestau }}</p>
-                                <p class="fs-5 text-dark"><i class="bi bi-envelope me-2 text-primary"></i>{{ restaurant.emailRestau }}</p>
+                                <p class="fs-5 mb-1 text-dark"><i class="fas fa-phone me-2 text-primary"></i>{{ restaurant.telRestau }}</p>
+                                <p class="fs-5 text-dark"><i class="fas fa-envelope me-2 text-primary"></i>{{ restaurant.emailRestau }}</p>
                             </div>
                             <div class="col-md-6">
                                 <label class="small text-muted text-uppercase fw-bold">Autres</label>
                                 <div class="d-flex gap-3 mt-2">
                                     <span class="badge bg-light text-dark border p-2 fw-normal">
-                                        <i class="bi bi-layout-three-columns me-1 text-primary"></i> {{ restaurant.nbTable }} Tables
+                                        <i class="fas fa-table me-1 text-primary"></i> {{ restaurant.nbTable }} Tables
                                     </span>
                                     {% if restaurant.nbEtoiles %}
                                         <span class="badge bg-light text-dark border p-2 fw-normal">
-                                            <i class="bi bi-star-fill me-1 text-warning"></i> {{ restaurant.nbEtoiles }} Étoiles
+                                            <i class="fas fa-star me-1 text-warning"></i> {{ restaurant.nbEtoiles }} Étoiles
                                         </span>
                                     {% endif %}
                                 </div>
@@ -130,7 +138,7 @@
                         <div class="d-flex justify-content-between align-items-center mb-4">
                             <h5 class="fw-bold mb-0 text-dark">Horaires</h5>
                             <a href="{{ path('app_restaurant_horaires', {id: restaurant.id}) }}" class="btn btn-sm btn-light border" title="Modifier les horaires">
-                                <i class="bi bi-clock-history"></i>
+                                <i class="fas fa-clock"></i>
                             </a>
                         </div>
 
@@ -154,6 +162,12 @@
                     </div>
                 </div>
             </div>
+        </div>
+
+        <div class="text-center mt-5">
+            <a href="{{ path('app_restaurant_delete', {id: restaurant.id}) }}" class="text-danger text-decoration-none small opacity-75 hover-opacity-100">
+                <i class="fas fa-trash me-1"></i> Supprimer le restaurant
+            </a>
         </div>
     </div>
 {% endblock %}

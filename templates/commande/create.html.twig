@@ -1,17 +1,50 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}Création commande - {{ restaurant.libRestau }}{% endblock %}
+
+{% block favicon %}
+    {% if restaurant.logo %}
+        <link rel="icon" href="{{ asset('images/logos/' ~ restaurant.logo) }}">
+    {% else %}
+        <link rel="icon" href="{{ asset('images/favicon.png') }}">
+    {% endif %}
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .product-card.active {
+            background-color: #198754 !important;
+            border-color: #198754 !important;
+            color: white !important;
+        }
+        .product-card.active .text-dark,
+        .product-card.active .text-success,
+        .product-card.active .text-muted {
+            color: white !important;
+        }
+    </style>
+{% endblock %}
+
 {% block body %}
     <div class="container-fluid py-4 bg-light">
-        {{ form_start(form, {attr: {autocomplete: 'off'}}) }}
+        {{ form_start(form, {'attr': {'autocomplete': 'off'}}) }}
         <div class="row">
             <div class="col-lg-8">
-                <div class="card shadow-sm border-0 rounded-3">
-                    <div class="card-header bg-white py-3">
-                        <h5 class="mb-0 fw-bold" style="color: #1a2a3a;">CARTE : {{ restaurant.libRestau }}</h5>
-                    </div>
-                    <div class="card-body p-4">
-                        {% for categorie, produits in produitsGroupes %}
-                            <h6 class="text-uppercase fw-bold text-muted border-bottom pb-2 pt-3">{{ categorie }}</h6>
+                <h1 class="h3 fw-bold mb-4 text-dark">Carte</h1>
+
+                {% for categorie, produits in produitsGroupes %}
+                    <div class="mb-3">
+                        <button type="button" 
+                                class="btn btn-white w-100 text-start d-flex justify-content-between align-items-center p-3 shadow-sm border-0 rounded-3" 
+                                data-bs-toggle="collapse" 
+                                data-bs-target="#collapse-{{ loop.index }}" 
+                                aria-expanded="true">
+                            <h5 class="mb-0 fw-bold text-uppercase text-warning">{{ categorie }}</h5>
+                            <i class="fas fa-chevron-down text-muted"></i>
+                        </button>
+
+                        <div class="collapse show mt-3" id="collapse-{{ loop.index }}">
                             <div class="row g-3">
                                 {% for index, p in produits %}
                                     {% set child = form.produits[index] %}
@@ -33,7 +66,7 @@
                                                         <span class="d-block fw-bold text-dark">{{ p.libProduit }}</span>
                                                         <span class="text-success small fw-bold">{{ p.prixProduit|number_format(2, ',', ' ') }} €</span>
                                                     </div>
-                                                    <div class="js-icon-check text-success {{ child.vars.checked ? '' : 'd-none' }}">
+                                                    <div class="js-icon-check text-success d-none">
                                                         <i class="fas fa-check-circle h4 mb-0"></i>
                                                     </div>
                                                 </div>
@@ -77,19 +110,19 @@
                                     </div>
                                 {% endfor %}
                             </div>
-                        {% endfor %}
+                        </div>
                     </div>
-                </div>
+                {% endfor %}
             </div>
 
             <div class="col-lg-4">
-                <div class="card shadow border-0 sticky-top" style="top: 20px; border-radius: 12px; overflow: hidden;">
+                <div class="card shadow border-0" style="position: sticky; top: 90px; z-index: 900; border-radius: 12px; overflow: hidden;">
                     <div class="card-header bg-dark text-white py-3 text-center">
                         <h5 class="mb-0 fw-bold">TOTAL : <span id="total-display">0,00</span> €</h5>
                     </div>
                     <div class="card-body p-4 text-center">
-                        <div class="mb-3">Serveur : {{ serveur.nom }}</div>
-                        <div class="mb-4">Table N°{{ table.numero }}</div>
+                        <div class="mb-3 fw-medium">Serveur : {{ serveur.nom }}</div>
+                        <div class="mb-4 fw-medium">Table N°{{ table.numero }}</div>
                         <button type="submit" class="btn btn-success btn-lg w-100 py-3 fw-bold shadow-sm">VALIDER LA COMMANDE</button>
                     </div>
                 </div>
@@ -128,11 +161,9 @@
 
                 card.addEventListener('click', function() {
                     const checkbox = this.querySelector('.js-check');
-                    const icon = this.querySelector('.js-icon-check');
 
                     checkbox.checked = !checkbox.checked;
                     this.classList.toggle('active', checkbox.checked);
-                    icon.classList.toggle('d-none', !checkbox.checked);
                     qtyContainer.classList.toggle('d-none', !checkbox.checked);
 
                     updateTotal();
