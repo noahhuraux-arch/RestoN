@@ -53,19 +53,27 @@ class CommandeController extends AbstractController
             throw $this->createAccessDeniedException('Accès interdit');
         }
 
-        if ($table->isDisponible()) {
-            $table->setDisponible(false);
-        }
+        $commande = $em->getRepository(Commande::class)->findOneBy([
+            'tables' => $table,
+            'restaurant' => $restaurant,
+            'isPaye' => false,
+        ]);
 
-        $user = $this->getUser();
-        $commande = new Commande();
-        $commande->setTables($table);
-        $commande->setRestaurant($restaurant);
+        if (!$commande) {
+            $user = $this->getUser();
+            $commande = new Commande();
+            $commande->setTables($table);
+            $commande->setRestaurant($restaurant);
 
-        if ($isServeurDuResto) {
-            $commande->setServeur($user);
-        } else {
-            $commande->setServeur(null);
+            if ($isServeurDuResto) {
+                $commande->setServeur($user);
+            } else {
+                $commande->setServeur(null);
+            }
+
+            if ($table->isDisponible()) {
+                $table->setDisponible(false);
+            }
         }
 
         $form = $this->createForm(CommandeType::class, $commande, ['restaurant' => $restaurant]);
@@ -146,5 +154,82 @@ class CommandeController extends AbstractController
         $em->flush();
 
         return $this->redirectToRoute('app_commande_index', ['id' => $restaurant->getId()]);
+    }
+
+    #[Route('/{id}/commande/{commandeId}/update', name: 'app_commande_update')]
+    public function update(Restaurant $restaurant, int $commandeId, Request $request, EntityManagerInterface $em): Response
+    {
+        $user = $this->getUser();
+        $commande = $em->getRepository(Commande::class)->find($commandeId);
+
+        if (!$commande || $commande->getRestaurant() !== $restaurant) {
+            throw $this->createNotFoundException('Commande introuvable');
+        }
+
+        $isProprio = ($restaurant->getProprietaire() === $user);
+        $isServeurDuResto = $restaurant->getServeurs()->contains($user);
+        if (!$isProprio && !$isServeurDuResto) {
+            throw $this->createAccessDeniedException('Accès interdit');
+        }
+
+        $form = $this->createForm(CommandeType::class, $commande, ['restaurant' => $restaurant]);
+        $form->handleRequest($request);
+
+        $produitsGroupes = ['Entrées' => [], 'Plats' => [], 'Desserts' => [], 'Boissons' => [], 'Menus' => []];
+        $choices = $form->get('produits')->getConfig()->getAttribute('choice_list')->getChoices();
+
+        foreach ($choices as $index => $produit) {
+            $categorie = null;
+            if ($produit instanceof Boisson) {
+                $categorie = 'Boissons';
+            } elseif ($produit instanceof Menu) {
+                $categorie = 'Menus';
+            } elseif ($produit instanceof Plat) {
+                $typePlat = $produit->getTypePlat()->getLib();
+                if ('Entrée' === $typePlat) {
+                    $categorie = 'Entrées';
+                } elseif ('Plat' === $typePlat) {
+                    $categorie = 'Plats';
+                } elseif ('Dessert' === $typePlat) {
+                    $categorie = 'Desserts';
+                }
+            }
+            if ($categorie) {
+                $produitsGroupes[$categorie][$index] = $produit;
+            }
+        }
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $qtys = $request->request->all('qtys');
+            $total = 0;
+
+            foreach ($commande->getProduits() as $p) {
+                $commande->removeProduit($p);
+            }
+
+            $produitsSelectionnes = $form->get('produits')->getData();
+
+            foreach ($produitsSelectionnes as $produit) {
+                $qte = isset($qtys[$produit->getId()]) ? (int) $qtys[$produit->getId()] : 1;
+                $total += ($produit->getPrixProduit() * $qte);
+
+                for ($i = 0; $i < $qte; ++$i) {
+                    $commande->addProduit($produit);
+                }
+            }
+
+            $commande->setPrixCommande($total);
+            $em->flush();
+
+            return $this->redirectToRoute('app_commande_index', ['id' => $restaurant->getId()]);
+        }
+
+        return $this->render('commande/create.html.twig', [
+            'form' => $form->createView(),
+            'restaurant' => $restaurant,
+            'table' => $commande->getTables(),
+            'serveur' => $user,
+            'produitsGroupes' => array_filter($produitsGroupes),
+        ]);
     }
 }
