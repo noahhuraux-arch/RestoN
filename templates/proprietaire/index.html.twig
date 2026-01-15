@@ -2,6 +2,14 @@
 
 {% block title %}Gestion - {{ restaurant.libRestau }}{% endblock %}
 
+{% block favicon %}
+    {% if restaurant.logo %}
+        <link rel="icon" href="{{ asset('images/logos/' ~ restaurant.logo) }}">
+    {% else %}
+        <link rel="icon" href="{{ asset('images/favicon.png') }}">
+    {% endif %}
+{% endblock %}
+
 {% block body %}
     <div class="container py-5">
         <div class="card border-0 shadow-sm overflow-hidden mb-4">
