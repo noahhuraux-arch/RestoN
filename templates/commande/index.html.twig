@@ -19,7 +19,48 @@
             </a>
         </div>
 
-        <div class="card shadow-sm">
+        {# Vue Mobile (Cartes) #}
+        <div class="d-md-none">
+            {% for commande in commandes %}
+                {% if not commande.isPaye %}
+                    {% set serveur = commande.serveur ? commande.serveur.nom : restaurant.proprietaire.nom %}
+                    <div class="card mb-3 shadow-sm border-0">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-start mb-3">
+                                <div>
+                                    <h5 class="fw-bold mb-1">Commande #{{ commande.id }}</h5>
+                                    <small class="text-muted"><i class="bi bi-calendar3 me-1"></i>{{ commande.dateCommande|date('d/m/Y') }}</small>
+                                </div>
+                                <span class="badge bg-primary fs-6">{{ commande.prixCommande|number_format(2, ',', ' ') }} €</span>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <div class="d-flex align-items-center mb-1">
+                                    <i class="bi bi-person-badge me-2 text-secondary"></i>
+                                    <span>{{ serveur }}</span>
+                                </div>
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-chair me-2 text-secondary"></i>
+                                    <span>Table n°{{ commande.tables.numero }}</span>
+                                </div>
+                            </div>
+
+                            <div class="d-grid gap-2 d-flex">
+                                <button class="btn btn-outline-dark flex-grow-1 js-details-btn" data-bs-toggle="modal" data-bs-target="#detailsModal" data-id="{{ commande.id }}" data-serveur="{{ serveur }}" data-table="{{ commande.tables ? 'Table n°' ~ commande.tables.numero }}" data-total="{{ commande.prixCommande|number_format(2, ',', ' ') }}" data-produits='[{% for p in commande.produits %}{"nom": "{{ p.libProduit }}", "prix": "{{ p.prixProduit|number_format(2, ',', ' ') }}"}{% if not loop.last %},{% endif %}{% endfor %}]'>
+                                    <i class="bi bi-eye me-2"></i>Détails
+                                </button>
+                                <a href="{{ path('app_commande_payer', {id: restaurant.id, commande: commande.id}) }}" class="btn btn-success flex-grow-1">
+                                    <i class="bi bi-credit-card me-2"></i>Payer
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+
+        {# Vue Desktop (Tableau) #}
+        <div class="card shadow-sm d-none d-md-block">
             <div class="table-responsive">
                 <table class="table table-hover align-middle mb-0">
                     <thead class="table-light">
@@ -52,23 +93,21 @@
                                 </td>
                                 <td class="text-center pe-4">
                                     <div class="btn-group">
-                                        <button class="btn btn-sm px-3 js-details-btn"
+                                        <button class="btn btn-sm btn-outline-dark px-3 js-details-btn"
                                                 data-bs-toggle="modal"
                                                 data-bs-target="#detailsModal"
-                                                style="border: 1px solid #1a2a3a; color: #1a2a3a; background: transparent;"
                                                 data-id="{{ commande.id }}"
                                                 data-serveur="{{ serveur }}"
                                                 data-table="{{ commande.tables ? 'Table n°' ~ commande.tables.numero }}"
                                                 data-total="{{ commande.prixCommande|number_format(2, ',', ' ') }}"
                                                 data-produits='[{% for p in commande.produits %}{"nom": "{{ p.libProduit }}", "prix": "{{ p.prixProduit|number_format(2, ',', ' ') }}"}{% if not loop.last %},{% endif %}{% endfor %}]'>
-                                            Détails
+                                            <i class="bi bi-eye me-1"></i> Détails
                                         </button>
                                         <a href="{{ path('app_commande_payer', {id: restaurant.id, commande: commande.id}) }}"
-                                           class="btn btn-sm btn-outline-secondary">
-                                            Payer
+                                           class="btn btn-sm btn-success">
+                                            <i class="bi bi-credit-card me-1"></i> Payer
                                         </a>
                                     </div>
-                                </button>
                             </td>
                         </tr>
                         {% endif %}
