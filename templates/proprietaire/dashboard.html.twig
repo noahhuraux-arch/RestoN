@@ -2,6 +2,14 @@
 
 {% block title %}Tableau de bord - {{ restaurant.libRestau }}{% endblock %}
 
+{% block favicon %}
+    {% if restaurant.logo %}
+        <link rel="icon" href="{{ asset('images/logos/' ~ restaurant.logo) }}">
+    {% else %}
+        <link rel="icon" href="{{ asset('images/favicon.png') }}">
+    {% endif %}
+{% endblock %}
+
 {% block body %}
 <div class="container py-4">
     <div class="row align-items-center mb-4 g-3">
