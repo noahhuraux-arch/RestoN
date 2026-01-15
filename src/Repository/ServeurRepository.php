@@ -53,11 +53,13 @@ class ServeurRepository extends ServiceEntityRepository
 
     public function SumTotalByRestaurantServeur($restaurant): float
     {
-        return $this->createQueryBuilder('r')
+        $result = $this->createQueryBuilder('r')
             ->select('Sum(r.salaire)')
             ->andWhere('r.restaurant = :restaurant')
             ->setParameter('restaurant', $restaurant)
             ->getQuery()
             ->getSingleScalarResult();
+
+        return (float) ($result ?? 0);
     }
 }

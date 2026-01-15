@@ -14,7 +14,7 @@ class TableFixtures extends Fixture
         $restaurants = $manager->getRepository(Restaurant::class)->findAll();
 
         foreach ($restaurants as $restaurant) {
-            $nbTables = 5;
+            $nbTables = $restaurant->getNbTable();
             for ($i = 1; $i <= $nbTables; ++$i) {
                 TableFactory::createOne([
                     'numero' => $i,

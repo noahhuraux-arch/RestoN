@@ -57,12 +57,14 @@ class CommandeRepository extends ServiceEntityRepository
 
     public function SumTotalByRestaurantCommandes(Restaurant $restaurant): float
     {
-        return $this->createQueryBuilder('r')
+        $result = $this->createQueryBuilder('r')
             ->select('Sum(r.prixCommande)')
             ->andWhere('r.restaurant = :restaurant')
             ->setParameter('restaurant', $restaurant)
             ->getQuery()
             ->getSingleScalarResult();
+
+        return (float) ($result ?? 0);
     }
 
     public function findMostPopularMenuByRestaurant(Restaurant $restaurant): ?array
