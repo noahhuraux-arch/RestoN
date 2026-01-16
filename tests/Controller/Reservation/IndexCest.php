@@ -96,4 +96,57 @@ final class IndexCest
         $I->seeCurrentRouteIs('app_reservation', ['id' => $resto->getId()]);
         $I->seeInCurrentUrl('searchText=Joe');
     }
+
+    public function VerifiesReservationsAreSortedByDateAndTime(ControllerTester $I): void
+    {
+        $proprio = ProprietaireFactory::createOne(['roles' => ['ROLE_PROPRIETAIRE']])->_real();
+        $resto = RestaurantFactory::createOne(['proprietaire' => $proprio]);
+        $table = TableFactory::createOne(['restaurant' => $resto, 'numero' => 1]);
+        $client = ClientFactory::createOne();
+
+        ReservationFactory::createSequence([
+            [
+                'restaurant' => $resto,
+                'table' => $table,
+                'client' => $client,
+                'numero' => 1,
+                'date' => new \DateTime('2026-02-10'),
+                'heure' => new \DateTime('19:30:00'),
+                'nbPers' => 2,
+            ],
+            [
+                'restaurant' => $resto,
+                'table' => $table,
+                'client' => $client,
+                'numero' => 2,
+                'date' => new \DateTime('2026-01-15'),
+                'heure' => new \DateTime('20:00:00'),
+                'nbPers' => 4,
+            ],
+            [
+                'restaurant' => $resto,
+                'table' => $table,
+                'client' => $client,
+                'numero' => 3,
+                'date' => new \DateTime('2026-01-15'),
+                'heure' => new \DateTime('12:00:00'),
+                'nbPers' => 2,
+            ],
+        ]);
+        $I->amLoggedInAs($proprio);
+        $I->amOnPage('/'.$resto->getId().'/reservation');
+        $dates = $I->grabMultiple('.bi-calendar3');
+        $heures = $I->grabMultiple('.badge.bg-dark');
+        $actualList = [];
+        for ($i = 0; $i < count($dates); ++$i) {
+            $actualList[] = $dates[$i].' '.$heures[$i];
+        }
+        $expected = [
+            ' 15/01/2026 12:00',
+            ' 15/01/2026 20:00',
+            ' 10/02/2026 19:30',
+        ];
+
+        $I->assertEquals($expected, $actualList);
+    }
 }
