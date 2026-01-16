@@ -149,4 +149,53 @@ final class IndexCest
 
         $I->assertEquals($expected, $actualList);
     }
+
+    public function SearchResultRestrictsReservationList(ControllerTester $I): void
+    {
+        $proprio = ProprietaireFactory::createOne(['roles' => ['ROLE_PROPRIETAIRE']])->_real();
+        $resto = RestaurantFactory::createOne(['proprietaire' => $proprio]);
+        $table = TableFactory::createOne(['restaurant' => $resto, 'numero' => 1]);
+        $clientJoe = ClientFactory::createOne(['nom' => 'Joe', 'prenom' => 'Dalton']);
+        $clientJack = ClientFactory::createOne(['nom' => 'Jack', 'prenom' => 'Joe']);
+        $clientAverell = ClientFactory::createOne(['nom' => 'Averell', 'prenom' => 'Dalton']);
+
+        ReservationFactory::createSequence([
+            [
+                'restaurant' => $resto,
+                'table' => $table,
+                'client' => $clientJoe,
+                'numero' => 1,
+                'date' => new \DateTime('2026-01-10'),
+                'heure' => new \DateTime('12:00:00'),
+                'nbPers' => 2,
+            ],
+            [
+                'restaurant' => $resto,
+                'table' => $table,
+                'client' => $clientJack,
+                'numero' => 2,
+                'date' => new \DateTime('2026-01-15'),
+                'heure' => new \DateTime('20:00:00'),
+                'nbPers' => 4,
+            ],
+            [
+                'restaurant' => $resto,
+                'table' => $table,
+                'client' => $clientAverell,
+                'numero' => 3,
+                'date' => new \DateTime('2026-01-05'),
+                'heure' => new \DateTime('19:00:00'),
+                'nbPers' => 2,
+            ],
+        ]);
+
+        $I->amLoggedInAs($proprio);
+        $I->amOnPage('/'.$resto->getId().'/reservation?searchText=Joe');
+        $I->seeResponseCodeIsSuccessful();
+        $results = $I->grabMultiple('.card h5');
+        $expected = ['Joe Jack', 'Dalton Joe'];
+
+        $I->assertEquals($expected, $results);
+        $I->seeInCurrentUrl('searchText=Joe');
+    }
 }
