@@ -18,7 +18,7 @@ class ProprietaireType extends AbstractType
         $builder
             ->add('prenom', TextType::class, ['label' => 'Prénom'])
             ->add('nom', TextType::class, ['label' => 'Nom'])
-            ->add('telephone', TelType::class, ['label' => 'Téléphone'])
+            ->add('telephone', TelType::class, ['label' => 'Téléphone', 'attr' => ['maxlength' => 10]])
             ->add('email', EmailType::class, ['label' => 'Email'])
             ->add('password', PasswordType::class, ['label' => 'Mot de passe',
                 'mapped' => false,
