@@ -95,10 +95,21 @@ class AddHeureFieldListener implements EventSubscriberInterface
             foreach ($creneaux as $heure) {
                 if ($heure[0] && $heure[1]) {
                     $Demiheure = new \DatePeriod($heure[0], $interval, $heure[1]);
+                    $precedentEtaitOccupe = false;
                     foreach ($Demiheure as $journeeHoraire) {
                         if ($this->tableRepository->findAvailableTables($restaurant, $date, $journeeHoraire, $nbPers)) {
                             $formatHeure = $journeeHoraire->format('H:i');
-                            $liste_Horaires[$formatHeure] = $formatHeure;
+                            if (false === $precedentEtaitOccupe) {
+                                $liste_Horaires[$formatHeure] = $formatHeure;
+                            }
+                            $precedentEtaitOccupe = false;
+                        } else {
+                            $heurePrecedente = new \DateTime($journeeHoraire->format('H:i'));
+                            $heurePrecedente->modify('-30 minutes');
+                            $heurePrecedenteFormat = $heurePrecedente->format('H:i');
+                            unset($liste_Horaires[$heurePrecedenteFormat]);
+
+                            $precedentEtaitOccupe = true;
                         }
                     }
                 }
