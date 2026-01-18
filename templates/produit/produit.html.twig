@@ -98,7 +98,7 @@
                 {% endif %}
 
                 <div class="d-flex justify-content-start align-items-center">
-                    {% if is_granted('ROLE_PROPRIETAIRE') and app.user == produit.restaurant.proprietaire%}
+                    {% if is_granted('ROLE_PROPRIETAIRE') and app.user == produit.restaurant.proprietaire %}
                         {% if produit.visible %}
                             <span class="badge bg-success px-3 py-2 me-3">Visible sur la carte</span>
                         {% else %}
@@ -144,7 +144,7 @@
                 </p>
 
                 <div class="mt-4 d-flex justify-content-between align-items-center">
-                    {% if is_granted('ROLE_PROPRIETAIRE') and app.user == produit.restaurant.proprietaire%}
+                    {% if is_granted('ROLE_PROPRIETAIRE') and app.user == produit.restaurant.proprietaire %}
                         <a href="{{ path('app_produit_proprietaire', {idRestau: produit.restaurant.id}) }}" class="btn btn-light border rounded-3 px-4 fs-6">
                             ← Retour à la carte
                         </a>
@@ -154,7 +154,7 @@
                         </a>
                     {% endif %}
 
-                    {% if is_granted('ROLE_PROPRIETAIRE') and app.user == produit.restaurant.proprietaire%}
+                    {% if is_granted('ROLE_PROPRIETAIRE') and app.user == produit.restaurant.proprietaire %}
 
                         <div class="d-flex gap-2">
                             {% if produit.alcoolise is defined %}
@@ -175,7 +175,7 @@
                                 Supprimer
                             </a>
                         </div>
-                    {% endif  %}
+                    {% endif %}
                 </div>
 
             </div>

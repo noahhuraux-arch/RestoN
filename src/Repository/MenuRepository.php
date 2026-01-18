@@ -17,7 +17,6 @@ class MenuRepository extends ServiceEntityRepository
         parent::__construct($registry, Menu::class);
     }
 
-
     public function findAllPlats(Restaurant $restaurant)
     {
         return $this->createQueryBuilder('menu')

@@ -11,7 +11,7 @@
         <div class="card shadow-sm">
             <div class="card-body">
 
-                {{ form_start(form, {'attr': {'enctype': 'multipart/form-data'}}) }}
+                {{ form_start(form, {attr: {enctype: 'multipart/form-data'}}) }}
 
                 <h5 class="text-primary mb-3">Informations générales</h5>
                 <div class="row">
@@ -63,7 +63,7 @@
 
                 <div class="mt-4 d-flex justify-content-end gap-2">
                     {% if submit_label == 'Modifier' %}
-                        <a href="{{ path('app_proprietaire_show', {'id': restaurant.id}) }}" class="btn btn-outline-secondary">
+                        <a href="{{ path('app_proprietaire_show', {id: restaurant.id}) }}" class="btn btn-outline-secondary">
                             Annuler
                         </a>
                     {% else %}

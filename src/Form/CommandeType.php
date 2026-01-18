@@ -4,8 +4,6 @@ namespace App\Form;
 
 use App\Entity\Commande;
 use App\Entity\Produit;
-use App\Entity\Reservation;
-use App\Entity\Serveur;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;

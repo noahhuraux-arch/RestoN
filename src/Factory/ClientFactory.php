@@ -15,6 +15,7 @@ final class ClientFactory extends PersistentProxyObjectFactory
     protected function defaults(): array|callable
     {
         $faker = self::faker();
+
         return [
             'nom' => self::faker()->lastName(),
             'prenom' => self::faker()->firstName(),

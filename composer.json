@@ -104,11 +104,18 @@
         "test" : [
             "@test:phpcs",
             "@test:twigcs",
-            "@test:codecept"
+            "@test:codeception"
         ],
         "fix" : [
             "@fix:phpcs",
             "@fix:twigcs"
+        ],
+        "test:codeception": [
+            "php vendor/bin/codecept clean",
+            "bin/console doctrine:schema:drop --force --quiet --env=test",
+            "bin/console doctrine:schema:create --quiet --env=test",
+            "php vendor/bin/codecept run"
+
         ],
         "db": [
             "php bin/console doctrine:database:drop --force --if-exists",
@@ -127,6 +134,10 @@
         }
     },
     "require-dev": {
+        "codeception/codeception": "^5.3",
+        "codeception/module-asserts": "^3.3",
+        "codeception/module-doctrine": "^3.3",
+        "codeception/module-symfony": "^3.8",
         "doctrine/doctrine-fixtures-bundle": "^4.3",
         "friendsofphp/php-cs-fixer": "^3.91",
         "phpunit/phpunit": "^12.4.4",

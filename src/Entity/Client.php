@@ -36,6 +36,7 @@ class Client extends Personne
     public function setNumTel(?string $numTel): static
     {
         $this->numTel = $numTel;
+
         return $this;
     }
 }

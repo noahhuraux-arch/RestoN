@@ -14,13 +14,12 @@ use Doctrine\Persistence\ObjectManager;
 
 class ProduitFixtures extends Fixture implements DependentFixtureInterface
 {
-
     public function load(ObjectManager $manager): void
     {
         $restaurants = $manager->getRepository(Restaurant::class)->findAll();
         $typePlatRepository = $manager->getRepository(TypePlat::class);
 
-        $chemin = __DIR__ . '/data/produit.json';
+        $chemin = __DIR__.'/data/produit.json';
         $contenu = file_get_contents($chemin);
         $contenu = json_decode($contenu, true);
 

@@ -58,7 +58,7 @@
                                 <span>{{ reservation.client.nom }}</span>
                             {% endif %}
                             <div class="text-muted small">
-                                <span>{{ table.nbPlace}} places</span>
+                                <span>{{ table.nbPlace }} places</span>
                             </div>
                             <a href="{{ path('app_commande_create', {id: restaurant.id, table: table.id}) }}"
                                class="btn btn-sm rounded-3 px-2 mt-1">

@@ -33,7 +33,7 @@
                                 </div>
                                 <span class="badge bg-primary fs-6">{{ commande.prixCommande|number_format(2, ',', ' ') }} €</span>
                             </div>
-                            
+
                             <div class="mb-3">
                                 <div class="d-flex align-items-center mb-1">
                                     <i class="bi bi-person-badge me-2 text-secondary"></i>
@@ -84,7 +84,7 @@
                                     {% if commande.serveur is not null %}
                                         {{ serveur }}
                                     {% else %}
-                                        {{ serveur}} <span class="badge bg-warning text-dark" style="font-size: 0.8rem;">Proprio</span>
+                                        {{ serveur }} <span class="badge bg-warning text-dark" style="font-size: 0.8rem;">Proprio</span>
                                     {% endif %}
                                 </td>
                                 <td>Table n°{{ commande.tables.numero }}</td>

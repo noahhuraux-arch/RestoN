@@ -6,8 +6,6 @@ use App\Entity\Restaurant;
 use App\Entity\Table;
 use App\Factory\ClientFactory;
 use App\Factory\ReservationFactory;
-use App\Factory\RestaurantFactory;
-use App\Factory\TableFactory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;

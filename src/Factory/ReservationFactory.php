@@ -33,7 +33,7 @@ final class ReservationFactory extends PersistentProxyObjectFactory
     {
         return $this->afterInstantiate(function (Reservation $reservation): void {
             $restaurant = $reservation->getTable()->getRestaurant();
-            $horaires = $restaurant->getHoraires()->filter(fn($h) => !$h->isFerme());
+            $horaires = $restaurant->getHoraires()->filter(fn ($h) => !$h->isFerme());
 
             if (!$horaires->isEmpty()) {
                 $h = self::faker()->randomElement($horaires->toArray());
@@ -41,7 +41,7 @@ final class ReservationFactory extends PersistentProxyObjectFactory
 
                 if ($heureBase) {
                     $heure = \DateTime::createFromInterface($heureBase);
-                    $heure->modify('+' . self::faker()->randomElement([0, 30, 60, 90]) . ' minutes');
+                    $heure->modify('+'.self::faker()->randomElement([0, 30, 60, 90]).' minutes');
                     $reservation->setHeure($heure);
                 }
             }

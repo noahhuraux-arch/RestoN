@@ -54,6 +54,7 @@ class Table
     public function setNbPlace(int $nbPlace): static
     {
         $this->nbPlace = $nbPlace;
+
         return $this;
     }
 
@@ -65,6 +66,7 @@ class Table
     public function setDisponible(?bool $disponible): static
     {
         $this->disponible = $disponible;
+
         return $this;
     }
 
@@ -76,6 +78,7 @@ class Table
     public function setRestaurant(?Restaurant $restaurant): static
     {
         $this->restaurant = $restaurant;
+
         return $this;
     }
 
@@ -95,6 +98,7 @@ class Table
             $this->commande->add($commande);
             $commande->setTables($this);
         }
+
         return $this;
     }
 
@@ -105,6 +109,7 @@ class Table
                 $commande->setTables(null);
             }
         }
+
         return $this;
     }
 
@@ -174,6 +179,7 @@ class Table
                 }
             }
         }
+
         return null;
     }
 }

@@ -8,8 +8,8 @@ use App\Entity\Serveur;
 use App\Entity\Table;
 use App\Factory\CommandeFactory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
+use Doctrine\Persistence\ObjectManager;
 
 class CommandesFixtures extends Fixture implements DependentFixtureInterface
 {
