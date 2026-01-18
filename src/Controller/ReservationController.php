@@ -159,6 +159,7 @@ class ReservationController extends AbstractController
         return $this->render('reservation/delete.html.twig', [
             'reservation' => $reservation,
             'form' => $form->createView(),
+            'restaurant' => $restaurant,
         ]);
     }
 
