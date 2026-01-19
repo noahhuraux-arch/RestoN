@@ -16,6 +16,11 @@
             <div>
                 <h1 class="fw-bold h2 mb-0">Plan des Tables</h1>
             </div>
+            {% if app.user == restaurant.proprietaire %}
+                <a href="{{ path('app_table_create', {restaurant: restaurant.id}) }}" class="btn btn-primary rounded-3 shadow-sm">
+                    <i class="bi bi-plus-circle me-1"></i> Ajouter une table
+                </a>
+            {% endif %}
         </div>
 
         <div class="row g-4 pb-4">
@@ -50,27 +55,39 @@
                             </div>
                         {% endif %}
 
-                        <div class="card-body text-center py-2">
+                        <div class="card-body text-center py-2 d-flex flex-column">
                             <div class="fs-3 fw-bold mb-1">
                                 <span>N°{{ table.numero }}</span>
                             </div>
-                            {% if statut == 'Reservee' %}
-                                <span>{{ reservation.client.nom }}</span>
+                            {% if statut == 'Reservee' and reservation %}
+                                <span class="small text-truncate d-block">{{ reservation.client.nom }}</span>
                             {% endif %}
-                            <div class="text-muted small">
+                            <div class="text-muted small mb-2">
                                 <span>{{ table.nbPlace }} places</span>
                             </div>
                             <a href="{{ path('app_commande_create', {id: restaurant.id, table: table.id}) }}"
-                               class="btn btn-sm rounded-3 px-2 mt-1">
+                               class="btn btn-sm btn-light border rounded-3 px-2 mt-auto mb-2">
                                 <i class="bi bi-plus-lg small"></i>
                                 <span>Commande</span>
                             </a>
+                            {% if app.user == restaurant.proprietaire %}
+                                <form method="post" action="{{ path('app_table_delete', {restaurant: restaurant.id, id: table.id}) }}"
+                                      onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer la table N°{{ table.numero }} ?');"
+                                      class="mt-1 border-top pt-2">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ table.id) }}">
+                                    <button class="btn btn-link btn-sm text-danger text-decoration-none p-0">
+                                        <i class="bi bi-trash small"></i> Supprimer
+                                    </button>
+                                </form>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
             {% else %}
+                <div class="col-12 text-center py-5">
+                    <p class="text-muted">Aucune table n'a encore été configurée pour ce restaurant.</p>
+                </div>
             {% endfor %}
         </div>
     </div>
-
 {% endblock %}
