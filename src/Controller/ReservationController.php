@@ -26,6 +26,10 @@ class ReservationController extends AbstractController
     #[Route('{id}/reserver', name: 'app_reservation_create', requirements: ['id' => Requirement::DIGITS], methods: ['GET', 'POST'])]
     public function createReservation(Request $request, Restaurant $restaurant, ReservationRepository $restoRepo, TableRepository $tableRepository, ClientRepository $clientRepository, EntityManagerInterface $entityManager, EmailService $emailService): Response
     {
+        if ($restaurant->getProprietaire() !== $this->getUser()) {
+            throw $this->createAccessDeniedException("Vous n'avez pas la permission de créer des réservations dans un restaurant qui ne vous appartient pas");
+        }
+
         $reservation = new Reservation();
         $form = $this->createForm(ReservationType::class, $reservation, ['restaurant' => $restaurant]);
 

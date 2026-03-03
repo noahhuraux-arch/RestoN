@@ -19,23 +19,23 @@ class TableType extends AbstractType
                 'label' => 'Numéro de la table',
                 'attr' => [
                     'placeholder' => 'Ex: 10',
-                    'class' => 'form-control'
+                    'class' => 'form-control',
                 ],
                 'constraints' => [
                     new NotBlank(['message' => 'Veuillez saisir un numéro']),
-                    new Positive(['message' => 'Le numéro doit être supérieur à 0'])
-                ]
+                    new Positive(['message' => 'Le numéro doit être supérieur à 0']),
+                ],
             ])
             ->add('nbPlace', IntegerType::class, [
                 'label' => 'Nombre de places',
                 'attr' => [
                     'placeholder' => 'Ex: 4',
-                    'class' => 'form-control'
+                    'class' => 'form-control',
                 ],
                 'constraints' => [
                     new NotBlank(['message' => 'Veuillez saisir le nombre de places']),
-                    new Positive(['message' => 'Il doit y avoir au moins 1 place'])
-                ]
+                    new Positive(['message' => 'Il doit y avoir au moins 1 place']),
+                ],
             ])
         ;
     }
