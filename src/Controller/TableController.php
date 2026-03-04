@@ -69,9 +69,11 @@ final class TableController extends AbstractController
             throw $this->createAccessDeniedException('Accès interdit');
         }
 
-
         if ($this->isCsrfTokenValid('delete'.$table->getId(), $request->request->get('_token'))) {
-            if (!$table->isDisponible()) {
+
+            if (!$table->getReservations()->isEmpty()) {
+                $this->addFlash('danger', 'Impossible de supprimer cette table : il y a une résérvation à cette table');
+            } elseif (!$table->isDisponible()) {
                 $this->addFlash('danger', 'Impossible de supprimer une table occupée.');
             } else {
                 $em->remove($table);
