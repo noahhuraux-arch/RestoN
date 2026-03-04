@@ -2,8 +2,8 @@
 
 namespace App\Controller;
 
-use App\Entity\Table;
 use App\Entity\Restaurant;
+use App\Entity\Table;
 use App\Form\TableType;
 use App\Repository\TableRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -52,6 +52,7 @@ final class TableController extends AbstractController
             $em->flush();
 
             $this->addFlash('success', 'La table a été ajoutée avec succès.');
+
             return $this->redirectToRoute('app_restaurant_tables', ['restaurant' => $restaurant->getId()]);
         }
 
@@ -68,7 +69,6 @@ final class TableController extends AbstractController
         if ($restaurant->getProprietaire() !== $this->getUser() || $table->getRestaurant() !== $restaurant) {
             throw $this->createAccessDeniedException('Accès interdit');
         }
-
 
         if ($this->isCsrfTokenValid('delete'.$table->getId(), $request->request->get('_token'))) {
             if (!$table->isDisponible()) {
