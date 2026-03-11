@@ -215,6 +215,7 @@
                         <button class="btn btn-sm btn-outline-warning rounded-pill" onclick="sendPredefinedMessage('En savoir plus')">Infos</button>
                     {% endif %}
                     <button class="btn btn-sm btn-outline-secondary rounded-pill" onclick="sendPredefinedMessage('Contacter le support')">Support</button>
+                    <button class="btn btn-sm btn-outline-secondary rounded-pill" onclick="sendPredefinedMessage('Quelles sont les mots-clés que tu comprend ?')">Help</button>
                 </div>
             </div>
         </div>
@@ -281,12 +282,22 @@
                 response = "Pour réserver une table, rendez-vous dans l'onglet 'Réservations'.";
             } else if (msg.includes('inscri')) {
                 response = "Pour inscrire votre restaurant, utilisez le bouton 'S'inscrire' sur la page d'accueil.";
-            } else if (msg.includes('info')) {
-                response = "Resto'N est une plateforme complète pour la gestion de votre restaurant.";
             } else if (msg.includes('support') || msg.includes('contact')) {
                 response = "Besoin d'aide ? Contactez notre support à contact@reston.fr.";
             } else if (msg.includes('partenaires') || msg.includes('partenariat')) {
                 response = "La liste de nos 'Partenaires' est visible sur notre carousel. Chaque restaurant utilisant Resto'N est un partenaire.";
+            } else if (msg.includes('info') || msg.includes('savoir')) {
+                response = "Resto'N est une plateforme complète pour la gestion de votre restaurant.";
+            } else if (msg.includes('mots-clés') || msg.includes('help')) {
+                response = "Voici les mots-clés que je comprends :\n" +
+                    "'horaire', \n" +
+                    "'help',\n" +
+                    "'carte',\n" +
+                    "'réserver',\n" +
+                    "'inscrire',\n" +
+                    "'support' / 'contact',\n" +
+                    "'partenaires' / 'partenariat',\n" +
+                    "'info'";
             }
             addMessage(response, 'bot');
         }, 1000);
