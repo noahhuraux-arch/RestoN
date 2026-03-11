@@ -54,9 +54,14 @@
                             </div>
                         </div>
                         <div class="card-footer bg-white border-0 p-3 d-flex justify-content-between">
-                            <a href="{{ path('app_reservation_show', {id: restaurant.id, idReservation: reservation.id}) }}" class="btn btn-sm btn-warning fw-bold shadow-sm">
-                                Voir détails
-                            </a>
+                            <div class="d-flex gap-2">
+                                <a href="{{ path('app_reservation_show', {id: restaurant.id, idReservation: reservation.id}) }}" class="btn btn-sm btn-warning fw-bold shadow-sm">
+                                    Voir détails
+                                </a>
+                                <a href="{{ path('app_reservation_update', {id: restaurant.id, idReservation: reservation.id}) }}" class="btn btn-sm btn-warning fw-bold shadow-sm">
+                                    Modifier
+                                </a>
+                            </div>
                             <a href="{{ path('app_reservation_delete', {id: restaurant.id, idReservation: reservation.id}) }}" class="btn btn-sm btn-outline-danger shadow-sm bi bi-trash">
                             </a>
                         </div>
