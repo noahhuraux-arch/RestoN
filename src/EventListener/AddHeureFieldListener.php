@@ -29,11 +29,34 @@ class AddHeureFieldListener implements EventSubscriberInterface
 
     public function onPreSetData(PreSetDataEvent $event): void
     {
+        $reservation = $event->getData();
         $form = $event->getForm();
+
+        $heureValue = null;
         $choices = [];
+
+        if ($reservation instanceof \App\Entity\Reservation && null !== $reservation->getHeure()) {
+            $heureValue = $reservation->getHeure()->format('H:i');
+            $choices = [$heureValue => $heureValue];
+        }
+
         $factory = $form->getConfig()->getFormFactory();
-        $builder = $factory->createNamedBuilder('heure', ChoiceType::class, null,
-            ['choices' => $choices, 'auto_initialize' => false, 'placeholder' => 'Choisir une date et un nombre de Personne']);
+
+        $builder = $factory->createNamedBuilder('heure', ChoiceType::class, $heureValue, [
+            'choices' => $choices,
+            'auto_initialize' => false,
+            'placeholder' => $heureValue ? null : 'Choisir une date et un nombre de personne',
+        ]);
+
+        $builder->addModelTransformer(new CallbackTransformer(
+            function ($date) {
+                return $date instanceof \DateTimeInterface ? $date->format('H:i') : '';
+            },
+            function ($stringHeure) {
+                return $stringHeure ? new \DateTime($stringHeure) : null;
+            }
+        ));
+
         $form->add($builder->getForm());
     }
 
