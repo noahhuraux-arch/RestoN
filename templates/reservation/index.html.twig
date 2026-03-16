@@ -20,10 +20,10 @@
                     <button class="btn btn-outline-success" type="submit">Recherche</button>
                 </form>
                 <div class="d-flex flex-wrap justify-content-center gap-2 w-100 w-md-auto">
-                    <a href="{{ path('app_reservation', {id: restaurant.id}) }}" class="btn btn-outline-warning fw-bold shadow-sm flex-grow-1 flex-md-grow-0">
+                    <a href="{{ path('app_reservation', {id: restaurant.id}) }}" class="btn fw-bold shadow-sm flex-grow-1 flex-md-grow-0 {{ app.request.get('filter') is null ? 'btn-warning' : 'btn-outline-warning' }}">
                         Toutes
                     </a>
-                    <a href="{{ path('app_reservation', {id: restaurant.id, filter: 'today'}) }}" class="btn btn-warning fw-bold shadow-sm flex-grow-1 flex-md-grow-0">
+                    <a href="{{ path('app_reservation', {id: restaurant.id, filter: 'today'}) }}" class="btn fw-bold shadow-sm flex-grow-1 flex-md-grow-0 {{ app.request.get('filter') == 'today' ? 'btn-warning' : 'btn-outline-warning' }}">
                         Aujourd'hui
                     </a>
                     <a href="{{ path('app_restaurant_home', {id: restaurant.id}) }}" class="btn btn-outline-secondary fw-bold shadow-sm bi bi-arrow-left flex-grow-1 flex-md-grow-0">
