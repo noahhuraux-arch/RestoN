@@ -97,6 +97,8 @@ class ReservationController extends AbstractController
             throw $this->createAccessDeniedException('Accès interdit');
         }
         $filter = $request->query->get('filter');
+        $order = $request->query->get('order', 'desc');
+
         if ('today' === $filter) {
             $reservations = $reservationRepository->findTodayByReservation($restaurant);
         } elseif ('' !== $searchText) {
@@ -105,9 +107,21 @@ class ReservationController extends AbstractController
             $reservations = $reservationRepository->findByRestaurantWithDetailsReservations($restaurant);
         }
 
+        usort($reservations, function ($a, $b) use ($order) {
+            $dateA = $a->getDate()->format('Y-m-d') . ' ' . $a->getHeure()->format('H:i');
+            $dateB = $b->getDate()->format('Y-m-d') . ' ' . $b->getHeure()->format('H:i');
+
+            if ($order === 'asc') {
+                return strcmp($dateA, $dateB);
+            }
+
+            return strcmp($dateB, $dateA);
+        });
+
         return $this->render('reservation/index.html.twig', [
             'restaurant' => $restaurant,
             'reservations' => $reservations,
+            'order' => $order,
         ]);
     }
 

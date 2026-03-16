@@ -26,6 +26,21 @@
                     <a href="{{ path('app_reservation', {id: restaurant.id, filter: 'today'}) }}" class="btn fw-bold shadow-sm flex-grow-1 flex-md-grow-0 {{ app.request.get('filter') == 'today' ? 'btn-warning' : 'btn-outline-warning' }}">
                         Aujourd'hui
                     </a>
+                    {% set currentOrder = app.request.get('order') ?? 'desc' %}
+                    {% set nextOrder = currentOrder == 'asc' ? 'desc' : 'asc' %}
+
+                    <a href="{{ path('app_reservation', {
+                        id: restaurant.id,
+                        filter: app.request.get('filter'),
+                        searchText: app.request.get('searchText'),
+                        order: nextOrder
+                        }) }}"
+                       class="btn fw-bold shadow-sm flex-grow-1 flex-md-grow-0
+                        {{ currentOrder == 'asc' ? 'btn-outline-warning' : 'btn-warning' }}">
+                        <i class="bi {{ currentOrder == 'asc' ? 'bi-arrow-down' : 'bi-arrow-up' }} me-1"></i>
+                        {{ currentOrder == 'asc' ? 'Date' : 'Date' }}
+                    </a>
+
                     <a href="{{ path('app_restaurant_home', {id: restaurant.id}) }}" class="btn btn-outline-secondary fw-bold shadow-sm bi bi-arrow-left flex-grow-1 flex-md-grow-0">
                         Retour
                     </a>
