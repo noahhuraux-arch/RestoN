@@ -43,7 +43,7 @@ final class LoginSuccessEventListener
         }
 
         if ($user instanceof Proprietaire) {
-            $url = $this->urlGenerator->generate('app_proprietaire');
+            $url = $this->urlGenerator->generate('app_home');
             $event->setResponse(new RedirectResponse($url));
 
             return;
