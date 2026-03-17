@@ -8,7 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ProprietaireRepository::class)]
-class Proprietaire extends Personne
+class Proprietaire extends Client
 {
     /**
      * @var Collection<int, Restaurant>
@@ -18,6 +18,7 @@ class Proprietaire extends Personne
 
     public function __construct()
     {
+        parent::__construct();
         $this->restaurants = new ArrayCollection();
     }
 
