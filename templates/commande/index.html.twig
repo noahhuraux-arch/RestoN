@@ -120,11 +120,11 @@
 
                                                     {% for etat in etats %}
                                                         <option value="{{ etat.value }}" {{ etat == commande.etatCommande ? 'selected' : '' }}>
-                                                            {% if etat.name == "WaitingTreatment" %}
+                                                            {% if etat.name == 'WaitingTreatment' %}
                                                                 En attente
-                                                            {% elseif etat.name == "InTreatment" %}
+                                                            {% elseif etat.name == 'InTreatment' %}
                                                                 En cours
-                                                            {% elseif etat.name == "Ready" %}
+                                                            {% elseif etat.name == 'Ready' %}
                                                                 Prête
                                                             {% endif %}
                                                         </option>
@@ -222,7 +222,6 @@
                 });
             });
         });
-
 
         document.addEventListener('DOMContentLoaded', function() {
             const allSelects = document.querySelectorAll('.js-etat-select');

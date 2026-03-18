@@ -25,8 +25,8 @@ final class ServeurController extends AbstractController
         Restaurant $restaurant,
         ServeurRepository $serveurRepository,
     ): Response {
-        if ($restaurant->getProprietaire() !== $this->getUser()){
-            throw $this->createAccessDeniedException( "Vous n'avez pas accès aux serveurs de ce restaurant." );
+        if ($restaurant->getProprietaire() !== $this->getUser()) {
+            throw $this->createAccessDeniedException("Vous n'avez pas accès aux serveurs de ce restaurant.");
         }
 
         $serveurs = $serveurRepository->findBy(['restaurant' => $restaurant]);

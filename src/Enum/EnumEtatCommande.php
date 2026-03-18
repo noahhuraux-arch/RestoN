@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Enum;
+
 enum EnumEtatCommande: string
 {
     case WaitingTreatment = 'Commande en attente de traitement';
