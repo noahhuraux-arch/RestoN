@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Enum\EnumEtatCommande;
 use App\Repository\CommandeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -42,6 +43,9 @@ class Commande
 
     #[ORM\Column]
     private ?bool $isPaye = false;
+
+    #[ORM\Column(enumType: EnumEtatCommande::class)]
+    private ?EnumEtatCommande $etatCommande = EnumEtatCommande::WaitingTreatment;
 
     public function __construct()
     {
@@ -146,6 +150,18 @@ class Commande
     public function setIsPaye(bool $isPaye): static
     {
         $this->isPaye = $isPaye;
+
+        return $this;
+    }
+
+    public function getEtatCommande(): ?EnumEtatCommande
+    {
+        return $this->etatCommande;
+    }
+
+    public function setEtatCommande(EnumEtatCommande $etatCommande): static
+    {
+        $this->etatCommande = $etatCommande;
 
         return $this;
     }

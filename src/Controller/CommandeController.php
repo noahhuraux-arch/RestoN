@@ -37,6 +37,7 @@ class CommandeController extends AbstractController
         return $this->render('commande/index.html.twig', [
             'restaurant' => $restaurant,
             'commandes' => $commandes,
+            'etats' => \App\Enum\EnumEtatCommande::cases(),
         ]);
     }
 
@@ -230,6 +231,22 @@ class CommandeController extends AbstractController
             'table' => $commande->getTables(),
             'serveur' => $user,
             'produitsGroupes' => array_filter($produitsGroupes),
+        ]);
+    }
+
+    #[Route('/commande/{id}/update-status', name: 'app_commande_update_etat', methods: ['POST'])]
+    public function updateStatus(Request $request, Commande $commande, EntityManagerInterface $em): Response
+    {
+        $nouvelEtat = \App\Enum\EnumEtatCommande::tryFrom($request->request->get('nouvel_etat'));
+
+        if ($nouvelEtat) {
+            $commande->setEtatCommande($nouvelEtat);
+            $em->flush();
+            $this->addFlash('success', 'Etat de la commande mis à jour avec succès.');
+        }
+
+        return $this->redirectToRoute('app_commande_index', [
+            'id' => $commande->getRestaurant()->getId(),
         ]);
     }
 }

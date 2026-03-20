@@ -3,6 +3,7 @@
 namespace App\Factory;
 
 use App\Entity\Commande;
+use App\Enum\EnumEtatCommande;
 use Zenstruck\Foundry\Persistence\PersistentProxyObjectFactory;
 
 /**
@@ -37,6 +38,7 @@ final class CommandeFactory extends PersistentProxyObjectFactory
             'dateCommande' => self::faker()->dateTimeBetween('-1 day', 'now'),
             'prixCommande' => 0,
             'isPaye' => true,
+            'etatCommande' => EnumEtatCommande::WaitingTreatment,
         ];
     }
 
