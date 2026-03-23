@@ -1,11 +1,11 @@
 .git
+.idea
 vendor
 node_modules
 var/cache
 var/log
-.idea
-/.php-cs-fixer.cache
-/.twig-cs-fixer.cache
+.php-cs-fixer.cache
+.twig-cs-fixer.cache
 
 .env.local
 .env.*.local
