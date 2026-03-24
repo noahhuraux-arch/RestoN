@@ -7,6 +7,11 @@
 
 ### Installation par `Composer`
 
+Cloner le dépot : 
+```bash
+git clone https://iut-info.univ-reims.fr/gitlab/gabo0013/resto-n.git
+```
+
 Lancer `composer install` pour installer [PHP Coding Standards Fixer](https://cs.symfony.com/) et le configurer dans PhpStorm (le fichier `.php-cs-fixer.php` contient les règles personnalisées basées sur la recommandation [Symfony](https://symfony.com/doc/current/contributing/code/standards.html)).
 
 ### Configurer PhpStorm
@@ -17,13 +22,21 @@ Configurer l'intégration de PHP Coding Standards Fixer dans PhpStorm en fixant 
 
 ### Démarrer le serveur Web
 
+Attention la commande suivante est à utiliser la première fois uniquement, car à chaque build la BD est crée automatiquement
+et donc reset par la même occasion. 
 ```bash
-composer start
+docker compose up --build
+```
+
+Dans le cas où vous cherchez à redémarrer votre serveur, utilisez les commandes suivantes : 
+```bash
+docker compose down
+docker compose up
 ```
 
 ### Accéder au serveur Web
 
-Naviguez alors à partir de cette adresse : [https://127.0.0.1:8000/](https://127.0.0.1:8000/)
+Naviguez alors à partir de cette adresse : [https://127.0.0.1:8080/](https://127.0.0.1:8000/)
 
 ## Configuration de la base de données
 
