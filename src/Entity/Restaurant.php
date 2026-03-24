@@ -2,13 +2,16 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use App\Repository\RestaurantRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: RestaurantRepository::class)]
+#[ApiResource(normalizationContext: ['groups' => ['Restaurant_Read']], denormalizationContext: ['groups' => ['Restaurant_Write']])]
 class Restaurant
 {
     #[ORM\Id]
@@ -19,27 +22,33 @@ class Restaurant
     #[ORM\Column(length: 64)]
     #[Assert\NotBlank]
     #[Assert\Length(max: 64, maxMessage: 'Le nom ne doit pas dépasser {{ limit }} caractères.')]
+    #[Groups(['Restaurant_Read', 'Restaurant_Write'])]
     private ?string $libRestau = null;
 
     #[ORM\Column(length: 100, nullable: true)]
     #[Assert\NotBlank]
     #[Assert\Length(max: 100, maxMessage: "L'adresse ne doit pas dépasser {{ limit }} caractères.")]
+    #[Groups(['Restaurant_Read', 'Restaurant_Write'])]
     private ?string $adrRestau = null;
 
     #[ORM\Column(nullable: true)]
     #[Assert\NotBlank]
     #[Assert\Regex(pattern: '/^[0-9]{5}$/', message: "Le code postal n'est pas valide.")]
+    #[Groups(['Restaurant_Read', 'Restaurant_Write'])]
     private ?int $cpRestau = null;
 
     #[ORM\Column(length: 50, nullable: true)]
     #[Assert\NotBlank]
     #[Assert\Length(max: 50, maxMessage: 'La ville ne doit pas dépasser {{ limit }} caractères.')]
+    #[Groups(['Restaurant_Read', 'Restaurant_Write'])]
     private ?string $villeRestau = null;
 
     #[ORM\Column]
+    #[Groups(['Restaurant_Read'])]
     private ?int $nbTable = null;
 
     #[ORM\Column(nullable: true)]
+    #[Groups(['Restaurant_Read', 'Restaurant_Write'])]
     private ?int $nbEtoiles = null;
 
     #[ORM\ManyToOne(inversedBy: 'restaurants')]
@@ -49,11 +58,13 @@ class Restaurant
     #[ORM\Column(length: 10)]
     #[Assert\NotBlank]
     #[Assert\Regex(pattern: '/^(?:(?:\+|00)33[\s.-]{0,3}(?:\(0\)[\s.-]{0,3})?|0)[1-9](?:(?:[\s.-]?\d{2}){4})$/', message: 'Format de téléphone invalide')]
+    #[Groups(['Restaurant_Read', 'Restaurant_Write'])]
     private ?string $tel_restau = null;
 
     #[ORM\Column(length: 150)]
     #[Assert\NotBlank]
     #[Assert\Email(message: "L'email '{{ value }}' n'est pas valide.")]
+    #[Groups(['Restaurant_Read', 'Restaurant_Write'])]
     private ?string $email_restau = null;
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -75,6 +86,7 @@ class Restaurant
     private Collection $serveurs;
 
     #[ORM\OneToMany(targetEntity: Produit::class, mappedBy: 'restaurant', cascade: ['remove'])]
+    #[Groups(['Restaurant_Read', 'Restaurant_Write'])]
     private Collection $produits;
 
     /**

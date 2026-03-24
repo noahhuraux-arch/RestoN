@@ -2,10 +2,12 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use App\Repository\ProduitRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: ProduitRepository::class)]
 #[ORM\InheritanceType('SINGLE_TABLE')]
@@ -15,6 +17,7 @@ use Doctrine\ORM\Mapping as ORM;
     'menu' => Menu::class,
     'plat' => Plat::class,
 ])]
+#[ApiResource(normalizationContext: ['groups' => ['Produit_Read']], denormalizationContext: ['groups' => ['Produit_Write']])]
 abstract class Produit
 {
     #[ORM\Id]
@@ -23,25 +26,31 @@ abstract class Produit
     private ?int $id = null;
 
     #[ORM\Column(length: 64)]
+    #[Groups(['Produit_Read', 'Produit_Write'])]
     private ?string $libProduit = null;
 
     #[ORM\Column]
+    #[Groups(['Produit_Read', 'Produit_Write'])]
     private ?float $prixProduit = null;
 
     #[ORM\Column]
+    #[Groups(['Produit_Read', 'Produit_Write'])]
     private ?bool $visible = null;
 
     #[ORM\Column(length: 1024, nullable: true)]
+    #[Groups(['Produit_Read', 'Produit_Write'])]
     private ?string $descriptionProduit = null;
 
     #[ORM\ManyToOne(targetEntity: Restaurant::class, inversedBy: 'produits')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['Produit_Read', 'Produit_Write'])]
     private ?Restaurant $restaurant = null;
 
     /**
      * @var Collection<int, Allergene>
      */
     #[ORM\ManyToMany(targetEntity: Allergene::class, inversedBy: 'produits')]
+    #[Groups(['Produit_Read', 'Produit_Write'])]
     private Collection $allergenes;
 
     public function __construct()
