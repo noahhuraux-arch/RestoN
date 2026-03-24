@@ -1,10 +1,10 @@
-FROM nginx:1.27-alpine AS contacts_nginx
+FROM nginx:1.27-alpine AS resto_nginx
 COPY nginx.conf /etc/nginx/conf.d/default.conf
-WORKDIR /symfony-contacts/public
+WORKDIR /var/www/html/public
 
 FROM php:8.2-fpm AS base
-RUN apk add --no-cache \
-    git unzip icu-dev libzip-dev libpng-dev oniguruma-dev libxml2-dev \
+RUN apt-get update && apt-get install -y \
+    git unzip libicu-dev libzip-dev libpng-dev libonig-dev libxml2-dev \
     && docker-php-ext-install intl pdo pdo_mysql zip opcache
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 WORKDIR /var/www/html
@@ -12,6 +12,9 @@ WORKDIR /var/www/html
 FROM base AS dev
 RUN pecl install xdebug \
     && docker-php-ext-enable xdebug
+COPY entrypoint-dev.sh /usr/local/bin/entrypoint-dev.sh
+RUN chmod +x /usr/local/bin/entrypoint-dev.sh
+ENTRYPOINT ["entrypoint-dev.sh"]
 
 FROM base AS prod
 ENV APP_ENV=prod

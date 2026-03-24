@@ -1,15 +1,14 @@
-version: "3.9"
 services:
     nginx:
         build:
             context: .
             dockerfile: Dockerfile
-            target: contacts_nginx
+            target: resto_nginx
         container_name: symfony-nginx
         ports:
             - "8080:80"
         volumes:
-            - ./:/symfony-contacts
+            - ./:/var/www/html
         depends_on:
             - php
 
