@@ -191,10 +191,10 @@
                     const vege = item.dataset.vege === '1';
                     const allergenes = item.dataset.allergenes.split(',').filter(id => id !== "");
 
-                    const isVege = !isVege || vege;
+                    const isVeges = !isVege || vege;
                     const nonValide = idExclu.some(id => allergenes.includes(id));
 
-                    if (isVege && !nonValide) {
+                    if (isVeges && !nonValide) {
                         item.classList.remove('d-none');
                     } else {
                         item.classList.add('d-none');
