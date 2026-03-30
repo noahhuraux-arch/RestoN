@@ -2,28 +2,39 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use App\Repository\ReservationRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: ReservationRepository::class)]
+#[ApiResource(
+    normalizationContext: ['groups' => ['reservation:read']],
+    denormalizationContext: ['groups' => ['reservation:write']]
+)]
 class Reservation
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['reservation:read'])]
     private ?int $id = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[Groups(['reservation:read', 'reservation:write'])]
     private ?\DateTime $date = null;
 
     #[ORM\Column(type: Types::TIME_MUTABLE)]
+    #[Groups(['reservation:read', 'reservation:write'])]
     private ?\DateTime $heure = null;
 
     #[ORM\Column]
+    #[Groups(['reservation:read', 'reservation:write'])]
     private ?int $nbPers = null;
 
     #[ORM\ManyToOne(targetEntity: Client::class, inversedBy: 'reservations', cascade: ['persist'])]
+    #[Groups(['reservation:read', 'reservation:write'])]
     private ?Client $client = null;
 
     public function getClient(): ?Client
