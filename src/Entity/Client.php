@@ -28,14 +28,14 @@ class Client extends Personne
         $this->reservations = $reservations;
     }
 
-    public function getNumTel(): ?string
+    public function getTelephone(): ?string
     {
-        return $this->numTel;
+        return $this->telephone;
     }
 
-    public function setNumTel(?string $numTel): static
+    public function setTelephone(?string $telephone): static
     {
-        $this->numTel = $numTel;
+        $this->telephone = $telephone;
 
         return $this;
     }
