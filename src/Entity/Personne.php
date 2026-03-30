@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: PersonneRepository::class)]
 #[ORM\InheritanceType('SINGLE_TABLE')]
@@ -22,16 +23,20 @@ abstract class Personne implements UserInterface, PasswordAuthenticatedUserInter
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['reservation:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 25, nullable: true)]
+    #[Groups(['reservation:read'])]
     private ?string $prenom = null;
 
     #[ORM\Column(length: 64, nullable: true)]
+    #[Groups(['reservation:read'])]
     private ?string $nom = null;
 
     #[ORM\Column(length: 10, nullable: true)]
-    private ?string $telephone = null;
+    #[Groups(['reservation:read'])]
+    protected ?string $telephone = null;
 
     #[ORM\Column(length: 150, unique: true, nullable: true)]
     private ?string $email = null;
