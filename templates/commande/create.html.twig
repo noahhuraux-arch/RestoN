@@ -163,6 +163,12 @@
                     <div class="card-body p-4 text-center">
                         <div class="mb-3 fw-medium">Serveur : {{ serveur.nom }}</div>
                         <div class="mb-4 fw-medium">Table N°{{ table.numero }}</div>
+                        <div class="mb-4 fw-medium">
+                            <div class="mb-2 text-muted small text-uppercase fw-bold">Résumé de la commande :</div>
+                            <div id="order-summary-list" class="text-start border-top pt-2">
+                                <p class="text-muted small">Aucun produit sélectionné</p>
+                            </div>
+                        </div>
                         <button type="submit" class="btn btn-success btn-lg w-100 py-3 fw-bold shadow-sm">VALIDER LA COMMANDE</button>
                     </div>
                 </div>

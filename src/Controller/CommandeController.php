@@ -248,4 +248,30 @@ class CommandeController extends AbstractController
             'id' => $commande->getRestaurant()->getId(),
         ]);
     }
+
+    #[Route('/{id}/commande/{commandeId}/delete', name: 'app_commande_delete', methods: ['GET'])]
+    public function delete(Restaurant $restaurant, int $commandeId, EntityManagerInterface $em): Response
+    {
+        $commande = $em->getRepository(Commande::class)->find($commandeId);
+
+        if (!$commande || $commande->getRestaurant() !== $restaurant) {
+            throw $this->createNotFoundException('Commande introuvable');
+        }
+
+        $user = $this->getUser();
+        $isProprio = ($restaurant->getProprietaire() === $user);
+        $isServeurDuResto = $restaurant->getServeurs()->contains($user);
+        if (!$isProprio && !$isServeurDuResto) {
+            throw $this->createAccessDeniedException('Accès interdit');
+        }
+
+        if ($commande->getTables()) {
+            $commande->getTables()->setDisponible(true);
+        }
+
+        $em->remove($commande);
+        $em->flush();
+
+        return $this->redirectToRoute('app_commande_index', ['id' => $restaurant->getId()]);
+    }
 }
