@@ -30,6 +30,7 @@ class CommandeType extends AbstractType
                 'expanded' => true,
                 'choice_label' => 'libProduit',
                 'by_reference' => false,
+                'mapped' => false,
             ]);
     }
 
