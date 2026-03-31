@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\RestaurantRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -53,6 +54,7 @@ class Restaurant
 
     #[ORM\ManyToOne(inversedBy: 'restaurants')]
     #[ORM\JoinColumn(nullable: false)]
+    #[ApiProperty(example: '/api/proprietaires/1')]
     private ?Proprietaire $proprietaire = null;
 
     #[ORM\Column(length: 10)]
@@ -86,6 +88,7 @@ class Restaurant
     private Collection $serveurs;
 
     #[ORM\OneToMany(targetEntity: Produit::class, mappedBy: 'restaurant', cascade: ['remove'])]
+    #[ApiProperty(example: '[/api/produits/1, /api/produits/2]')]
     #[Groups(['Restaurant_Read', 'Restaurant_Write'])]
     private Collection $produits;
 
@@ -93,6 +96,7 @@ class Restaurant
      * @var Collection<int, Commande>
      */
     #[ORM\OneToMany(targetEntity: Commande::class, mappedBy: 'restaurant')]
+    #[ApiProperty(example: '[/api/commandes/1, /api/commandes/2]')]
     private Collection $commandes;
 
     public function __construct()

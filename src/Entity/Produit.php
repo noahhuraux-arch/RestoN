@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\ProduitRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -44,6 +45,7 @@ abstract class Produit
     #[ORM\ManyToOne(targetEntity: Restaurant::class, inversedBy: 'produits')]
     #[ORM\JoinColumn(nullable: false)]
     #[Groups(['Produit_Read', 'Produit_Write'])]
+    #[ApiProperty(example: '/api/restaurants/1')]
     private ?Restaurant $restaurant = null;
 
     /**
@@ -51,6 +53,7 @@ abstract class Produit
      */
     #[ORM\ManyToMany(targetEntity: Allergene::class, inversedBy: 'produits')]
     #[Groups(['Produit_Read', 'Produit_Write'])]
+    #[ApiProperty(example: '[/api/allergenes/1, /api/allergenes/2]')]
     private Collection $allergenes;
 
     public function __construct()

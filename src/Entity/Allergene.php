@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\AllergeneRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -26,6 +27,7 @@ class Allergene
      * @var Collection<int, Produit>
      */
     #[ORM\ManyToMany(targetEntity: Produit::class, mappedBy: 'allergenes')]
+    #[ApiProperty(example: '[/api/produits/1, /api/produits/2]')]
     #[Groups(['Allergene_Read', 'Allerge_Write'])]
     private Collection $produits;
 

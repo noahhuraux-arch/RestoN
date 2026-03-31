@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\TypePlatRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -26,6 +27,7 @@ class TypePlat
      * @var Collection<int, Plat>
      */
     #[ORM\OneToMany(targetEntity: Plat::class, mappedBy: 'typePlat')]
+    #[ApiProperty(example: '[/api/plats/1, /api/plats/2]')]
     #[Groups(['TypePlat_Read', 'TypePlat_Write'])]
     private Collection $plats;
 

@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\MenuRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -16,6 +17,7 @@ class Menu extends Produit
      * @var Collection<int, Plat>
      */
     #[ORM\ManyToMany(targetEntity: Plat::class, inversedBy: 'menus')]
+    #[ApiProperty(example: '[/api/plats/1, /api/plats/2]')]
     private Collection $idPlat;
 
     public function __construct()
