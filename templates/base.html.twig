@@ -97,8 +97,9 @@
                             {{ app.user.nom }}
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="{{ path('app_utilisateur_show', {name: app.user.prenom}) }}"><i class="fas fa-user me-2"></i>Mon profil</a></li>
                             {% if not is_granted('ROLE_SERVEUR') %}
-                                <li><a class="dropdown-item" href="{{ path('app_proprietaire_update') }}"><i class="fas fa-user-cog me-2"></i>Gérer mon profil</a></li>
+
                                 <li><a class="dropdown-item" href="{{ path('app_proprietaire') }}"><i class="fas fa-store me-2"></i>Mes restaurants</a></li>
                             {% endif %}
                             {% if is_granted('ROLE_PROPRIETAIRE') %}
