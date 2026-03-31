@@ -44,9 +44,16 @@ abstract class Produit
     #[ORM\ManyToMany(targetEntity: Allergene::class, inversedBy: 'produits')]
     private Collection $allergenes;
 
+    /**
+     * @var Collection<int, CommandeQuantite>
+     */
+    #[ORM\OneToMany(targetEntity: CommandeQuantite::class, mappedBy: 'produit', orphanRemoval: true)]
+    private Collection $commandeQuantites;
+
     public function __construct()
     {
         $this->allergenes = new ArrayCollection();
+        $this->commandeQuantites = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -134,6 +141,35 @@ abstract class Produit
     public function removeAllergene(Allergene $allergene): static
     {
         $this->allergenes->removeElement($allergene);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, CommandeQuantite>
+     */
+    public function getCommandeQuantites(): Collection
+    {
+        return $this->commandeQuantites;
+    }
+
+    public function addCommandeQuantite(CommandeQuantite $commandeQuantite): static
+    {
+        if (!$this->commandeQuantites->contains($commandeQuantite)) {
+            $this->commandeQuantites->add($commandeQuantite);
+            $commandeQuantite->setProduit($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCommandeQuantite(CommandeQuantite $commandeQuantite): static
+    {
+        if ($this->commandeQuantites->removeElement($commandeQuantite)) {
+            if ($commandeQuantite->getProduit() === $this) {
+                $commandeQuantite->setProduit(null);
+            }
+        }
 
         return $this;
     }

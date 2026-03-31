@@ -85,9 +85,11 @@
                             <div class="row g-3">
                                 {% for index, p in produits %}
                                     {% set child = form.produits[index] %}
-                                    {% set qteInitiale = 0 %}
-                                    {% for prodId in form.vars.value.produits %}
-                                        {% if prodId.id == p.id %}{% set qteInitiale = qteInitiale + 1 %}{% endif %}
+                                    {% set qteInitiale = 1 %}
+                                    {% for cq in form.vars.value.commandeQuantites %}
+                                        {% if cq.produit.id == p.id %}
+                                            {% set qteInitiale = cq.quantite %}
+                                        {% endif %}
                                     {% endfor %}
 
                                     <div class="col-md-6 col-xl-4 js-filterable-item"
@@ -161,6 +163,12 @@
                     <div class="card-body p-4 text-center">
                         <div class="mb-3 fw-medium">Serveur : {{ serveur.nom }}</div>
                         <div class="mb-4 fw-medium">Table N°{{ table.numero }}</div>
+                        <div class="mb-4 fw-medium">
+                            <div class="mb-2 text-muted small text-uppercase fw-bold">Résumé de la commande :</div>
+                            <div id="order-summary-list" class="text-start border-top pt-2">
+                                <p class="text-muted small">Aucun produit sélectionné</p>
+                            </div>
+                        </div>
                         <button type="submit" class="btn btn-success btn-lg w-100 py-3 fw-bold shadow-sm">VALIDER LA COMMANDE</button>
                     </div>
                 </div>
@@ -176,25 +184,61 @@
     </style>
 
     <script>
+        const produitsSelectionnesIds = {{ produitsSelectionnesIds|default([])|json_encode|raw }};
+
         document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.js-product-card');
+            const totalDisplay = document.getElementById('total-display');
+            const summaryList = document.getElementById('order-summary-list');
             const vegeFiltre = document.getElementById('vege-filtre');
             const allergen = document.querySelectorAll('.js-allergen-checkbox');
             const filtre = document.querySelectorAll('.js-filterable-item');
-            const total = document.getElementById('total-display');
 
+            function updateTotal() {
+                let totalValue = 0;
+                let summaryHtml = '';
+
+                document.querySelectorAll('.js-check:checked').forEach(check => {
+                    const card = check.closest('.js-product-card');
+                    const price = parseFloat(card.dataset.price);
+                    const qtyInput = card.querySelector('.js-qty-input');
+                    const qty = parseInt(qtyInput.value) || 1;
+                    const productName = card.querySelector('.fw-bold.text-dark').innerText;
+
+                    totalValue += (price * qty);
+
+                    summaryHtml += `
+                    <div class="d-flex justify-content-between align-items-center mb-1 small">
+                        <span>${productName} x ${qty}</span>
+                        <span class="fw-bold">${(price * qty).toFixed(2).replace('.', ',')} €</span>
+                    </div>`;
+                });
+
+                if (totalDisplay) {
+                    totalDisplay.innerText = totalValue.toLocaleString('fr-FR', { minimumFractionDigits: 2 });
+                }
+
+                if (summaryList) {
+                    summaryList.innerHTML = summaryHtml === ''
+                        ? '<p class="text-muted small italic">Aucun produit sélectionné</p>'
+                        : summaryHtml;
+                }
+            }
 
             function runFilters() {
+                if (!vegeFiltre) return;
                 const isVege = vegeFiltre.checked;
                 const idExclu = Array.from(allergen).filter(cb => cb.checked).map(cb => cb.value);
 
                 filtre.forEach(item => {
                     const vege = item.dataset.vege === '1';
-                    const allergenes = item.dataset.allergenes.split(',').filter(id => id !== "");
+                    const allergenesAttr = item.dataset.allergenes || "";
+                    const allergenes = allergenesAttr.split(',').filter(id => id !== "");
 
-                    const isVeges = !isVege || vege;
-                    const nonValide = idExclu.some(id => allergenes.includes(id));
+                    const respecteVeges = !isVege || vege;
+                    const aUnAllergene = idExclu.some(id => allergenes.includes(id));
 
-                    if (isVeges && !nonValide) {
+                    if (respecteVeges && !aUnAllergene) {
                         item.classList.remove('d-none');
                     } else {
                         item.classList.add('d-none');
@@ -202,33 +246,52 @@
                 });
             }
 
+            cards.forEach(card => {
+                const checkbox = card.querySelector('.js-check');
+                const qtyInput = card.querySelector('.js-qty-input');
+                const qtyContainer = card.querySelector('.js-qty-container');
+                const iconCheck = card.querySelector('.js-icon-check');
 
-            function updateTotal() {
-                let total = 0;
-                document.querySelectorAll('.js-check:checked').forEach(check => {
-                    const card = check.closest('.js-product-card');
-                    const price = parseFloat(card.dataset.price);
-                    const qtyInput = card.querySelector('.js-qty-input');
-                    const qty = parseInt(qtyInput.value) || 1;
-                    total += (price * qty);
-                });
-                total.innerText = total.toLocaleString('fr-FR', { minimumFractionDigits: 2 });
-            }
+                const match = qtyInput ? qtyInput.name.match(/\d+/) : null;
+                const produitId = match ? parseInt(match[0]) : null;
 
-            document.querySelectorAll('.js-product-card').forEach(card => {
-                card.addEventListener('click', function(e) {
-                    if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') return;
-                    const checkbox = this.querySelector('.js-check');
-                    checkbox.checked = !checkbox.checked;
-                    this.classList.toggle('active', checkbox.checked);
-                    this.querySelector('.js-qty-container').classList.toggle('d-none', !checkbox.checked);
-                    this.querySelector('.js-icon-check').classList.toggle('d-none', !checkbox.checked);
-                    updateTotal();
-                });
-                card.querySelector('.js-qty-input').addEventListener('input', updateTotal);
+                if (produitId && produitsSelectionnesIds.includes(produitId)) {
+                    checkbox.checked = true;
+                    card.classList.add('active');
+                    if (qtyContainer) qtyContainer.classList.remove('d-none');
+                    if (iconCheck) iconCheck.classList.remove('d-none');
+                }
             });
 
-            vegeFiltre.addEventListener('change', runFilters);
+            cards.forEach(card => {
+                const qtyInput = card.querySelector('.js-qty-input');
+                const qtyContainer = card.querySelector('.js-qty-container');
+                const iconCheck = card.querySelector('.js-icon-check');
+
+                card.addEventListener('click', function(e) {
+                    if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') return;
+
+                    const checkbox = this.querySelector('.js-check');
+                    checkbox.checked = !checkbox.checked;
+
+                    this.classList.toggle('active', checkbox.checked);
+                    if (qtyContainer) qtyContainer.classList.toggle('d-none', !checkbox.checked);
+                    if (iconCheck) iconCheck.classList.toggle('d-none', !checkbox.checked);
+
+                    updateTotal();
+                });
+
+                if (qtyInput) {
+                    qtyInput.addEventListener('input', function(e) {
+                        e.stopPropagation();
+                        updateTotal();
+                    });
+                }
+            });
+
+            if (vegeFiltre) {
+                vegeFiltre.addEventListener('change', runFilters);
+            }
             allergen.forEach(cb => cb.addEventListener('change', runFilters));
 
             document.querySelectorAll('.dropdown-menu').forEach(menu => {
@@ -236,6 +299,7 @@
             });
 
             updateTotal();
+            runFilters();
         });
     </script>
 {% endblock %}

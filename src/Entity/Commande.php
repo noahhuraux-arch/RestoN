@@ -30,27 +30,25 @@ class Commande
     #[ORM\ManyToOne]
     private ?Table $tables = null;
 
-    /**
-     * Relation ManyToMany vers l'entité Produit (classe mère)
-     * On utilise une Collection pour stocker la liste des articles sélectionnés.
-     */
-    #[ORM\ManyToMany(targetEntity: Produit::class)]
-    #[ORM\JoinTable(name: 'commande_produit')]
-    private Collection $produits;
-
     #[ORM\ManyToOne(inversedBy: 'commandes')]
     private ?Restaurant $restaurant = null;
 
     #[ORM\Column]
     private ?bool $isPaye = false;
 
+    /**
+     * @var Collection<int, CommandeQuantite>
+     */
+    #[ORM\OneToMany(targetEntity: CommandeQuantite::class, mappedBy: 'commande', cascade: ['persist'], orphanRemoval: true)]
+    private Collection $commandeQuantites;
+
     #[ORM\Column(enumType: EnumEtatCommande::class)]
     private ?EnumEtatCommande $etatCommande = EnumEtatCommande::WaitingTreatment;
 
     public function __construct()
     {
-        $this->produits = new ArrayCollection();
         $this->dateCommande = new \DateTime();
+        $this->commandeQuantites = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -111,13 +109,25 @@ class Commande
      */
     public function getProduits(): Collection
     {
-        return $this->produits;
+        return $this->commandeQuantites->map(
+            fn ($cq) => $cq->getProduit()
+        );
     }
 
-    public function addProduit(Produit $produit): static
+    public function addProduit(Produit $produit, int $quantite = 1): static
     {
-        if (!$this->produits->contains($produit)) {
-            $this->produits->add($produit);
+        $existingCq = $this->commandeQuantites->findFirst(
+            fn ($key, CommandeQuantite $cq) => $cq->getProduit() === $produit
+        );
+
+        if ($existingCq) {
+            $existingCq->setQuantite($quantite);
+        } else {
+            $cq = new CommandeQuantite();
+            $cq->setProduit($produit);
+            $cq->setCommande($this);
+            $cq->setQuantite($quantite);
+            $this->commandeQuantites->add($cq);
         }
 
         return $this;
@@ -125,7 +135,13 @@ class Commande
 
     public function removeProduit(Produit $produit): static
     {
-        $this->produits->removeElement($produit);
+        $cq = $this->commandeQuantites->findFirst(
+            fn ($key, CommandeQuantite $cq) => $cq->getProduit() === $produit
+        );
+
+        if (null !== $cq) {
+            $this->commandeQuantites->removeElement($cq);
+        }
 
         return $this;
     }
@@ -150,6 +166,35 @@ class Commande
     public function setIsPaye(bool $isPaye): static
     {
         $this->isPaye = $isPaye;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, CommandeQuantite>
+     */
+    public function getCommandeQuantites(): Collection
+    {
+        return $this->commandeQuantites;
+    }
+
+    public function addCommandeQuantite(CommandeQuantite $commandeQuantite): static
+    {
+        if (!$this->commandeQuantites->contains($commandeQuantite)) {
+            $this->commandeQuantites->add($commandeQuantite);
+            $commandeQuantite->setCommande($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCommandeQuantite(CommandeQuantite $commandeQuantite): static
+    {
+        if ($this->commandeQuantites->removeElement($commandeQuantite)) {
+            if ($commandeQuantite->getCommande() === $this) {
+                $commandeQuantite->setCommande(null);
+            }
+        }
 
         return $this;
     }
