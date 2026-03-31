@@ -124,4 +124,14 @@ final class ProprietaireController extends AbstractController
             'stats' => $Statistique,
         ]);
     }
+
+    #[Route('/profil/{name}', name: 'app_utilisateur_show', requirements: ['id' => Requirement::DIGITS])]
+    public function profil(): Response
+    {
+        $personne = $this->getUser();
+
+        return $this->render('profil/profil.html.twig', [
+            'personne' => $personne,
+        ]);
+    }
 }
