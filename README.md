@@ -36,7 +36,9 @@ docker compose up
 
 ### Accéder au serveur Web
 
-Naviguez alors à partir de cette adresse : [https://127.0.0.1:8080/](https://127.0.0.1:8000/)
+Naviguez alors à partir de cette adresse : [https://127.0.0.1:8080/](https://127.0.0.1:8000/)  
+A noté que le site est déployé à l'adresse suivante (accessible uniquement via le VPN, ou sur une machine de l'IUT) : 
+[Resto-N](http://10.31.32.12) 
 
 ## Configuration de la base de données
 
