@@ -2,9 +2,11 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\ApiFilter;
 use App\Repository\PlatRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -17,6 +19,10 @@ use Doctrine\ORM\Mapping as ORM;
         new GetCollection(security: "is_granted('IS_AUTHENTICATED_FULLY')"),
     ]
 )]
+#[ApiFilter(SearchFilter::class, properties: [
+    'typePlat' => 'exact',
+    'allergenes' => 'exact',
+])]
 class Plat extends Produit
 {
     #[ORM\ManyToOne(inversedBy: 'plats')]
