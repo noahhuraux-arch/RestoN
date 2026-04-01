@@ -7,7 +7,6 @@ RUN mkdir -p /var/www/html/public && \
     chown -R nginx:nginx /var/www/html && \
     chmod -R 755 /var/www/html
 WORKDIR /var/www/html/public
-
 HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
     CMD wget --quiet --tries=1 --spider http://localhost/ || exit 1
 
@@ -39,6 +38,7 @@ RUN docker-php-ext-install -j$(nproc) \
     gd \
     xml \
     opcache
+
 RUN docker-php-ext-enable opcache && \
     echo "opcache.enable=1" >> /usr/local/etc/php/conf.d/docker-php-ext-opcache.ini && \
     echo "opcache.enable_cli=0" >> /usr/local/etc/php/conf.d/docker-php-ext-opcache.ini && \
@@ -52,8 +52,7 @@ WORKDIR /var/www/html
 RUN echo "display_errors=0" >> /usr/local/etc/php/conf.d/docker-php.ini && \
     echo "log_errors=1" >> /usr/local/etc/php/conf.d/docker-php.ini && \
     echo "error_log=/var/log/php-errors.log" >> /usr/local/etc/php/conf.d/docker-php.ini
-
-# PHP Production Stage
+# PHP Production
 FROM php-base AS php-prod
 LABEL maintainer="Resto-N Team"
 LABEL description="Production PHP-FPM server for Resto-N"
@@ -86,7 +85,6 @@ RUN chown -R www-data:www-data /var/www/html/var && \
 USER www-data
 HEALTHCHECK --interval=30s --timeout=10s --start-period=15s --retries=3 \
     CMD php bin/console about || exit 1
-
 EXPOSE 9000
 
 # Final Stage
@@ -98,3 +96,4 @@ COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 CMD ["php-fpm"]
+

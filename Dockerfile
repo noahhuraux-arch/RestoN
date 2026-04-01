@@ -31,3 +31,4 @@ RUN composer install --no-dev --optimize-autoloader --no-interaction \
     && php bin/console cache:clear --env=prod \
     && php bin/console asset-map:compile --env=prod
 USER root
+
