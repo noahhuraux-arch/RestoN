@@ -13,7 +13,8 @@ security:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
-        main:
+        main:            
+            entry_point: App\Security\ApiAuthenticationEntryPoint
             lazy: true
             provider: app_user_provider
             form_login:
@@ -34,7 +35,23 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        # - { path: ^/admin, roles: ROLE_ADMIN }
+    access_control:
+        - { path: ^/api/?$, roles: PUBLIC_ACCESS }
+        - { path: ^/api/allergenes, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/api/allergenes/\d+$, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/api/menus, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/api/menus/\d+$, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/api/plats, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/api/plats/\d+$, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/api/restaurants, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/api/restaurants/\d+$, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/api/type_plats, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/api/type_plats/\d+$, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/api/produits, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/api/produits/\d+$, roles: IS_AUTHENTICATED_FULLY }
+
+
+
         # - { path: ^/profile, roles: ROLE_USER }
 
 when@test:

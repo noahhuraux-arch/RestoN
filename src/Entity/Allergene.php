@@ -2,12 +2,25 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiProperty;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
 use App\Repository\AllergeneRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: AllergeneRepository::class)]
+#[ApiResource(
+    operations: [
+        new Get(security: "is_granted('IS_AUTHENTICATED_FULLY')"),
+        new GetCollection(security: "is_granted('IS_AUTHENTICATED_FULLY')"),
+    ],
+    normalizationContext: ['groups' => ['Allergene_Read']],
+    denormalizationContext: ['groups' => ['Allergene_Write']]
+)]
 class Allergene
 {
     #[ORM\Id]
@@ -16,12 +29,15 @@ class Allergene
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['Allergene_Read', 'Allerge_Write'])]
     private ?string $name = null;
 
     /**
      * @var Collection<int, Produit>
      */
     #[ORM\ManyToMany(targetEntity: Produit::class, mappedBy: 'allergenes')]
+    #[ApiProperty(example: '[/api/produits/1, /api/produits/2]')]
+    #[Groups(['Allergene_Read', 'Allerge_Write'])]
     private Collection $produits;
 
     public function __construct()

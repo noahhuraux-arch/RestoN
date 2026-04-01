@@ -1,4 +1,4 @@
-
+.vscode/
 ###> symfony/framework-bundle ###
 /.env.local
 /.env.local.php
@@ -30,3 +30,4 @@
 ###> vincentlanglet/twig-cs-fixer ###
 /.twig-cs-fixer.cache
 ###< vincentlanglet/twig-cs-fixer ###
+.vscode
