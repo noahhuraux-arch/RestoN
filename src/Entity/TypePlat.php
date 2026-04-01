@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
 use App\Repository\TypePlatRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -11,7 +13,14 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: TypePlatRepository::class)]
-#[ApiResource(normalizationContext: ['groups' => ['TypePlat_Read']], denormalizationContext: ['groups' => ['TypePlat_Write']])]
+#[ApiResource(
+    operations: [
+        new Get(),
+        new GetCollection(),
+    ],
+    normalizationContext: ['groups' => ['TypePlat_Read']],
+    denormalizationContext: ['groups' => ['TypePlat_Write']]
+)]
 class TypePlat
 {
     #[ORM\Id]

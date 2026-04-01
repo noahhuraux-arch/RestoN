@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
 use App\Repository\ProduitRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -18,7 +20,14 @@ use Symfony\Component\Serializer\Attribute\Groups;
     'menu' => Menu::class,
     'plat' => Plat::class,
 ])]
-#[ApiResource(normalizationContext: ['groups' => ['Produit_Read']], denormalizationContext: ['groups' => ['Produit_Write']])]
+#[ApiResource(
+    operations: [
+        new Get(),
+        new GetCollection(),
+    ],
+    normalizationContext: ['groups' => ['Produit_Read']],
+    denormalizationContext: ['groups' => ['Produit_Write']]
+)]
 abstract class Produit
 {
     #[ORM\Id]
