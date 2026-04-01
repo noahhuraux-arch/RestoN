@@ -22,8 +22,8 @@ use Symfony\Component\Serializer\Attribute\Groups;
 ])]
 #[ApiResource(
     operations: [
-        new Get(),
-        new GetCollection(),
+        new Get(security: "is_granted('IS_AUTHENTICATED_FULLY')"),
+        new GetCollection(security: "is_granted('IS_AUTHENTICATED_FULLY')"),
     ],
     normalizationContext: ['groups' => ['Produit_Read']],
     denormalizationContext: ['groups' => ['Produit_Write']]

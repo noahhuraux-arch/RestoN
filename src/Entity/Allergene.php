@@ -15,8 +15,8 @@ use Symfony\Component\Serializer\Attribute\Groups;
 #[ORM\Entity(repositoryClass: AllergeneRepository::class)]
 #[ApiResource(
     operations: [
-        new Get(),
-        new GetCollection(),
+        new Get(security: "is_granted('IS_AUTHENTICATED_FULLY')"),
+        new GetCollection(security: "is_granted('IS_AUTHENTICATED_FULLY')"),
     ],
     normalizationContext: ['groups' => ['Allergene_Read']],
     denormalizationContext: ['groups' => ['Allergene_Write']]
