@@ -6,11 +6,13 @@ use App\Repository\ClientRepository;
 use Doctrine\Common\Collections\ArrayCollection; // Ne pas oublier cet import
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Ignore;
 
 #[ORM\Entity(repositoryClass: ClientRepository::class)]
 class Client extends Personne
 {
     #[ORM\OneToMany(targetEntity: Reservation::class, mappedBy: 'client')]
+    #[Ignore]
     private Collection $reservations;
 
     public function __construct()
