@@ -30,6 +30,7 @@ class Allergene
 
     #[ORM\Column(length: 255)]
     #[Groups(['Allergene_Read', 'Allerge_Write'])]
+    #[ApiProperty(example: 'Fruits à coque')]
     private ?string $name = null;
 
     /**

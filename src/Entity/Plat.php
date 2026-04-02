@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
@@ -27,10 +28,13 @@ class Plat extends Produit
 {
     #[ORM\ManyToOne(inversedBy: 'plats')]
     #[ORM\JoinColumn(nullable: true)]
+    #[ApiProperty(example: '/api/type_plats/1')]
+
     private ?TypePlat $typePlat = null;
 
     /** @var Collection<int, Menu> */
     #[ORM\ManyToMany(targetEntity: Menu::class, mappedBy: 'idPlat')]
+    #[ApiProperty(example: '/api/menus/18')]
     private Collection $menus;
 
     #[ORM\Column]
