@@ -33,32 +33,38 @@ class Restaurant
     #[Assert\NotBlank]
     #[Assert\Length(max: 64, maxMessage: 'Le nom ne doit pas dépasser {{ limit }} caractères.')]
     #[Groups(['Restaurant_Read', 'Restaurant_Write'])]
+    #[ApiProperty(example: 'Ichiraku Ramen')]
     private ?string $libRestau = null;
 
     #[ORM\Column(length: 100, nullable: true)]
     #[Assert\NotBlank]
     #[Assert\Length(max: 100, maxMessage: "L'adresse ne doit pas dépasser {{ limit }} caractères.")]
     #[Groups(['Restaurant_Read', 'Restaurant_Write'])]
+    #[ApiProperty(example: 'Rue du Hokage')]
     private ?string $adrRestau = null;
 
     #[ORM\Column(nullable: true)]
     #[Assert\NotBlank]
     #[Assert\Regex(pattern: '/^[0-9]{5}$/', message: "Le code postal n'est pas valide.")]
     #[Groups(['Restaurant_Read', 'Restaurant_Write'])]
+    #[ApiProperty(example: '31500')]
     private ?int $cpRestau = null;
 
     #[ORM\Column(length: 50, nullable: true)]
     #[Assert\NotBlank]
     #[Assert\Length(max: 50, maxMessage: 'La ville ne doit pas dépasser {{ limit }} caractères.')]
     #[Groups(['Restaurant_Read', 'Restaurant_Write'])]
+    #[ApiProperty(example: 'Konoha')]
     private ?string $villeRestau = null;
 
     #[ORM\Column]
     #[Groups(['Restaurant_Read'])]
+    #[ApiProperty(example: 12)]
     private ?int $nbTable = null;
 
     #[ORM\Column(nullable: true)]
     #[Groups(['Restaurant_Read', 'Restaurant_Write'])]
+    #[ApiProperty(example: 2)]
     private ?int $nbEtoiles = null;
 
     #[ORM\ManyToOne(inversedBy: 'restaurants')]
@@ -70,12 +76,14 @@ class Restaurant
     #[Assert\NotBlank]
     #[Assert\Regex(pattern: '/^(?:(?:\+|00)33[\s.-]{0,3}(?:\(0\)[\s.-]{0,3})?|0)[1-9](?:(?:[\s.-]?\d{2}){4})$/', message: 'Format de téléphone invalide')]
     #[Groups(['Restaurant_Read', 'Restaurant_Write'])]
+    #[ApiProperty(example: '0579153085')]
     private ?string $tel_restau = null;
 
     #[ORM\Column(length: 150)]
     #[Assert\NotBlank]
     #[Assert\Email(message: "L'email '{{ value }}' n'est pas valide.")]
     #[Groups(['Restaurant_Read', 'Restaurant_Write'])]
+    #[ApiProperty(example: 'ichirakuRamen@gmail.com')]
     private ?string $email_restau = null;
 
     #[ORM\Column(length: 255, nullable: true)]

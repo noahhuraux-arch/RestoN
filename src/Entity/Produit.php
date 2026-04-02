@@ -37,11 +37,13 @@ abstract class Produit
 
     #[ORM\Column(length: 64)]
     #[Groups(['Produit_Read', 'Produit_Write'])]
-    private ?string $libProduit = null;
+    #[ApiProperty(example: 'Menu du Jour')]
+    protected ?string $libProduit = null;
 
     #[ORM\Column]
     #[Groups(['Produit_Read', 'Produit_Write'])]
-    private ?float $prixProduit = null;
+    #[ApiProperty(example: 20)]
+    protected ?float $prixProduit = null;
 
     #[ORM\Column]
     #[Groups(['Produit_Read', 'Produit_Write'])]
@@ -49,21 +51,22 @@ abstract class Produit
 
     #[ORM\Column(length: 1024, nullable: true)]
     #[Groups(['Produit_Read', 'Produit_Write'])]
-    private ?string $descriptionProduit = null;
+    #[ApiProperty(example: 'Séléction de nos plats de la journée')]
+    protected ?string $descriptionProduit = null;
 
     #[ORM\ManyToOne(targetEntity: Restaurant::class, inversedBy: 'produits')]
     #[ORM\JoinColumn(nullable: false)]
     #[Groups(['Produit_Read', 'Produit_Write'])]
     #[ApiProperty(example: '/api/restaurants/1')]
-    private ?Restaurant $restaurant = null;
+    protected ?Restaurant $restaurant = null;
 
     /**
      * @var Collection<int, Allergene>
      */
     #[ORM\ManyToMany(targetEntity: Allergene::class, inversedBy: 'produits')]
     #[Groups(['Produit_Read', 'Produit_Write'])]
-    #[ApiProperty(example: '[/api/allergenes/1, /api/allergenes/2]')]
-    private Collection $allergenes;
+    #[ApiProperty(example: "[/api/allergenes/1, /api/allergenes/2]")]
+    protected Collection $allergenes;
 
     public function __construct()
     {

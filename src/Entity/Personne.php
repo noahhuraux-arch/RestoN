@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiProperty;
 use App\Repository\PersonneRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -28,14 +29,17 @@ abstract class Personne implements UserInterface, PasswordAuthenticatedUserInter
 
     #[ORM\Column(length: 25, nullable: true)]
     #[Groups(['reservation:read'])]
-    private ?string $prenom = null;
+    #[ApiProperty(example: 'Mitsuha')]
+    protected ?string $prenom = null;
 
     #[ORM\Column(length: 64, nullable: true)]
     #[Groups(['reservation:read'])]
-    private ?string $nom = null;
+    #[ApiProperty(example: 'Miyamizu')]
+    protected ?string $nom = null;
 
     #[ORM\Column(length: 10, nullable: true)]
     #[Groups(['reservation:read'])]
+    #[ApiProperty(example: '0579153085')]
     protected ?string $telephone = null;
 
     #[ORM\Column(length: 150, unique: true, nullable: true)]
