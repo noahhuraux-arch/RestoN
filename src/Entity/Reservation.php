@@ -2,6 +2,9 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\DateFilter;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
@@ -20,6 +23,12 @@ use Symfony\Component\Serializer\Attribute\Groups;
     normalizationContext: ['groups' => ['reservation:read']],
     denormalizationContext: ['groups' => ['reservation:write']]
 )]
+#[ApiFilter(SearchFilter::class, properties: [
+    'client.nom' => 'partial',
+])]
+#[ApiFilter(DateFilter::class, properties: [
+    'date'
+])]
 class Reservation
 {
     #[ORM\Id]
