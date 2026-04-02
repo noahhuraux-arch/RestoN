@@ -2,7 +2,10 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
 use App\Repository\ReservationRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -10,6 +13,10 @@ use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: ReservationRepository::class)]
 #[ApiResource(
+    operations: [
+        new Get(),
+        new GetCollection(),
+    ],
     normalizationContext: ['groups' => ['reservation:read']],
     denormalizationContext: ['groups' => ['reservation:write']]
 )]
@@ -23,14 +30,17 @@ class Reservation
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     #[Groups(['reservation:read', 'reservation:write'])]
+    #[ApiProperty(example: '2026-03-30T00:00:00+00:00')]
     private ?\DateTime $date = null;
 
     #[ORM\Column(type: Types::TIME_MUTABLE)]
     #[Groups(['reservation:read', 'reservation:write'])]
+    #[ApiProperty(example: '1970-01-01T12:30:00+00:00')]
     private ?\DateTime $heure = null;
 
     #[ORM\Column]
     #[Groups(['reservation:read', 'reservation:write'])]
+    #[ApiProperty(example: 3)]
     private ?int $nbPers = null;
 
     #[ORM\ManyToOne(targetEntity: Client::class, inversedBy: 'reservations', cascade: ['persist'])]
