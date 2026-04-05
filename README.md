@@ -26,7 +26,9 @@ Attention la commande suivante est à utiliser la première fois uniquement, car
 et donc reset par la même occasion. 
 ```bash
 docker compose up --build
+docker compose exec php composer install
 ```
+Pour que le tout fonctionne correctement au démarrage pensez à bien remplir les informations dans le .env.local ! (effectuer une copie du .env, puis y mettre les informations nécessaire) 
 
 Dans le cas où vous cherchez à redémarrer votre serveur, utilisez les commandes suivantes : 
 ```bash
@@ -36,7 +38,7 @@ docker compose up
 
 ### Accéder au serveur Web
 
-Naviguez alors à partir de cette adresse : [https://127.0.0.1:8080/](https://127.0.0.1:8000/)  
+Naviguez alors à partir de cette adresse : [https://localhost:8080/](https://127.0.0.1:8000/)  
 A noté que le site est déployé à l'adresse suivante (accessible uniquement via le VPN, ou sur une machine de l'IUT) : 
 [Resto-N](http://10.31.32.12) 
 
