@@ -3,6 +3,13 @@
 ## Auteurs
 
 
+Dehêtre-Cordier Bastien : dehe0014  
+Fagot-Naude Amélien : fago0014  
+Gaboyard Aymeric : gabo0013  
+Huraux Noah : hura0003  
+
+### **root** : Travail fait par Noah Huraux -> oublie de configuration git sur la VM
+
 ## Installation / Configuration
 
 ### Installation par `Composer`
@@ -22,13 +29,19 @@ Configurer l'intégration de PHP Coding Standards Fixer dans PhpStorm en fixant 
 
 ### Démarrer le serveur Web
 
-Attention la commande suivante est à utiliser la première fois uniquement, car à chaque build la BD est crée automatiquement
-et donc reset par la même occasion. 
+Une fois le projet cloné, mettez en place votre fichier .env.local en y mettant vos informations. 
+Voici une commande pour copier le fichier et le modifier :
 ```bash
-docker compose up --build
+cp .env .env.local
+nano .env.local
+```
+
+Attention la commande suivante est à utiliser la première fois uniquement, car à chaque build la BD sera créer automatiquement
+et donc reset par la même occasion.
+```bash
+docker compose up --build -d
 docker compose exec php composer install
 ```
-Pour que le tout fonctionne correctement au démarrage pensez à bien remplir les informations dans le .env.local ! (effectuer une copie du .env, puis y mettre les informations nécessaire) 
 
 Dans le cas où vous cherchez à redémarrer votre serveur, utilisez les commandes suivantes : 
 ```bash
