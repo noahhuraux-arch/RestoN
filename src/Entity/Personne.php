@@ -2,11 +2,13 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiProperty;
 use App\Repository\PersonneRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: PersonneRepository::class)]
 #[ORM\InheritanceType('SINGLE_TABLE')]
@@ -22,16 +24,23 @@ abstract class Personne implements UserInterface, PasswordAuthenticatedUserInter
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['reservation:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 25, nullable: true)]
-    private ?string $prenom = null;
+    #[Groups(['reservation:read'])]
+    #[ApiProperty(example: 'Mitsuha')]
+    protected ?string $prenom = null;
 
     #[ORM\Column(length: 64, nullable: true)]
-    private ?string $nom = null;
+    #[Groups(['reservation:read'])]
+    #[ApiProperty(example: 'Miyamizu')]
+    protected ?string $nom = null;
 
     #[ORM\Column(length: 10, nullable: true)]
-    private ?string $telephone = null;
+    #[Groups(['reservation:read'])]
+    #[ApiProperty(example: '0579153085')]
+    protected ?string $telephone = null;
 
     #[ORM\Column(length: 150, unique: true, nullable: true)]
     private ?string $email = null;

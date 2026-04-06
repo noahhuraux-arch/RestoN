@@ -30,6 +30,7 @@ class TypePlat
 
     #[ORM\Column(length: 255)]
     #[Groups(['TypePlat_Read', 'TypePlat_Write'])]
+    #[ApiProperty(example: 'Entrée')]
     private ?string $lib = null;
 
     /**
