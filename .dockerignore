@@ -1,0 +1,11 @@
+.git
+.idea
+vendor
+node_modules
+var/cache
+var/log
+.php-cs-fixer.cache
+.twig-cs-fixer.cache
+
+.env.local
+.env.*.local

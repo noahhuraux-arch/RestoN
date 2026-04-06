@@ -6,11 +6,13 @@ use App\Repository\ClientRepository;
 use Doctrine\Common\Collections\ArrayCollection; // Ne pas oublier cet import
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Ignore;
 
 #[ORM\Entity(repositoryClass: ClientRepository::class)]
 class Client extends Personne
 {
     #[ORM\OneToMany(targetEntity: Reservation::class, mappedBy: 'client')]
+    #[Ignore]
     private Collection $reservations;
 
     public function __construct()
@@ -28,14 +30,14 @@ class Client extends Personne
         $this->reservations = $reservations;
     }
 
-    public function getNumTel(): ?string
+    public function getTelephone(): ?string
     {
-        return $this->numTel;
+        return $this->telephone;
     }
 
-    public function setNumTel(?string $numTel): static
+    public function setTelephone(?string $telephone): static
     {
-        $this->numTel = $numTel;
+        $this->telephone = $telephone;
 
         return $this;
     }

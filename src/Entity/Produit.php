@@ -2,10 +2,16 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiProperty;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
 use App\Repository\ProduitRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Serializer\Attribute\Ignore;
 
 #[ORM\Entity(repositoryClass: ProduitRepository::class)]
 #[ORM\InheritanceType('SINGLE_TABLE')]
@@ -15,6 +21,14 @@ use Doctrine\ORM\Mapping as ORM;
     'menu' => Menu::class,
     'plat' => Plat::class,
 ])]
+#[ApiResource(
+    operations: [
+        new Get(security: "is_granted('IS_AUTHENTICATED_FULLY')"),
+        new GetCollection(security: "is_granted('IS_AUTHENTICATED_FULLY')"),
+    ],
+    normalizationContext: ['groups' => ['Produit_Read']],
+    denormalizationContext: ['groups' => ['Produit_Write']]
+)]
 abstract class Produit
 {
     #[ORM\Id]
@@ -23,30 +37,49 @@ abstract class Produit
     private ?int $id = null;
 
     #[ORM\Column(length: 64)]
-    private ?string $libProduit = null;
+    #[Groups(['Produit_Read', 'Produit_Write'])]
+    #[ApiProperty(example: 'Menu du Jour')]
+    protected ?string $libProduit = null;
 
     #[ORM\Column]
-    private ?float $prixProduit = null;
+    #[Groups(['Produit_Read', 'Produit_Write'])]
+    #[ApiProperty(example: 20)]
+    protected ?float $prixProduit = null;
 
     #[ORM\Column]
+    #[Groups(['Produit_Read', 'Produit_Write'])]
     private ?bool $visible = null;
 
     #[ORM\Column(length: 1024, nullable: true)]
-    private ?string $descriptionProduit = null;
+    #[Groups(['Produit_Read', 'Produit_Write'])]
+    #[ApiProperty(example: 'Séléction de nos plats de la journée')]
+    protected ?string $descriptionProduit = null;
 
     #[ORM\ManyToOne(targetEntity: Restaurant::class, inversedBy: 'produits')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Restaurant $restaurant = null;
+    #[Groups(['Produit_Read', 'Produit_Write'])]
+    #[ApiProperty(example: '/api/restaurants/1')]
+    protected ?Restaurant $restaurant = null;
 
     /**
      * @var Collection<int, Allergene>
      */
     #[ORM\ManyToMany(targetEntity: Allergene::class, inversedBy: 'produits')]
-    private Collection $allergenes;
+    #[Groups(['Produit_Read', 'Produit_Write'])]
+    #[ApiProperty(example: "[/api/allergenes/1, /api/allergenes/2]")]
+    protected Collection $allergenes;
+
+    /**
+     * @var Collection<int, CommandeQuantite>
+     */
+    #[ORM\OneToMany(targetEntity: CommandeQuantite::class, mappedBy: 'produit', orphanRemoval: true)]
+    #[Ignore]
+    private Collection $commandeQuantites;
 
     public function __construct()
     {
         $this->allergenes = new ArrayCollection();
+        $this->commandeQuantites = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -134,6 +167,35 @@ abstract class Produit
     public function removeAllergene(Allergene $allergene): static
     {
         $this->allergenes->removeElement($allergene);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, CommandeQuantite>
+     */
+    public function getCommandeQuantites(): Collection
+    {
+        return $this->commandeQuantites;
+    }
+
+    public function addCommandeQuantite(CommandeQuantite $commandeQuantite): static
+    {
+        if (!$this->commandeQuantites->contains($commandeQuantite)) {
+            $this->commandeQuantites->add($commandeQuantite);
+            $commandeQuantite->setProduit($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCommandeQuantite(CommandeQuantite $commandeQuantite): static
+    {
+        if ($this->commandeQuantites->removeElement($commandeQuantite)) {
+            if ($commandeQuantite->getProduit() === $this) {
+                $commandeQuantite->setProduit(null);
+            }
+        }
 
         return $this;
     }

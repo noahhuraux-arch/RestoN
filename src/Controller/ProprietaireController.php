@@ -2,9 +2,9 @@
 
 namespace App\Controller;
 
-use App\Entity\Proprietaire;
+use App\Entity\Client;
 use App\Entity\Restaurant;
-use App\Form\ProprietaireType;
+use App\Form\ClientType;
 use App\Repository\CommandeRepository;
 use App\Repository\ReservationRepository;
 use App\Repository\ServeurRepository;
@@ -47,8 +47,8 @@ final class ProprietaireController extends AbstractController
     #[Route('/register', name: 'app_proprietaire_register')]
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
     {
-        $user = new Proprietaire();
-        $form = $this->createForm(ProprietaireType::class, $user);
+        $user = new Client();
+        $form = $this->createForm(ClientType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -59,7 +59,7 @@ final class ProprietaireController extends AbstractController
                 )
             );
 
-            $user->setRoles(['ROLE_PROPRIETAIRE']);
+            $user->setRoles(['ROLE_CLIENT']);
 
             $entityManager->persist($user);
             $entityManager->flush();
@@ -78,7 +78,7 @@ final class ProprietaireController extends AbstractController
     {
         $proprietaire = $this->getUser();
 
-        $form = $this->createForm(ProprietaireType::class, $proprietaire, [
+        $form = $this->createForm(ClientType::class, $proprietaire, [
             'is_edit' => true,
         ]);
 
@@ -122,6 +122,16 @@ final class ProprietaireController extends AbstractController
         return $this->render('proprietaire/dashboard.html.twig', [
             'restaurant' => $restaurant,
             'stats' => $Statistique,
+        ]);
+    }
+
+    #[Route('/profil/{name}', name: 'app_utilisateur_show', requirements: ['id' => Requirement::DIGITS])]
+    public function profil(): Response
+    {
+        $personne = $this->getUser();
+
+        return $this->render('profil/profil.html.twig', [
+            'personne' => $personne,
         ]);
     }
 }

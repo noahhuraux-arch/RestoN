@@ -2,20 +2,40 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiProperty;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\ApiFilter;
 use App\Repository\PlatRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: PlatRepository::class)]
+#[ApiResource(
+    operations: [
+        new Get(security: "is_granted('IS_AUTHENTICATED_FULLY')"),
+        new GetCollection(security: "is_granted('IS_AUTHENTICATED_FULLY')"),
+    ]
+)]
+#[ApiFilter(SearchFilter::class, properties: [
+    'typePlat' => 'exact',
+    'allergenes' => 'exact',
+    'restaurant' => 'exact',
+])]
 class Plat extends Produit
 {
     #[ORM\ManyToOne(inversedBy: 'plats')]
     #[ORM\JoinColumn(nullable: true)]
+    #[ApiProperty(example: '/api/type_plats/1')]
+
     private ?TypePlat $typePlat = null;
 
     /** @var Collection<int, Menu> */
     #[ORM\ManyToMany(targetEntity: Menu::class, mappedBy: 'idPlat')]
+    #[ApiProperty(example: '/api/menus/18')]
     private Collection $menus;
 
     #[ORM\Column]

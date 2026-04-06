@@ -2,16 +2,21 @@
 
 namespace App\Controller;
 
+use App\Entity\Client;
 use App\Entity\Horaire;
+use App\Entity\Proprietaire;
 use App\Entity\Restaurant;
 use App\Form\RestaurantType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Requirement\Requirement;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 final class RestaurantController extends AbstractController
@@ -92,8 +97,8 @@ final class RestaurantController extends AbstractController
     }
 
     #[Route('/proprietaire/restaurant/create', name: 'app_restaurant_create')]
-    #[IsGranted('ROLE_PROPRIETAIRE')]
-    public function create(Request $request, EntityManagerInterface $entityManager): Response
+    #[IsGranted(new Expression('is_granted("ROLE_CLIENT") or is_granted("ROLE_PROPRIETAIRE")'))]
+    public function create(Request $request, EntityManagerInterface $entityManager, SessionInterface $session): Response
     {
         $restaurant = new Restaurant();
         $form = $this->createForm(RestaurantType::class, $restaurant);
@@ -101,6 +106,31 @@ final class RestaurantController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            if (!in_array('ROLE_PROPRIETAIRE', $this->getUser()->getRoles())) {
+                /** @var Client $user */
+                $user = $this->getUser();
+                $roles = $user->getRoles();
+                $roles[] = 'ROLE_PROPRIETAIRE';
+                $user->setRoles($roles);
+                $entityManager->getConnection()->update(
+                    'personne',
+                    ['type' => 'proprietaire'],
+                    ['id' => $user->getId()]
+                );
+                $entityManager->flush();
+                $entityManager->clear();
+                $newUser = $entityManager->getRepository(Proprietaire::class)
+                    ->find($user->getId());
+                $token = new UsernamePasswordToken(
+                    $newUser,
+                    'main',
+                    $newUser->getRoles()
+                );
+                $this->container->get('security.token_storage')->setToken($token);
+                $session->set('_security_main', serialize($token));
+            }
+
             $restaurant->setProprietaire($this->getUser());
 
             $jours = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'];

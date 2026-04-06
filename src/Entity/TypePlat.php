@@ -2,12 +2,25 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiProperty;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
 use App\Repository\TypePlatRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: TypePlatRepository::class)]
+#[ApiResource(
+    operations: [
+        new Get(security: "is_granted('IS_AUTHENTICATED_FULLY')"),
+        new GetCollection(security: "is_granted('IS_AUTHENTICATED_FULLY')"),
+    ],
+    normalizationContext: ['groups' => ['TypePlat_Read']],
+    denormalizationContext: ['groups' => ['TypePlat_Write']]
+)]
 class TypePlat
 {
     #[ORM\Id]
@@ -16,12 +29,16 @@ class TypePlat
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['TypePlat_Read', 'TypePlat_Write'])]
+    #[ApiProperty(example: 'Entrée')]
     private ?string $lib = null;
 
     /**
      * @var Collection<int, Plat>
      */
     #[ORM\OneToMany(targetEntity: Plat::class, mappedBy: 'typePlat')]
+    #[ApiProperty(example: '[/api/plats/1, /api/plats/2]')]
+    #[Groups(['TypePlat_Read', 'TypePlat_Write'])]
     private Collection $plats;
 
     public function __construct()

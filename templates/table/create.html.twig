@@ -22,16 +22,16 @@
                         {{ form_start(form) }}
 
                         <div class="mb-3">
-                            {{ form_label(form.numero, 'Numéro de la table', {'label_attr': {'class': 'form-label fw-bold small text-uppercase text-muted'}}) }}
-                            {{ form_widget(form.numero, {'attr': {'class': 'form-control form-control-lg bg-light border-0', 'placeholder': 'Ex: 12'}}) }}
+                            {{ form_label(form.numero, 'Numéro de la table', {label_attr: {class: 'form-label fw-bold small text-uppercase text-muted'}}) }}
+                            {{ form_widget(form.numero, {attr: {class: 'form-control form-control-lg bg-light border-0', placeholder: 'Ex: 12'}}) }}
                             <div class="text-danger small mt-1">
                                 {{ form_errors(form.numero) }}
                             </div>
                         </div>
 
                         <div class="mb-4">
-                            {{ form_label(form.nbPlace, 'Nombre de couverts', {'label_attr': {'class': 'form-label fw-bold small text-uppercase text-muted'}}) }}
-                            {{ form_widget(form.nbPlace, {'attr': {'class': 'form-control form-control-lg bg-light border-0', 'placeholder': 'Ex: 4'}}) }}
+                            {{ form_label(form.nbPlace, 'Nombre de couverts', {label_attr: {class: 'form-label fw-bold small text-uppercase text-muted'}}) }}
+                            {{ form_widget(form.nbPlace, {attr: {class: 'form-control form-control-lg bg-light border-0', placeholder: 'Ex: 4'}}) }}
                             <div class="text-danger small mt-1">
                                 {{ form_errors(form.nbPlace) }}
                             </div>

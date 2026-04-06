@@ -29,12 +29,13 @@
                         {{ form_rest(form) }}
 
                         <button type="submit" class="btn btn-success w-100 btn-lg mt-4">
+                            <a href="{{ path('app_utilisateur_show', {name: app.user.prenom}) }}" class="text-decoration-none text-white">
                             Enregistrer les modifications
                         </button>
                         {{ form_end(form) }}
 
                         <div class="text-center mt-3">
-                            <a href="{{ path('app_proprietaire') }}" class="text-decoration-none text-muted small">
+                            <a href="{{ path('app_utilisateur_show', {name: app.user.prenom}) }}" class="text-decoration-none text-muted small">
                                 <i class="bi bi-arrow-left"></i> Retour
                             </a>
                         </div>

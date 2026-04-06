@@ -46,11 +46,19 @@
                             </div>
 
                             <div class="d-grid gap-2 d-flex">
-                                <button class="btn btn-outline-dark flex-grow-1 js-details-btn" data-bs-toggle="modal" data-bs-target="#detailsModal" data-id="{{ commande.id }}" data-serveur="{{ serveur }}" data-table="{{ commande.tables ? 'Table n°' ~ commande.tables.numero }}" data-total="{{ commande.prixCommande|number_format(2, ',', ' ') }}" data-produits='[{% for p in commande.produits %}{"nom": "{{ p.libProduit }}", "prix": "{{ p.prixProduit|number_format(2, ',', ' ') }}"}{% if not loop.last %},{% endif %}{% endfor %}]'>
+                                <button class="btn btn-outline-dark flex-grow-1 js-details-btn" data-bs-toggle="modal" data-bs-target="#detailsModal" data-id="{{ commande.id }}" data-serveur="{{ serveur }}" data-table="{{ commande.tables ? 'Table n°' ~ commande.tables.numero }}" data-total="{{ commande.prixCommande|number_format(2, ',', ' ') }}" data-produits='[{% for cq in commande.commandeQuantites %}{"nom": "{{ cq.produit.libProduit }}", "prix": "{{ cq.produit.prixProduit|number_format(2, ',', ' ') }}", "qte": {{ cq.quantite }}}{% if not loop.last %},{% endif %}{% endfor %}]'>
                                     <i class="bi bi-eye me-2"></i>Détails
                                 </button>
                                 <a href="{{ path('app_commande_payer', {id: restaurant.id, commande: commande.id}) }}" class="btn btn-success flex-grow-1">
                                     <i class="bi bi-credit-card me-2"></i>Payer
+                                </a>
+                                <a href="{{ path('app_commande_update', {id: restaurant.id, commandeId: commande.id}) }}" class="btn btn-outline-primary flex-grow-1">
+                                    <i class="bi bi-pencil me-2"></i>Modifier
+                                </a>
+                                <a href="{{ path('app_commande_delete', {id: restaurant.id, commandeId: commande.id}) }}"
+                                   class="btn btn-outline-danger flex-grow-1"
+                                   onclick="return confirm('Supprimer la commande #{{ commande.id }} ?')">
+                                    <i class="bi bi-trash me-2"></i>Supprimer
                                 </a>
                             </div>
                         </div>
@@ -71,6 +79,7 @@
                         <th>Table</th>
                         <th class="text-end">Total</th>
                         <th class="text-center">Actions</th>
+                        <th>Etat de la commande</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -100,16 +109,52 @@
                                                 data-serveur="{{ serveur }}"
                                                 data-table="{{ commande.tables ? 'Table n°' ~ commande.tables.numero }}"
                                                 data-total="{{ commande.prixCommande|number_format(2, ',', ' ') }}"
-                                                data-produits='[{% for p in commande.produits %}{"nom": "{{ p.libProduit }}", "prix": "{{ p.prixProduit|number_format(2, ',', ' ') }}"}{% if not loop.last %},{% endif %}{% endfor %}]'>
+                                                data-produits='[{% for cq in commande.commandeQuantites %}{"nom": "{{ cq.produit.libProduit }}", "prix": "{{ cq.produit.prixProduit|number_format(2, ',', ' ') }}", "qte": {{ cq.quantite }}}{% if not loop.last %},{% endif %}{% endfor %}]'>
                                             <i class="bi bi-eye me-1"></i> Détails
                                         </button>
                                         <a href="{{ path('app_commande_payer', {id: restaurant.id, commande: commande.id}) }}"
                                            class="btn btn-sm btn-success">
                                             <i class="bi bi-credit-card me-1"></i> Payer
                                         </a>
+                                        <a href="{{ path('app_commande_update', {id: restaurant.id, commandeId: commande.id}) }}"
+                                           class="btn btn-sm btn-outline-primary">
+                                            <i class="bi bi-pencil me-1"></i> Modifier
+                                        </a>
+                                        <a href="{{ path('app_commande_delete', {id: restaurant.id, commandeId: commande.id}) }}"
+                                           class="btn btn-sm btn-danger"
+                                           onclick="return confirm('Supprimer la commande #{{ commande.id }} ?')">
+                                            <i class="bi bi-trash me-1"></i> Supprimer
+                                        </a>
                                     </div>
-                            </td>
-                        </tr>
+                                </td>
+                                <td>
+                                    <form action="{{ path('app_commande_update_etat', {id: commande.id}) }}" method="POST">
+                                        <div class="d-flex flex-column gap-2">
+                                            <label>
+                                                <select name="nouvel_etat"
+                                                        class="form-select form-select-sm js-etat-select"
+                                                        data-original-value="{{ commande.etatCommande.value }}">
+
+                                                    {% for etat in etats %}
+                                                        <option value="{{ etat.value }}" {{ etat == commande.etatCommande ? 'selected' : '' }}>
+                                                            {% if etat.name == 'WaitingTreatment' %}
+                                                                En attente
+                                                            {% elseif etat.name == 'InTreatment' %}
+                                                                En cours
+                                                            {% elseif etat.name == 'Ready' %}
+                                                                Prête
+                                                            {% endif %}
+                                                        </option>
+                                                    {% endfor %}
+                                                </select>
+                                            </label>
+                                            <button type="submit" class="btn btn-sm btn-primary js-btn-save-etat" style="display: none;">
+                                                <i class="bi bi-check-circle me-1"></i>Enregistrer l'état
+                                            </button>
+                                        </div>
+                                    </form>
+                                </td>
+                            </tr>
                         {% endif %}
                     {% else %}
                         <tr>
@@ -186,11 +231,31 @@
                         const li = document.createElement('li');
                         li.className = 'list-group-item d-flex justify-content-between align-items-center px-0 border-0 bg-transparent py-1 small';
                         li.innerHTML = `
-                                <span class="text-dark">${p.nom}</span>
-                                <span class="fw-medium">${p.prix} €</span>
-                            `;
+                            <span class="text-dark">${p.nom} x${p.qte}</span>
+                            <span class="fw-medium">${p.prix} €</span>`;
                         listContainer.appendChild(li);
                     });
+                });
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const allSelects = document.querySelectorAll('.js-etat-select');
+
+            allSelects.forEach(select => {
+                select.addEventListener('change', function() {
+                    const form = this.closest('form');
+                    const button = form.querySelector('.js-btn-save-etat');
+                    const currentValue = this.value;
+                    const originalValue = this.getAttribute('data-original-value');
+
+                    if (currentValue !== originalValue) {
+                        button.style.display = 'block';
+                        this.classList.add('is-invalid');
+                    } else {
+                        button.style.display = 'none';
+                        this.classList.remove('is-invalid');
+                    }
                 });
             });
         });

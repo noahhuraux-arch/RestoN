@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ personne.prenom }} {{  personne.nom }} Profil{% endblock %}
+
+{% block body %}
+    <div class="container mb-4">
+
+        <h1 class="mb-1">{{ personne.nom|first|upper }}{{ personne.nom|slice(1)}} {{ personne.prenom|first|upper }}{{ personne.prenom|slice(1)}}
+            {% for role in personne.roles %}
+                {% if role == "ROLE_PROPRIETAIRE" %}
+                    - Propriétaire
+                {% elseif role == "ROLE_SERVEUR" %}
+                    - Serveur
+                {% endif %}
+            {% endfor %}
+        </h1>
+        <div class=" mb-5">
+            <a href="{{ path('app_proprietaire_update') }}" class="btn btn-outline-primary mt-3">
+                <i class=" me-1"></i> Modifier le profil
+            </a>
+        </div>
+
+
+
+        <h4>Information de contact</h4>
+            Numero de Téléphone : {{ personne.telephone }}
+
+        <h4 class = "mt-4">Information de connexion</h4>
+            Email de connexion : {{ personne.email }}
+
+        {% for role in personne.roles %}
+            {% if role == "ROLE_PROPRIETAIRE" %}
+                <h4 class = "mt-4">Information propriétaire</h4>
+                {% for resto in personne.restaurants %}
+                    <div class = "mb-3">
+                        <h6 class = "text-decoration-underline">Restaurant {{ resto.libRestau|first|upper }}{{ resto.libRestau|slice(1)}} :</h6>
+                        <div class = "ms-3">Adresse : {{ resto.adrRestau }} {{ resto.cpRestau }} {{ resto.villeRestau }}</div>
+                        <div class = "ms-3">Email : {{ resto.emailRestau }}</div>
+                        <div class = "ms-3">Téléphone : {{ resto.emailRestau }}</div>
+                        <div class = "ms-3">Nombre de table : {{ resto.nbTable }}</div>
+                        <div class = "ms-3">Nomdre d'étoile : {{ resto.nbEtoiles }}</div>
+                    </div>
+                {% endfor %}
+
+            {% elseif role == "ROLE_SERVEUR" %}
+                <h4 class = "mt-4">Information serveur</h4>
+                <h6 class = "text-decoration-underline">Commande(s) :</h6>
+                {% for commande in personne.commandes %}
+                    <div class = "ms-3"> N°{{ commande.id}}  Table {{ commande.tables.numero}} -> {{ commande.prixCommande}}€</div>
+                {% endfor %}
+            {% endif %}
+        {% endfor %}
+
+    </div>
+{% endblock %}
