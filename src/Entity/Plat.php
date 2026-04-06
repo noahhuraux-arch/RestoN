@@ -23,6 +23,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ApiFilter(SearchFilter::class, properties: [
     'typePlat' => 'exact',
     'allergenes' => 'exact',
+    'restaurant' => 'exact',
 ])]
 class Plat extends Produit
 {

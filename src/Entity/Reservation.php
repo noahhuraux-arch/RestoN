@@ -17,8 +17,8 @@ use Symfony\Component\Serializer\Attribute\Groups;
 #[ORM\Entity(repositoryClass: ReservationRepository::class)]
 #[ApiResource(
     operations: [
-        new Get(),
-        new GetCollection(),
+        new Get(security: "is_granted('IS_AUTHENTICATED_FULLY')"),
+        new GetCollection(security: "is_granted('IS_AUTHENTICATED_FULLY')"),
     ],
     normalizationContext: ['groups' => ['reservation:read']],
     denormalizationContext: ['groups' => ['reservation:write']]

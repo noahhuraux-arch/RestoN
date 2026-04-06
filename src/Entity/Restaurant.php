@@ -11,6 +11,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Serializer\Attribute\Ignore;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: RestaurantRepository::class)]
@@ -69,7 +70,7 @@ class Restaurant
 
     #[ORM\ManyToOne(inversedBy: 'restaurants')]
     #[ORM\JoinColumn(nullable: false)]
-    #[ApiProperty(example: '/api/proprietaires/1')]
+    #[Ignore]
     private ?Proprietaire $proprietaire = null;
 
     #[ORM\Column(length: 10)]
@@ -93,20 +94,25 @@ class Restaurant
     private ?string $banniere = null;
 
     #[ORM\OneToMany(targetEntity: Horaire::class, mappedBy: 'restaurant', cascade: ['remove'], orphanRemoval: true)]
+    #[Ignore]
     private Collection $horaires;
 
     #[ORM\OneToMany(targetEntity: Table::class, mappedBy: 'restaurant', cascade: ['remove'], orphanRemoval: true)]
+    #[Ignore]
     private Collection $tables;
 
     #[ORM\OneToMany(targetEntity: Reservation::class, mappedBy: 'restaurant', cascade: ['remove'])]
+    #[Ignore]
     private Collection $reservations;
 
     #[ORM\OneToMany(targetEntity: Serveur::class, mappedBy: 'restaurant', cascade: ['remove'])]
+    #[Ignore]
     private Collection $serveurs;
 
     #[ORM\OneToMany(targetEntity: Produit::class, mappedBy: 'restaurant', cascade: ['remove'])]
     #[ApiProperty(example: '[/api/produits/1, /api/produits/2]')]
     #[Groups(['Restaurant_Read', 'Restaurant_Write'])]
+    #[Ignore]
     private Collection $produits;
 
     /**
@@ -114,6 +120,7 @@ class Restaurant
      */
     #[ORM\OneToMany(targetEntity: Commande::class, mappedBy: 'restaurant')]
     #[ApiProperty(example: '[/api/commandes/1, /api/commandes/2]')]
+    #[Ignore]
     private Collection $commandes;
 
     public function __construct()

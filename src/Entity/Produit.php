@@ -11,6 +11,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Serializer\Attribute\Ignore;
 
 #[ORM\Entity(repositoryClass: ProduitRepository::class)]
 #[ORM\InheritanceType('SINGLE_TABLE')]
@@ -72,6 +73,7 @@ abstract class Produit
      * @var Collection<int, CommandeQuantite>
      */
     #[ORM\OneToMany(targetEntity: CommandeQuantite::class, mappedBy: 'produit', orphanRemoval: true)]
+    #[Ignore]
     private Collection $commandeQuantites;
 
     public function __construct()
