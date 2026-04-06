@@ -4,7 +4,7 @@ COPY nginx.conf /etc/nginx/conf.d/default.conf
 WORKDIR /var/www/html/public
 
 # BASE PHP
-FROM php:8.2-fpm AS base
+FROM php:8.3-fpm AS base
 RUN apt-get update && apt-get install -y \
     git unzip libicu-dev libzip-dev libpng-dev libonig-dev libxml2-dev \
     && docker-php-ext-install intl pdo pdo_mysql zip opcache
