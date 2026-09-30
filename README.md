@@ -1,14 +1,15 @@
 # SAE 3.01 Développement d’une application
 
-## Auteurs
+## Description : 
 
+Ceci est une application Web Symfony, celle-ci permet à un restaurant de gérer les réservations, son personnel ou encore les recettes pour ses plats  etc... 
+
+## Auteurs
 
 Dehêtre-Cordier Bastien : dehe0014  
 Fagot-Naude Amélien : fago0014  
 Gaboyard Aymeric : gabo0013  
 Huraux Noah : hura0003  
-
-### **root** : Travail fait par Noah Huraux -> oublie de configuration git sur la VM
 
 ## Installation / Configuration
 
